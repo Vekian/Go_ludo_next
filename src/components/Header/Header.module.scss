@@ -1,0 +1,36 @@
+@use "../../styles/variables" as *;
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 8vh;
+  min-height: 50px;
+  width: 100%;
+
+  .imageWrapper {
+    position: relative;
+    left: 0;
+    height: 100%;
+
+    img {
+      height: 100% !important;
+      width: auto !important;
+    }
+  }
+  .inputWrapper {
+    height: 50%;
+    width: 30%;
+    display: flex;
+    align-items: center;
+  }
+  input::placeholder {
+    color: $neutral-600;
+  }
+  .input {
+    background-color: $neutral-100;
+    height: 100% !important;
+    width: 100%;
+  }
+}
