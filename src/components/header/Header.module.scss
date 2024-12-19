@@ -1,9 +1,6 @@
 @use "../../styles/variables" as *;
 
 .header {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
   height: 8vh;
   min-height: 55px;
   width: 100%;

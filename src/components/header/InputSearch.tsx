@@ -3,10 +3,11 @@ import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBarcode, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-function InputSearch({ mobile }: { mobile: boolean }) {
+function InputSearch() {
   return (
     <div
-      className={`${styles.inputWrapper} relative ${mobile ? "" : " w-1/3"}`}
+      className={`${styles.inputWrapper} order-last md:order-2 ml-6 mr-6  relative w-full  md:w-1/3
+      `}
     >
       <FontAwesomeIcon
         icon={faSearch}
@@ -17,7 +18,9 @@ function InputSearch({ mobile }: { mobile: boolean }) {
         className={`${styles.input} pl-10 rounded-full`}
         placeholder="Rechercher un jeu"
       />
-      {!mobile && <FontAwesomeIcon icon={faBarcode} className="pl-6" />}
+      <div className="pl-6 hidden md:block">
+        <FontAwesomeIcon icon={faBarcode} />
+      </div>
     </div>
   );
 }

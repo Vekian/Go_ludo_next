@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import Header from "@/components/Header/Header";
+import Header from "@/components/header/Header";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { farro, nunito } from "../fonts/fonts";
-import MobileHeader from "@/components/Header/MobileHeader";
 
 export const metadata: Metadata = {
   title: "Go Ludo",
@@ -19,8 +18,7 @@ export default function RootLayout({
     <html lang="fr">
       <body className={`${nunito.variable} ${farro.variable}`}>
         <Header />
-        <MobileHeader />
-        {children}
+        <div>{children}</div>
       </body>
     </html>
   );
