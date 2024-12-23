@@ -1,4 +1,5 @@
 import ButtonPrimary from "@/components/button/ButtonPrimary";
+import ButtonSelect from "@/components/button/ButtonSelect";
 import Carousel from "@/components/carousel/Carousel";
 
 export default function Home() {
@@ -29,15 +30,52 @@ export default function Home() {
           <ButtonPrimary label="Chercher" color="primary" />
         </div>
       </div>
-      <div className="flex mt-10">
-        {/*         <ButtonSelect
+      <div className="flex mt-10 justify-around">
+        <ButtonSelect
+          label="Trier par"
+          options={[
+            { id: "2", label: "test1", value: "Test1" },
+            { id: "3", label: "test2", value: "Test2" },
+          ]}
+          color="primary-900"
+          width={150}
+        />
+        <ButtonSelect
+          label="Catégorie"
+          options={[
+            { id: "2", label: "test1", value: "Test1" },
+            { id: "3", label: "test2", value: "Test2" },
+          ]}
+          color="primary-500"
+          width={150}
+        />
+        <ButtonSelect
           label="Thème"
           options={[
             { id: "2", label: "test1", value: "Test1" },
-            { id: "3", label: "test1", value: "Test1" },
+            { id: "3", label: "test2", value: "Test2" },
           ]}
-          color="primary"
-        /> */}
+          color="neutral-500"
+          width={150}
+        />
+        <ButtonSelect
+          label="Mode de jeu"
+          options={[
+            { id: "2", label: "test1", value: "Test1" },
+            { id: "3", label: "test2", value: "Test2" },
+          ]}
+          color="secondary-600"
+          width={180}
+        />
+        <ButtonSelect
+          label="Durée"
+          options={[
+            { id: "2", label: "test1", value: "Test1" },
+            { id: "3", label: "test2", value: "Test2" },
+          ]}
+          color="primary-500"
+          width={150}
+        />
       </div>
     </main>
   );

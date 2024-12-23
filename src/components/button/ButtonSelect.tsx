@@ -1,0 +1,118 @@
+"use client";
+// ButtonSelect.tsx
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import dynamic from "next/dynamic";
+import { theme } from "../../../theme/theme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { Paper } from "@mui/material";
+
+interface Option {
+  value: string;
+  label: string;
+  id: string;
+}
+
+const ButtonSelect = ({
+  label,
+  options,
+  color,
+  width,
+}: {
+  label: string;
+  options: Option[];
+  color: string | null;
+  width: number;
+}) => {
+  const [isClient, setIsClient] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<Option | null>(null);
+  const partsColor = color.split("-");
+  const tailwindColor = (theme.colors as any)[partsColor[0]]?.[partsColor[1]];
+  const white = theme.colors.white;
+
+  const styleLabel = {
+    border: "none",
+    color: selectedValue ? theme.colors.black : white,
+    transform: "",
+    fontFamily: "nunito",
+    fontWeight: 700,
+    fontSize: "17px",
+  };
+
+  if (selectedValue) {
+    styleLabel.transform = "translate(30%,-80%)";
+    styleLabel.fontSize = "0.8rem";
+  }
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null; // Ne rend rien tant que ce n'est pas côté client
+  }
+
+  const handleSelect = (
+    event: React.ChangeEvent<unknown>,
+    value: Option | null
+  ) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <Autocomplete
+      popupIcon={
+        <FontAwesomeIcon
+          icon={faAngleDown}
+          style={{ color: white }} // Couleur personnalisable
+        />
+      }
+      disablePortal
+      options={options}
+      value={selectedValue} // Liaison avec la valeur sélectionnée
+      onChange={handleSelect}
+      PaperComponent={({ children }) => (
+        <Paper style={{ fontFamily: "nunito", fontWeight: 700 }}>
+          {children}
+        </Paper>
+      )}
+      sx={{
+        marginLeft: "10px",
+        marginRight: "10px",
+        width: width,
+        ".MuiInputLabel-root": styleLabel,
+        ".MuiOutlinedInput-notchedOutline": {
+          border: "none",
+        },
+        ".MuiInputLabel-root.Mui-focused": {
+          transform: "translate(30%,-80%)",
+          fontSize: "0.8rem",
+          color: theme.colors.black, // Change la couleur du label lorsqu'il est focalisé
+        },
+        ".MuiAutocomplete-clearIndicator": {
+          color: white, // Modifier la couleur de la croix via la classe
+        },
+        ".MuiAutocomplete-input": {
+          marginLeft: "10px",
+          marginRight: "10px",
+          color: white, // Change la couleur de la valeur sélectionnée
+        },
+        ".MuiAutocomplete-listbox": {
+          backgroundColor: tailwindColor, // Appliquer la couleur de fond personnalisée pour la liste des options
+        },
+        ".MuiOutlinedInput-root": {
+          borderRadius: "50px",
+          fontFamily: "nunito",
+          fontWeight: 700,
+          backgroundColor: tailwindColor,
+          // Applique un border-radius au champ de texte à l'intérieur de l'Autocomplete
+        },
+      }}
+      renderInput={(params) => <TextField {...params} label={label} />}
+    />
+  );
+};
+
+// Dynamic import with SSR disabled
+export default dynamic(() => Promise.resolve(ButtonSelect), { ssr: false });
