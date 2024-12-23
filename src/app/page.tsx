@@ -1,5 +1,4 @@
 import ButtonPrimary from "@/components/button/ButtonPrimary";
-import ButtonSelect from "@/components/button/ButtonSelect";
 import Carousel from "@/components/carousel/Carousel";
 
 export default function Home() {
@@ -31,14 +30,14 @@ export default function Home() {
         </div>
       </div>
       <div className="flex mt-10">
-        <ButtonSelect
+        {/*         <ButtonSelect
           label="Thème"
           options={[
             { id: "2", label: "test1", value: "Test1" },
             { id: "3", label: "test1", value: "Test1" },
           ]}
           color="primary"
-        />
+        /> */}
       </div>
     </main>
   );
