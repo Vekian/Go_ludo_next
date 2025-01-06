@@ -22,7 +22,7 @@ export default function RootLayout({
       >
         <SideMenu />
         <Header />
-        <div>{children}</div>
+        <div className="pt-10">{children}</div>
       </body>
     </html>
   );

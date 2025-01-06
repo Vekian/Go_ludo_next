@@ -3,7 +3,7 @@ import React from "react";
 
 function Filters() {
   return (
-    <div className="flex justify-around flex-wrap">
+    <div className="flex justify-around flex-wrap mt-5">
       <ButtonSelect
         label="Trier par"
         options={[

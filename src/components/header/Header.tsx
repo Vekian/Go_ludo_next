@@ -3,14 +3,17 @@ import styles from "./Header.module.scss";
 import Image from "next/image";
 import ButtonPrimary from "../button/ButtonPrimary";
 import InputSearch from "./InputSearch";
+import Link from "next/link";
 
 export default function Header() {
   return (
     <header
-      className={`${styles.header} flex flex-wrap  items-center justify-around bg-white`}
+      className={`${styles.header} flex flex-wrap  items-center justify-around bg-white fixed z-50`}
     >
       <div className={`${styles.imageWrapper} order-1`}>
-        <Image src="/images/logo.png" alt="logo" width={200} height={50} />
+        <Link href="/">
+          <Image src="/images/logo.png" alt="logo" width={200} height={50} />
+        </Link>
       </div>
       <InputSearch />
       <div className="order-3">

@@ -4,10 +4,22 @@ import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import Carousel from "@/components/carousel/Carousel";
 function MainContent() {
+  const imgs: [] = [
+    {
+      id: 2,
+      src: "/images/banniere.webp",
+      alt: "banniere",
+    },
+    {
+      id: 3,
+      src: "/images/banniere.webp",
+      alt: "banniere",
+    },
+  ];
   return (
     <div className="flex">
-      <div className="w-2/3 ">
-        <Carousel />
+      <div className="w-2/3">
+        <Carousel imgs={imgs} height={300} width={1000} />
       </div>
       <div className="w-1/3 flex pl-16 pr-16 flex-col items-center justify-center">
         <h1 className="text-primary-950 text-center mb-2">
