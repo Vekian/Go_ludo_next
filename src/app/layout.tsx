@@ -3,6 +3,7 @@ import Header from "@/components/header/Header";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { farro, nunito } from "../fonts/fonts";
+import SideMenu from "@/components/header/SideMenu";
 
 export const metadata: Metadata = {
   title: "Go Ludo",
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body
         className={`${nunito.variable} ${farro.variable} bg-neutral-50  min-h-screen`}
       >
+        <SideMenu />
         <Header />
         <div>{children}</div>
       </body>
