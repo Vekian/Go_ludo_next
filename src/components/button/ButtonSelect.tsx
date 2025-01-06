@@ -28,8 +28,13 @@ const ButtonSelect = ({
 }) => {
   const [isClient, setIsClient] = useState(false);
   const [selectedValue, setSelectedValue] = useState<Option | null>(null);
-  const partsColor = color.split("-");
-  const tailwindColor = (theme.colors as any)[partsColor[0]]?.[partsColor[1]];
+
+  const partsColor: [string, string] = color?.split("-") as [string, string];
+  const tailwindColor =
+    theme.colors[partsColor[0] as keyof typeof theme.colors]?.[
+      partsColor[1] as unknown as keyof (typeof theme.colors)["neutral"]
+    ];
+
   const white = theme.colors.white;
 
   const styleLabel = {
@@ -109,7 +114,9 @@ const ButtonSelect = ({
           // Applique un border-radius au champ de texte à l'intérieur de l'Autocomplete
         },
       }}
-      renderInput={(params) => <TextField {...params} label={label} />}
+      renderInput={(params) => (
+        <TextField {...params} label={label} size="small" />
+      )}
     />
   );
 };
