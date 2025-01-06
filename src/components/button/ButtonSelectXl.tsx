@@ -6,12 +6,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import dynamic from "next/dynamic";
 import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleDown,
-  faDice,
-  IconDefinition,
-} from "@fortawesome/free-solid-svg-icons";
-import { InputAdornment, Paper } from "@mui/material";
+import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { InputAdornment } from "@mui/material";
 
 interface Option {
   value: string;
@@ -106,6 +102,7 @@ const ButtonSelectXl = ({
                     style={{
                       color: theme.colors.primary[900],
                       marginLeft: 12,
+                      marginRight: 2,
                     }}
                   />
                 </InputAdornment>

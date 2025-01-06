@@ -47,7 +47,7 @@ const ButtonSelect = ({
   };
 
   if (selectedValue) {
-    styleLabel.transform = "translate(30%,-80%)";
+    styleLabel.transform = "translate(30%,-100%)";
     styleLabel.fontSize = "0.8rem";
   }
   React.useEffect(() => {
@@ -86,14 +86,16 @@ const ButtonSelect = ({
         marginLeft: "10px",
         marginRight: "10px",
         width: width,
+        textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)",
         ".MuiInputLabel-root": styleLabel,
         ".MuiOutlinedInput-notchedOutline": {
           border: "none",
         },
         ".MuiInputLabel-root.Mui-focused": {
-          transform: "translate(30%,-80%)",
+          transform: "translate(30%,-100%)",
           fontSize: "0.8rem",
-          color: theme.colors.black, // Change la couleur du label lorsqu'il est focalisé
+          color: theme.colors.black,
+          textShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)", // Change la couleur du label lorsqu'il est focalisé
         },
         ".MuiAutocomplete-clearIndicator": {
           color: white, // Modifier la couleur de la croix via la classe

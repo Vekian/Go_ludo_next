@@ -1,11 +1,11 @@
 "use client";
 
-import React, { Component } from "react";
+import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loaders
 import { Carousel as ReactCarousel } from "react-responsive-carousel";
 import Image from "next/image";
 
-function Carousel(props) {
+function Carousel() {
   return (
     <ReactCarousel
       autoPlay={true}
