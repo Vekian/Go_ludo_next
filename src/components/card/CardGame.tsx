@@ -4,7 +4,7 @@ import Rating from "../rating/Rating";
 
 function CardGame() {
   return (
-    <div className="w-1/6 p-5">
+    <div className="w-60 p-5">
       <div className="flex flex-col items-center justify-center bg-white shadow-lg rounded-md p-2 ">
         <Image
           alt="cover"

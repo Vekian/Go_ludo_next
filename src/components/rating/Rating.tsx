@@ -15,7 +15,7 @@ function Rating() {
           <div className="flex items-center bg-primary-900 rounded-e-full pl-4 p-2">
             <MaterialRating
               name="half-rating"
-              defaultValue={2.5}
+              defaultValue={4}
               precision={0.5}
               readOnly
               icon={

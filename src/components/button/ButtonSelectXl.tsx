@@ -34,7 +34,7 @@ const ButtonSelectXl = ({
     fontFamily: "nunito",
     fontWeight: 700,
     fontSize: "17px",
-    marginLeft: "40px",
+    marginLeft: "50px",
   };
 
   React.useEffect(() => {
@@ -102,7 +102,8 @@ const ButtonSelectXl = ({
                     style={{
                       color: theme.colors.primary[900],
                       marginLeft: 12,
-                      marginRight: 2,
+                      marginRight: 0,
+                      width: 20,
                     }}
                   />
                 </InputAdornment>

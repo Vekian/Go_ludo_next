@@ -7,17 +7,10 @@ import InputSearch from "./InputSearch";
 export default function Header() {
   return (
     <header
-      className={`${styles.header} flex flex-wrap container mx-auto items-center justify-around`}
+      className={`${styles.header} flex flex-wrap  items-center justify-around bg-white`}
     >
       <div className={`${styles.imageWrapper} order-1`}>
-        <Image
-          src="/images/logo.png"
-          alt="logo"
-          className="h-100 w-auto"
-          layout="responsive"
-          width={450}
-          height={150}
-        />
+        <Image src="/images/logo.png" alt="logo" width={200} height={50} />
       </div>
       <InputSearch />
       <div className="order-3">

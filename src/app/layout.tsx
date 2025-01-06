@@ -16,7 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${nunito.variable} ${farro.variable}`}>
+      <body
+        className={`${nunito.variable} ${farro.variable} bg-neutral-50  min-h-screen`}
+      >
         <Header />
         <div>{children}</div>
       </body>

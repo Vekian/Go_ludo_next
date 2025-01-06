@@ -4,7 +4,7 @@ import CardGame from "@/components/card/CardGame";
 
 export default function Home() {
   return (
-    <main className=" bg-neutral-50 min-h-screen">
+    <main>
       <div className="bg-white ">
         <div className="container pt-10 pb-5 ">
           <MainContent />
@@ -13,7 +13,7 @@ export default function Home() {
       </div>
 
       <div>
-        <div className="container flex">
+        <div className="container flex justify-center flex-wrap">
           <CardGame />
           <CardGame />
         </div>
