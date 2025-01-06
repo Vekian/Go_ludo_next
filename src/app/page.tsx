@@ -1,6 +1,8 @@
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import ButtonSelect from "@/components/button/ButtonSelect";
+import ButtonSelectXl from "@/components/button/ButtonSelectXl";
 import Carousel from "@/components/carousel/Carousel";
+import { faLocationDot, faDice } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   return (
@@ -15,17 +17,25 @@ export default function Home() {
           </h1>
           <div className="w-full flex flex-col">
             <label>Chercher une partie</label>
-            <select>
-              <option>Saboteur</option>
-              <option>6 qui prend </option>
-            </select>
+            <ButtonSelectXl
+              label="Où ? (ville, code postal...)"
+              options={[
+                { id: "2", label: "Saboteur", value: "Saboteur" },
+                { id: "3", label: "6 qui prend", value: "6 qui prend" },
+              ]}
+              icon={faLocationDot}
+            />
           </div>
           <div className="w-full flex flex-col">
             <label>Une envie de jeu particulière ?</label>
-            <select>
-              <option>Saboteur</option>
-              <option>6 qui prend </option>
-            </select>
+            <ButtonSelectXl
+              label="Un jeu, un thème..."
+              options={[
+                { id: "2", label: "Saboteur", value: "Saboteur" },
+                { id: "3", label: "6 qui prend", value: "6 qui prend" },
+              ]}
+              icon={faDice}
+            />
           </div>
           <ButtonPrimary label="Chercher" color="primary" />
         </div>
