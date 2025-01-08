@@ -6,18 +6,4 @@
   font-weight: 600;
   padding: 5px 20px;
   margin: 10px;
-
-  &.primary {
-    background-color: $primary-600;
-    &:hover {
-      background-color: $primary-700;
-    }
-  }
-
-  &.secondary {
-    background-color: $primary-900;
-    &:hover {
-      background-color: $primary-950;
-    }
-  }
 }

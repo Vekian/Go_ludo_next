@@ -43,7 +43,7 @@ const ButtonSelect = ({
     transform: "",
     fontFamily: "nunito",
     fontWeight: 700,
-    fontSize: "17px",
+    fontSize: "16px",
   };
 
   if (selectedValue) {

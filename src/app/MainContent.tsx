@@ -47,7 +47,7 @@ function MainContent() {
             icon={faDice}
           />
         </div>
-        <ButtonPrimary label="Chercher" color="primary" />
+        <ButtonPrimary label="Chercher" color="primary-600" />
       </div>
     </div>
   );

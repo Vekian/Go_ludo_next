@@ -1,3 +1,4 @@
+"use client";
 import { Stack, Rating as MaterialRating } from "@mui/material";
 import React from "react";
 import { theme } from "../../../theme/theme";
@@ -7,7 +8,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 function Rating() {
   return (
     <div className="flex items-center">
-      <div className="rounded-full z-50 bg-primary-600 text-xl font-bold text-white pl-4 pr-4 pt-2 pb-2">
+      <div className="rounded-full z-50 bg-primary-600 text-lg font-bold text-white pl-3 pr-3 pt-1 pb-1">
         4
       </div>
       <div className="-ml-3 z-10">
@@ -23,7 +24,7 @@ function Rating() {
                   icon={faStar}
                   style={{
                     color: theme.colors.primary[400],
-                    fontSize: "16px",
+                    fontSize: "12px",
                     marginRight: "3px",
                   }}
                 />
@@ -33,7 +34,7 @@ function Rating() {
                   icon={faStar}
                   style={{
                     color: theme.colors.neutral[200],
-                    fontSize: "16px",
+                    fontSize: "12px",
                     marginRight: "3px",
                   }}
                 />

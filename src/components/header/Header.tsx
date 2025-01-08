@@ -17,8 +17,8 @@ export default function Header() {
       </div>
       <InputSearch />
       <div className="order-3">
-        <ButtonPrimary label="Se connecter" color="primary" />
-        <ButtonPrimary label="S'inscrire" color="secondary" />
+        <ButtonPrimary label="Se connecter" color="primary-600" />
+        <ButtonPrimary label="S'inscrire" color="primary-900" />
       </div>
     </header>
   );

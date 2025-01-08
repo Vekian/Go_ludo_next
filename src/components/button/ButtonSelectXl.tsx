@@ -116,7 +116,7 @@ const ButtonSelectXl = ({
               ),
               style:
                 selectedValue || params.inputProps?.value
-                  ? { transform: "translate(-20%,-30%)", fontSize: "0.8rem" }
+                  ? { transform: "translate(-26%,-30%)", fontSize: "0.8rem" }
                   : {},
             },
           }}
