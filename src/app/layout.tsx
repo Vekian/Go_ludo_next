@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body
-        className={`${nunito.variable} ${farro.variable} bg-neutral-50  min-h-screen`}
+        className={`${nunito.variable} ${farro.variable} bg-neutral-100  min-h-screen`}
       >
         <SideMenu />
         <Header />

@@ -57,4 +57,7 @@ export const theme = {
   boxShadow: {
     card: "0px -1px 10px rgba(0, 0, 0, 0.25)",
   },
+  flex: {
+    "2": "2 2 0%",
+  },
 };

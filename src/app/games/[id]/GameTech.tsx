@@ -33,7 +33,7 @@ function GameTech() {
           </h5>
         </div>
         <div className="flex-1 flex flex-col justify-start">
-          <h5>Contenu</h5>
+          <h5 className="text-lg">Contenu</h5>
           <ul className="pl-3 flex flex-col flex-1 justify-around">
             <li>75 cartes</li>
             <li>50 jetons</li>
@@ -42,7 +42,7 @@ function GameTech() {
         </div>
       </div>
       <div>
-        <h5>Nécessite:</h5>
+        <h5 className="text-lg">Nécessite:</h5>
         <h6>Téléphone, connexion internet, environnement spacieux.</h6>
       </div>
     </div>

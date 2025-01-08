@@ -57,7 +57,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
           />
         </div>
       </div>
-      <div className=" bg-neutral-50 border-white border-2 overflow-x-hidden shadow-card h-80 rounded-b-xxl text-primary-950 font-semibold p-8 z-50 relative ">
+      <div className=" bg-neutral-50 border-white border-2 overflow-x-hidden shadow-card h-80 rounded-b-xxl text-primary-950 font-semibold p-8 z-40 relative ">
         {children}
       </div>
     </div>

@@ -5,18 +5,18 @@ import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-function Rating() {
+function Rating({ value }: { value?: number }) {
   return (
     <div className="flex items-center">
-      <div className="rounded-full z-50 bg-primary-600 text-lg font-bold text-white pl-3 pr-3 pt-1 pb-1">
-        4
+      <div className="flex items-center justify-center rounded-full z-40 bg-primary-600 text-lg font-bold text-white h-10 w-10">
+        {value ? value : "?"}
       </div>
       <div className="-ml-3 z-10">
         <Stack spacing={1}>
           <div className="flex items-center bg-primary-900 rounded-e-full pl-4 p-2">
             <MaterialRating
               name="half-rating"
-              defaultValue={4}
+              defaultValue={value}
               precision={0.5}
               readOnly
               icon={
