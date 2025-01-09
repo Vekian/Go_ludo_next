@@ -6,7 +6,7 @@ import { GameCard } from "@/interfaces";
 function CardGame({ game }: { game: GameCard }) {
   return (
     <div>
-      <div className="flex flex-col items-center justify-center bg-white shadow-lg rounded-md p-2 ">
+      <div className="flex flex-col items-center justify-center hover:bg-primary-50 bg-white shadow-lg rounded-md p-2 ">
         <div className="h-36 relative w-full max-w-36">
           <Image
             alt={game.name}

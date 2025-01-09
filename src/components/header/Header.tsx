@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Header.module.scss";
 import Image from "next/image";
 import ButtonPrimary from "../button/ButtonPrimary";
-import InputSearch from "./InputSearch";
+import SearchBar from "./SearchBar";
 import Link from "next/link";
 
 export default function Header() {
@@ -15,7 +15,7 @@ export default function Header() {
           <Image src="/images/logo.png" alt="logo" width={200} height={50} />
         </Link>
       </div>
-      <InputSearch />
+      <SearchBar />
       <div className="order-3">
         <ButtonPrimary label="Se connecter" color="primary-600" />
         <ButtonPrimary label="S'inscrire" color="primary-900" />

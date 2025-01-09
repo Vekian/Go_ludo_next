@@ -32,7 +32,7 @@ async function GamesList({
   return (
     <div className="container grid grid-cols-6 gap-5 mt-5">
       {games.map((game: GameCard) => (
-        <Link key={game.id} href={`/games/${game.id}`}>
+        <Link key={`${game.id}list`} href={`/games/${game.id}`}>
           <CardGame game={game} />
         </Link>
       ))}

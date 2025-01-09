@@ -28,22 +28,16 @@ function MainContent() {
           <label className="mb-2">Chercher une partie</label>
           <ButtonSelectXl
             label="Où ? (ville, code postal...)"
-            options={[
-              { id: "2", label: "Saboteur", value: "Saboteur" },
-              { id: "3", label: "6 qui prend", value: "6 qui prend" },
-            ]}
             icon={faLocationDot}
+            type="location"
           />
         </div>
         <div className="w-full flex flex-col">
           <label className="mb-2">Une envie de jeu particulière ?</label>
           <ButtonSelectXl
             label="Un jeu, un thème..."
-            options={[
-              { id: "2", label: "Saboteur", value: "Saboteur" },
-              { id: "3", label: "6 qui prend", value: "6 qui prend" },
-            ]}
             icon={faDice}
+            type="game"
           />
         </div>
         <ButtonPrimary label="Chercher" color="primary-600" />

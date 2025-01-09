@@ -6,20 +6,15 @@ import Autocomplete from "@mui/material/Autocomplete";
 import dynamic from "next/dynamic";
 import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
-import { CircularProgress, InputAdornment } from "@mui/material";
+import { faE, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getPublicGames } from "@/lib/api";
 import { GameCard, Param } from "@/interfaces";
+import { InputAdornment } from "@mui/material";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-const ButtonSelectXl = ({
-  label,
-  icon,
-  type,
-}: {
-  label: string;
-  icon: IconDefinition;
-  type: string;
-}) => {
+const InputSearch = ({ label }: { label: string }) => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameCard[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -41,6 +36,7 @@ const ButtonSelectXl = ({
   const handleOpen = () => {
     setOpen(true);
     if (options.length === 0) {
+      console.log("prout");
       loadOptions();
     }
   };
@@ -51,11 +47,18 @@ const ButtonSelectXl = ({
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    if (type === "game") {
-      const games: GameCard[] = await getPublicGames(params);
-      setOptions([...games]);
-    }
+    const games: GameCard[] = await getPublicGames(params);
+    setOptions([...games]);
     setLoading(false);
+  }
+
+  function handleChange(
+    event: React.ChangeEvent<unknown>,
+    value: GameCard | null
+  ) {
+    if (value) {
+      router.push(`/${value.type}s/${value.id}`);
+    }
   }
 
   const styleLabel = {
@@ -70,15 +73,11 @@ const ButtonSelectXl = ({
 
   return (
     <Autocomplete
-      popupIcon={
-        <FontAwesomeIcon
-          icon={faAngleDown}
-          style={{ color: theme.colors.black }} // Couleur personnalisable
-        />
-      }
+      popupIcon={null}
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
+      onChange={handleChange}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
@@ -104,25 +103,39 @@ const ButtonSelectXl = ({
         ".MuiInputLabel-root": styleLabel,
         ".MuiAutocomplete-input": {
           marginLeft: "10px",
-          marginRight: "10px", // Change la couleur de la valeur sélectionnée
+          marginRight: "10px",
         },
         ".MuiOutlinedInput-root": {
           borderRadius: "50px",
           fontFamily: "nunito",
           fontWeight: 700,
-          // Applique un border-radius au champ de texte à l'intérieur de l'Autocomplete
+          backgroundColor: theme.colors.neutral[100],
+        },
+        ".MuiOutlinedInput-notchedOutline": {
+          border: "none",
         },
       }}
       renderOption={(props, option) => {
         const { key, ...rest } = props; // On extrait explicitement la clé
-
         return (
           <li
-            key={`${key}${option.id}${type}`}
+            key={`${key}${option.id}`}
             {...rest}
-            style={{ display: "flex", alignItems: "center" }}
+            className="flex items-center justify-between px-5 py-2 hover:bg-neutral-100 cursor-pointer"
           >
-            {option.name}
+            <div className="flex items-center">
+              <div className=" h-10 w-16 relative mr-4">
+                <Image
+                  alt={option.name}
+                  src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${option.cover.filepath}`}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              {option.name}
+            </div>
+
+            {option.type === "extension" && <FontAwesomeIcon icon={faE} />}
           </li>
         );
       }}
@@ -137,7 +150,7 @@ const ButtonSelectXl = ({
               startAdornment: (
                 <InputAdornment position="start">
                   <FontAwesomeIcon
-                    icon={icon}
+                    icon={faSearch}
                     style={{
                       color: theme.colors.primary[900],
                       marginLeft: 12,
@@ -146,14 +159,6 @@ const ButtonSelectXl = ({
                     }}
                   />
                 </InputAdornment>
-              ),
-              endAdornment: (
-                <React.Fragment>
-                  {loading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
               ),
             },
             inputLabel: {
@@ -170,4 +175,4 @@ const ButtonSelectXl = ({
 };
 
 // Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(ButtonSelectXl), { ssr: false });
+export default dynamic(() => Promise.resolve(InputSearch), { ssr: false });

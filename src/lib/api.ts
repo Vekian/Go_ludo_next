@@ -1,7 +1,4 @@
-interface Param {
-  key: string;
-  value: string | string[];
-}
+import { Param } from "@/interfaces";
 
 export function getGames(params: Param[] = []) {
   const url = new URL(
@@ -22,9 +19,7 @@ export function getGames(params: Param[] = []) {
 }
 
 export async function getPublicGames(params: Param[] = []) {
-  const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/base`
-  );
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/public/game`);
   params
     .filter((param) => param.value)
     .forEach((param) => {
