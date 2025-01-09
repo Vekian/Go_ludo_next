@@ -7,7 +7,8 @@ import dynamic from "next/dynamic";
 import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
-import { InputAdornment } from "@mui/material";
+import { CircularProgress, InputAdornment } from "@mui/material";
+import { getPublicGames } from "@/lib/api";
 
 interface Option {
   value: string;
@@ -17,15 +18,30 @@ interface Option {
 
 const ButtonSelectXl = ({
   label,
-  options,
   icon,
 }: {
   label: string;
-  options: Option[];
   icon: IconDefinition;
 }) => {
-  const [isClient, setIsClient] = useState(false);
-  const [selectedValue, setSelectedValue] = useState<Option | null>(null);
+  const [open, setOpen] = React.useState(false);
+  const [options, setOptions] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+    (async () => {
+      setLoading(true);
+      const games = await getPublicGames();
+      setLoading(false);
+
+      setOptions([...games]);
+    })();
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setOptions([]);
+  };
 
   const styleLabel = {
     border: "none",
@@ -37,20 +53,10 @@ const ButtonSelectXl = ({
     marginLeft: "50px",
   };
 
-  React.useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null; // Ne rend rien tant que ce n'est pas côté client
-  }
-
   const handleSelect = (
     event: React.ChangeEvent<unknown>,
     value: Option | null
-  ) => {
-    setSelectedValue(value);
-  };
+  ) => {};
 
   return (
     <Autocomplete
@@ -60,9 +66,13 @@ const ButtonSelectXl = ({
           style={{ color: theme.colors.black }} // Couleur personnalisable
         />
       }
-      disablePortal
+      open={open}
+      onOpen={handleOpen}
+      onClose={handleClose}
+      isOptionEqualToValue={(option, value) => option.name === value.name}
+      getOptionLabel={(option) => option.name}
       options={options}
-      value={selectedValue} // Liaison avec la valeur sélectionnée
+      loading={loading}
       onChange={handleSelect}
       slotProps={{
         paper: {
@@ -108,16 +118,20 @@ const ButtonSelectXl = ({
                   />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
             },
             inputLabel: {
-              shrink: Boolean(
-                selectedValue || // Si une valeur est sélectionnée
-                  params.inputProps?.value
-              ),
-              style:
-                selectedValue || params.inputProps?.value
-                  ? { transform: "translate(-26%,-30%)", fontSize: "0.8rem" }
-                  : {},
+              shrink: Boolean(params.inputProps?.value),
+              style: params.inputProps?.value
+                ? { transform: "translate(-26%,-30%)", fontSize: "0.8rem" }
+                : {},
             },
           }}
         />
