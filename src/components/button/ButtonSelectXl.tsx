@@ -9,12 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
 import { getPublicGames } from "@/lib/api";
-
-interface Option {
-  value: string;
-  label: string;
-  id: string;
-}
+import { GameCard } from "@/interfaces";
 
 const ButtonSelectXl = ({
   label,
@@ -23,15 +18,15 @@ const ButtonSelectXl = ({
   label: string;
   icon: IconDefinition;
 }) => {
-  const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState<GameCard[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleOpen = () => {
     setOpen(true);
     (async () => {
       setLoading(true);
-      const games = await getPublicGames();
+      const games: GameCard[] = await getPublicGames();
       setLoading(false);
 
       setOptions([...games]);
@@ -53,11 +48,6 @@ const ButtonSelectXl = ({
     marginLeft: "50px",
   };
 
-  const handleSelect = (
-    event: React.ChangeEvent<unknown>,
-    value: Option | null
-  ) => {};
-
   return (
     <Autocomplete
       popupIcon={
@@ -73,7 +63,6 @@ const ButtonSelectXl = ({
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
-      onChange={handleSelect}
       slotProps={{
         paper: {
           sx: {
