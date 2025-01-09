@@ -1,8 +1,9 @@
 import MainContent from "./MainContent";
 import Filters from "./Filters";
-import CardGame from "@/components/card/CardGame";
+import GamesList from "./GamesList";
+import { Suspense } from "react";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <div className="bg-white ">
@@ -11,12 +12,10 @@ export default function Home() {
           <Filters />
         </div>
       </div>
-
       <div>
-        <div className="container flex justify-center flex-wrap">
-          <CardGame />
-          <CardGame />
-        </div>
+        <Suspense fallback={<p>Chargement ...</p>}>
+          <GamesList />
+        </Suspense>
       </div>
     </main>
   );

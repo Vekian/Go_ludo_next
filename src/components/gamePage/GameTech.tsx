@@ -1,3 +1,5 @@
+import { Game } from "@/interfaces";
+import { formatDate } from "@/lib/date";
 import {
   faBarcode,
   faCalendarDays,
@@ -7,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-function GameTech() {
+function GameTech({ game }: { game: Game }) {
   return (
     <div
       id="onglet2"
@@ -17,7 +19,7 @@ function GameTech() {
         <div className="flex flex-col justify-between flex-1">
           <h5 className="flex-1">
             <FontAwesomeIcon icon={faCalendarDays} className="pr-3 text-xl" />
-            Sorti le 11 septembre 2024
+            Sorti le {formatDate(game.publishedAt)}
           </h5>
           <h5 className="flex-1">
             <FontAwesomeIcon icon={faRuler} className="pr-3  text-xl" />
@@ -29,7 +31,7 @@ function GameTech() {
           </h5>
           <h5 className="flex-1">
             <FontAwesomeIcon icon={faBarcode} className="pr-3  text-xl" />
-            06570070707
+            {game.barCode}
           </h5>
         </div>
         <div className="flex-1 flex flex-col justify-start">

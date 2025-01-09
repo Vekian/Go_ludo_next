@@ -1,5 +1,7 @@
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import SimpleSlider from "@/components/slider/SimpleSlider";
+import { Game } from "@/interfaces";
+import { getDurationFromTimestamp } from "@/lib/date";
 import {
   faCakeCandles,
   faClock,
@@ -8,7 +10,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-function GameInfos() {
+function GameInfos({ game }: { game: Game }) {
   return (
     <div
       id="onglet1"
@@ -17,15 +19,16 @@ function GameInfos() {
       <div className="flex justify-between">
         <h5 className="flex-1">
           <FontAwesomeIcon icon={faCakeCandles} className="pr-3 text-xl" />À
-          partir de 6 ans
+          partir de {game.ageMin} ans
         </h5>
         <h5 className="flex-1">
           <FontAwesomeIcon icon={faUsers} className="pr-3  text-xl" />
-          De 2 à 5 joueurs
+          De {game.playersMin} à {game.playersMax} joueurs
         </h5>
         <h5 className="flex-1">
           <FontAwesomeIcon icon={faClock} className="pr-3  text-xl" />
-          Entre 1 et 2 heures
+          Entre {getDurationFromTimestamp(game.playtimeMin)} et{" "}
+          {getDurationFromTimestamp(game.playtimeMax)}
         </h5>
       </div>
       <div className="flex">
@@ -42,27 +45,51 @@ function GameInfos() {
         <div className="flex-1">
           <h5>Catégories</h5>
           <div>
-            <ButtonPrimary label="Jeu de cartes" color="primary-500" />
+            {game.categories.categories &&
+              game.categories.categories.map((theme) => (
+                <ButtonPrimary
+                  label={theme.name}
+                  color="primary-500"
+                  key={theme.id}
+                />
+              ))}
           </div>
         </div>
         <div className="flex-1">
           <h5>Mode de jeu</h5>
           <div>
-            <ButtonPrimary label="Coopération" color="secondary-500" />
+            {game.categories.modes &&
+              game.categories.modes.map((theme) => (
+                <ButtonPrimary
+                  label={theme.name}
+                  color="secondary-500"
+                  key={theme.id}
+                />
+              ))}
           </div>
         </div>
         <div className="flex-1">
           <h5>Thèmes</h5>
           <div>
-            <ButtonPrimary label="Aventure" color="neutral-500" />
-            <ButtonPrimary label="Médiévale" color="neutral-500" />
+            {game.categories.themes &&
+              game.categories.themes.map((theme) => (
+                <ButtonPrimary
+                  label={theme.name}
+                  color="neutral-500"
+                  key={theme.id}
+                />
+              ))}
           </div>
         </div>
       </div>
       <div className="flex justify-between">
-        <h5 className="flex-1">6variantes</h5>
-        <h5 className="flex-1">7 extensions</h5>
-        <h5 className="flex-1">8 accessoires</h5>
+        {game.extensions?.length && (
+          <h5 className="flex-1">
+            {" "}
+            {game.extensions.length} extension
+            {game.extensions.length > 1 && "s"}
+          </h5>
+        )}
       </div>
     </div>
   );

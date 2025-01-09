@@ -13,7 +13,7 @@ import ReviewsList from "@/components/gamePage/ReviewsList";
 
 async function page({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
-  const game: Game = await getGame(id, "base");
+  const game: Game = await getGame(id, "extension");
 
   return (
     <div className="p-4 pt-10">

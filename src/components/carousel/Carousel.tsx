@@ -4,6 +4,7 @@ import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loaders
 import { Carousel as ReactCarousel } from "react-responsive-carousel";
 import Image from "next/image";
+import { ImageInterface } from "@/interfaces";
 
 function Carousel({
   imgs,
@@ -12,12 +13,13 @@ function Carousel({
   thumbs = false,
   autoPlay = true,
 }: {
-  imgs: [];
+  imgs: ImageInterface[];
   width: number;
   height: number;
   thumbs?: boolean;
   autoPlay?: boolean;
 }) {
+  const url = process.env.NEXT_PUBLIC_API_SYMFONY_URL;
   return (
     <ReactCarousel
       autoPlay={autoPlay}
@@ -34,10 +36,10 @@ function Carousel({
             thumbs && (
               <div key={idx} className="w-full h-20 relative">
                 <Image
-                  src={img.src}
+                  src={`${url}${img.filepath}`}
                   layout="fill"
                   objectFit="contain"
-                  alt="logo"
+                  alt="carousel"
                 ></Image>
               </div>
             )
@@ -54,8 +56,8 @@ function Carousel({
             }}
           >
             <Image
-              alt="Mountains"
-              src={img.src}
+              alt="Carousel"
+              src={`${url}${img.filepath}`}
               fill
               style={{
                 objectFit: "cover",

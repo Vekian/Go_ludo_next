@@ -1,6 +1,7 @@
+import { Game } from "@/interfaces";
 import React from "react";
 
-function GameStats() {
+function GameStats({ game }: { game: Game }) {
   return (
     <div
       id="onglet3"

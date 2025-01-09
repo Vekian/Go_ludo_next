@@ -1,19 +1,22 @@
 import Image from "next/image";
 import React from "react";
 import Rating from "../rating/Rating";
+import { GameCard } from "@/interfaces";
 
-function CardGame() {
+function CardGame({ game }: { game: GameCard }) {
   return (
     <div className="w-60 p-5">
       <div className="flex flex-col items-center justify-center bg-white shadow-lg rounded-md p-2 ">
-        <Image
-          alt="cover"
-          src="/images/game_cover.png"
-          width={100}
-          height={100}
-        />
-        <h4 className="text-center mt-1">Duel pour la terre du milieu</h4>
-        <Rating />
+        <div className="h-36 relative w-full max-w-36">
+          <Image
+            alt={game.name}
+            src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${game.cover.filepath}`}
+            fill
+            className="object-contain"
+          />
+        </div>
+        <h4 className="text-center mt-1">{game.name}</h4>
+        <Rating value={game.rating} />
       </div>
     </div>
   );

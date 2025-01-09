@@ -3,17 +3,16 @@ import ButtonSelectXl from "@/components/button/ButtonSelectXl";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import Carousel from "@/components/carousel/Carousel";
+import { ImageInterface } from "@/interfaces";
 function MainContent() {
-  const imgs: [] = [
+  const imgs: ImageInterface[] = [
     {
       id: 2,
-      src: "/images/banniere.webp",
-      alt: "banniere",
+      filepath: "/images/banniere/banniere.webp",
     },
     {
       id: 3,
-      src: "/images/banniere.webp",
-      alt: "banniere",
+      filepath: "/images/banniere/banniere2.jpg",
     },
   ];
   return (

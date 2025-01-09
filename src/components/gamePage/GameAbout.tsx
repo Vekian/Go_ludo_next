@@ -1,7 +1,8 @@
+import { Game } from "@/interfaces";
 import Image from "next/image";
 import React from "react";
 
-function GameAbout(props) {
+function GameAbout({ game }: { game: Game }) {
   return (
     <div
       id="onglet4"
