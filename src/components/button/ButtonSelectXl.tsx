@@ -1,6 +1,6 @@
 "use client";
 // ButtonSelect.tsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import dynamic from "next/dynamic";
@@ -20,7 +20,25 @@ const ButtonSelectXl = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameCard[]>([]);
+  const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (inputValue.length > 2) {
+      (async () => {
+        setLoading(true);
+        const games: GameCard[] = await getPublicGames([
+          {
+            key: "search",
+            value: inputValue,
+          },
+        ]);
+        setLoading(false);
+
+        setOptions([...games]);
+      })();
+    }
+  }, [inputValue]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -59,10 +77,14 @@ const ButtonSelectXl = ({
       open={open}
       onOpen={handleOpen}
       onClose={handleClose}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
       isOptionEqualToValue={(option, value) => option.name === value.name}
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
+      filterOptions={(x) => x}
       slotProps={{
         paper: {
           sx: {
