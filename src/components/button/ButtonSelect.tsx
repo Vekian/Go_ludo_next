@@ -9,12 +9,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { Paper } from "@mui/material";
 import { GameCategory } from "@/interfaces";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 interface Option {
   name: string;
   label: string;
-  value: number;
+  value: string;
 }
 
 const ButtonSelect = ({
@@ -32,11 +32,14 @@ const ButtonSelect = ({
 }) => {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [selectedValue, setSelectedValue] = useState<Option | null>(null);
   const optionsSelect = options.map((option) => ({
     name: name,
     label: option.name,
-    value: option.id,
+    value: option.id.toString(),
   }));
 
   const partsColor: [string, string] = color?.split("-") as [string, string];
@@ -73,9 +76,15 @@ const ButtonSelect = ({
     value: Option | null
   ) => {
     setSelectedValue(value);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
     if (value) {
-      router.replace(`/?${value.name}=${value.value}`);
+      newSearchParams.set(value.name, value.value);
+    } else {
+      newSearchParams.delete(name);
     }
+
+    router.replace(`${pathname}?${newSearchParams.toString()}`);
   };
 
   return (

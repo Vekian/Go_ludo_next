@@ -7,12 +7,26 @@ import React from "react";
 async function GamesList({
   searchParams,
 }: {
-  searchParams: Promise<{ category: string | string[] }>;
+  searchParams: Promise<{
+    category: string | string[];
+    theme: string | string[];
+    mode: string | string[];
+  }>;
 }) {
+  const params = await searchParams;
+  const toArray = (param: string | string[]): string[] => {
+    if (param === undefined) return [];
+    return Array.isArray(param) ? param : [param];
+  };
+  const categoryParams = [
+    ...toArray(params.category),
+    ...toArray(params.theme),
+    ...toArray(params.mode),
+  ];
   const games = await getGames([
     {
       key: "category[]",
-      value: (await searchParams).category,
+      value: categoryParams,
     },
   ]);
   return (

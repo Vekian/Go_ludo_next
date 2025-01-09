@@ -6,7 +6,11 @@ import { Suspense } from "react";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ category: string | string[] }>;
+  searchParams: Promise<{
+    category: string | string[];
+    theme: string | string[];
+    mode: string | string[];
+  }>;
 }) {
   return (
     <main>

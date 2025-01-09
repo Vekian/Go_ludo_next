@@ -7,7 +7,6 @@ export function getGames(params: Param[] = []) {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/base`
   );
-  console.log(params);
   params
     .filter((param) => param.value)
     .forEach((param) => {
@@ -19,7 +18,6 @@ export function getGames(params: Param[] = []) {
         );
       }
     });
-
   return fetch(url).then((response) => response.json());
 }
 
