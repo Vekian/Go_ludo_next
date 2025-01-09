@@ -3,7 +3,11 @@ import Filters from "./Filters";
 import GamesList from "./GamesList";
 import { Suspense } from "react";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ category: string | string[] }>;
+}) {
   return (
     <main>
       <div className="bg-white ">
@@ -14,7 +18,7 @@ export default async function Home() {
       </div>
       <div>
         <Suspense fallback={<p>Chargement ...</p>}>
-          <GamesList />
+          <GamesList searchParams={searchParams} />
         </Suspense>
       </div>
     </main>

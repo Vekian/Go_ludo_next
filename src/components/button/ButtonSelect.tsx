@@ -8,11 +8,13 @@ import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { Paper } from "@mui/material";
+import { GameCategory } from "@/interfaces";
+import { useRouter } from "next/navigation";
 
 interface Option {
-  value: string;
+  name: string;
   label: string;
-  id: string;
+  value: number;
 }
 
 const ButtonSelect = ({
@@ -20,14 +22,22 @@ const ButtonSelect = ({
   options,
   color,
   width,
+  name,
 }: {
   label: string;
-  options: Option[];
+  options: GameCategory[];
   color: string | null;
   width: number;
+  name: string;
 }) => {
   const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
   const [selectedValue, setSelectedValue] = useState<Option | null>(null);
+  const optionsSelect = options.map((option) => ({
+    name: name,
+    label: option.name,
+    value: option.id,
+  }));
 
   const partsColor: [string, string] = color?.split("-") as [string, string];
   const tailwindColor =
@@ -63,6 +73,9 @@ const ButtonSelect = ({
     value: Option | null
   ) => {
     setSelectedValue(value);
+    if (value) {
+      router.replace(`/?${value.name}=${value.value}`);
+    }
   };
 
   return (
@@ -74,7 +87,7 @@ const ButtonSelect = ({
         />
       }
       disablePortal
-      options={options}
+      options={optionsSelect}
       value={selectedValue} // Liaison avec la valeur sélectionnée
       onChange={handleSelect}
       PaperComponent={({ children }) => (

@@ -5,6 +5,7 @@ export interface GameCard {
   name: string;
   cover: ImageInterface;
   rating: number;
+  type: string;
 }
 
 export interface Game {
@@ -23,6 +24,7 @@ export interface Game {
   imageGames: ImageInterface[];
   categories: GameCategories;
   creators: GameCreators;
+  awards: GameAward[];
   extensions?: GameCard[];
 }
 
@@ -39,10 +41,19 @@ export interface GameCategory {
 }
 
 export interface GameCreators {
-  author?: GameCreator[];
+  authors?: GameCreator[];
+  editors?: GameCreator[];
+  illustrators?: GameCreator[];
 }
 
 export interface GameCreator {
   id: number;
   name: string;
+  image: string;
+}
+
+export interface GameAward {
+  id: number;
+  name: string;
+  logo: string;
 }
