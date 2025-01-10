@@ -1,6 +1,6 @@
 import CardGame from "@/components/card/CardGame";
 import { Game, GameCard } from "@/interfaces";
-import { getGames } from "@/lib/api";
+import { getGames } from "@/lib/api/api";
 import Link from "next/link";
 import React from "react";
 

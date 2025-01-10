@@ -8,7 +8,7 @@ import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { getPublicGlobal } from "@/lib/api";
+import { getPublicGlobal } from "@/lib/api/publicApi";
 import { GameCard, Param } from "@/interfaces";
 
 const ButtonSelectXl = ({

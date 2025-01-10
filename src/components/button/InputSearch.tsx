@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faE, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { getPublicGames } from "@/lib/api";
+import { getPublicGames } from "@/lib/api/publicApi";
 import { GameCard, Param } from "@/interfaces";
 import { InputAdornment } from "@mui/material";
 import { useRouter } from "next/navigation";

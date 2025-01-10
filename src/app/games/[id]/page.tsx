@@ -6,7 +6,7 @@ import GameTech from "@/components/gamePage/GameTech";
 import GameStats from "@/components/gamePage/GameStats";
 import GameAbout from "@/components/gamePage/GameAbout";
 import SimilarGames from "../../../components/gamePage/SimilarGames";
-import { getGame } from "@/lib/api";
+import { getGame } from "@/lib/api/api";
 import { Game } from "@/interfaces";
 import GameContent from "@/components/gamePage/GameContent";
 import ReviewsList from "@/components/gamePage/ReviewsList";

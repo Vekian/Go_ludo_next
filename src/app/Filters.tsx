@@ -1,6 +1,6 @@
 import ButtonSelect from "@/components/button/ButtonSelect";
 import { GameCategory } from "@/interfaces";
-import { getCategories } from "@/lib/api";
+import { getCategories } from "@/lib/api/api";
 import React from "react";
 
 async function Filters() {
