@@ -8,7 +8,7 @@ import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { getPublicGames } from "@/lib/api";
+import { getPublicGlobal } from "@/lib/api";
 import { GameCard, Param } from "@/interfaces";
 
 const ButtonSelectXl = ({
@@ -52,7 +52,7 @@ const ButtonSelectXl = ({
   async function loadOptions(params?: Param[]) {
     setLoading(true);
     if (type === "game") {
-      const games: GameCard[] = await getPublicGames(params);
+      const games: GameCard[] = await getPublicGlobal(params);
       setOptions([...games]);
     }
     setLoading(false);
@@ -120,9 +120,10 @@ const ButtonSelectXl = ({
           <li
             key={`${key}${option.id}${type}`}
             {...rest}
-            style={{ display: "flex", alignItems: "center" }}
+            className="flex items-center justify-between px-5 py-2 hover:bg-neutral-100 cursor-pointer"
           >
-            {option.name}
+            <div>{option.name}</div>
+            <div>{option.type === "base" ? "jeu" : option.type}</div>
           </li>
         );
       }}

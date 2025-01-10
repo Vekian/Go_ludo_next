@@ -8,6 +8,14 @@ export interface GameCard {
   type: string;
 }
 
+export interface GameSearch {
+  id: number;
+  name: string;
+  cover?: ImageInterface;
+  icon?: string;
+  type: string;
+}
+
 export interface Game {
   id: number;
   name: string;
