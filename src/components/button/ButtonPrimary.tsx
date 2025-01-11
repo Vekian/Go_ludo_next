@@ -1,7 +1,15 @@
 import React from "react";
 import { theme } from "../../../theme/theme";
 
-function ButtonPrimary({ label, color }: { label: string; color: string }) {
+function ButtonPrimary({
+  label,
+  color,
+  onClick,
+}: {
+  label: string;
+  color: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   const partsColor: [string, string] = color?.split("-") as [string, string];
   const tailwindColor =
     theme.colors[partsColor[0] as keyof typeof theme.colors]?.[
@@ -11,6 +19,7 @@ function ButtonPrimary({ label, color }: { label: string; color: string }) {
     <button
       className={`bg-${color} hover:opacity-75 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
       style={{ backgroundColor: tailwindColor }}
+      onClick={onClick}
     >
       {label}
     </button>

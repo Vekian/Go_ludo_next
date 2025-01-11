@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Header.module.scss";
 import Image from "next/image";
-import ButtonPrimary from "../button/ButtonPrimary";
 import SearchBar from "./SearchBar";
 import Link from "next/link";
+import UserButton from "./UserButton";
 
 export default function Header() {
   return (
@@ -16,10 +16,7 @@ export default function Header() {
         </Link>
       </div>
       <SearchBar />
-      <div className="order-3">
-        <ButtonPrimary label="Se connecter" color="primary-600" />
-        <ButtonPrimary label="S'inscrire" color="primary-900" />
-      </div>
+      <UserButton />
     </header>
   );
 }
