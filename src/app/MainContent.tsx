@@ -1,5 +1,5 @@
 import ButtonPrimary from "@/components/button/ButtonPrimary";
-import ButtonSelectXl from "@/components/button/ButtonSelectXl";
+import ButtonSelectXl from "@/components/input/ButtonSelectXl";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import Carousel from "@/components/carousel/Carousel";

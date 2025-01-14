@@ -8,7 +8,7 @@ function ButtonPrimary({
 }: {
   label: string;
   color: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const partsColor: [string, string] = color?.split("-") as [string, string];
   const tailwindColor =
@@ -17,7 +17,7 @@ function ButtonPrimary({
     ];
   return (
     <button
-      className={`bg-${color} hover:opacity-75 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
+      className={`bg-${color} hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
       style={{ backgroundColor: tailwindColor }}
       onClick={onClick}
     >

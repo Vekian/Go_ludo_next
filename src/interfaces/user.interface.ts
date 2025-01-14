@@ -1,8 +1,15 @@
-import { User } from "next-auth";
+import { GameCard } from "./game.interface";
 
-export interface UserProfil extends User {
+export interface UserProfil {
+  id: number;
+  username: string;
+  email: string;
   roles: string[];
-  refreshToken: string;
-  token: string;
-  accessTokenExpires: number;
+  age: number;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  avatar: string;
+  description: string;
+  games: GameCard[];
 }

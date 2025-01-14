@@ -60,4 +60,8 @@ export const theme = {
   flex: {
     "2": "2 2 0%",
   },
+  fontFamily: {
+    nunito: ["var(--font-nunito)", "sans-serif"],
+    farro: ["var(--font-farro)", "serif"],
+  },
 };

@@ -4,13 +4,20 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
-    const res = await fetch("https://127.0.0.1:8000/api/token/refresh", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        refresh_token: token.refreshToken,
-      }),
-    });
+    if (!token.user) {
+      throw new Error("Pas de token trouvé");
+    }
+    const user = token.user as User;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/token/refresh`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          refresh_token: user.refreshToken,
+        }),
+      }
+    );
 
     if (!res.ok) {
       throw new Error("Failed to refresh token");
@@ -33,7 +40,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
   }
 }
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -89,6 +96,7 @@ const handler = NextAuth({
     async jwt({ token, user }: { token: JWT; user?: User }) {
       if (user) {
         return {
+          ...token,
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
           accessTokenExpires: Date.now() + 60 * 60 * 1000, // 1 heure
@@ -110,10 +118,13 @@ const handler = NextAuth({
     },
     async session({ session, token }: { session: Session; token: JWT }) {
       if (token.user) {
-        session.user = token.user as User;
+        session.user = {
+          ...(token.user as User),
+        };
       }
       return session;
     },
   },
-});
-export { handler as GET, handler as POST };
+};
+export const POST = NextAuth(authOptions);
+export const GET = NextAuth(authOptions);

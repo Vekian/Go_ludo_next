@@ -12,7 +12,7 @@ declare module "next-auth" {
   }
 
   interface Session {
-    user: User & DefaultSession["user"];
+    user: User;
     expires: string;
     error: string;
   }
