@@ -3,24 +3,36 @@
 import { getImg } from "@/lib/utils";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import ButtonSecondary from "./ButtonSecondary";
+import { UserProfil } from "@/interfaces";
 
-function ButtonImage({ setSourceState, user }) {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm();
+type FormDataInputs = {
+  avatar: FileList; // Typage pour le champ "avatar"
+};
 
-  const onSubmit = (data) => {
+function ButtonImage({
+  setSourceState,
+  user,
+}: {
+  setSourceState: React.Dispatch<React.SetStateAction<string>>;
+  user: UserProfil;
+}) {
+  const { data: session } = useSession();
+  const [uploading, setUploading] = useState(false);
+
+  const { register, handleSubmit } = useForm<FormDataInputs>();
+
+  const onSubmit: SubmitHandler<FormDataInputs> = (data) => {
     const formData = new FormData();
     formData.append("avatar", data.avatar[0]);
-    fetch(`${process.env.REACT_APP_URL}api/picture`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/picture`, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        Authorization: `Bearer ${props.token}`,
+        Authorization: `Bearer ${session?.user.token}`,
       },
       body: formData,
     })
@@ -30,7 +42,8 @@ function ButtonImage({ setSourceState, user }) {
         return response.json();
       })
       .then((data) => {
-        loadData(data);
+        console.log(data);
+        setUploading(false);
       });
   };
   return (
@@ -51,29 +64,41 @@ function ButtonImage({ setSourceState, user }) {
         <input
           type="file"
           id="avatar"
-          name="avatar"
           accept=".jpg, .jpeg, .png, .webp"
           className="hidden"
+          {...register("avatar", { required: true })}
           onInput={(e) => {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-              setSourceState(event.target.result);
-            };
-
-            reader.readAsDataURL(e.target.files[0]);
+            const fileInput = e.target as HTMLInputElement;
+            if (fileInput.files && fileInput.files[0]) {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                // Vérification que event.target.result est bien une chaîne
+                if (typeof event.target?.result === "string") {
+                  setSourceState(event.target.result);
+                }
+              };
+              reader.readAsDataURL(fileInput.files[0]);
+              setUploading(true);
+            }
           }}
         />
       </div>
-
-      <input type="submit" />
-      <button
-        onClick={() => {
-          setSourceState(getImg(user.avatar));
-        }}
-        className="buttonDanger ms-2"
-      >
-        Annuler
-      </button>
+      {uploading && (
+        <>
+          <input
+            type="submit"
+            value="Valider"
+            className={`bg-primary-700 hover:brightness-90 text-white cursor-pointer rounded-md font-semibold  px-3 py-1.5 m-2.5`}
+          />
+          <ButtonSecondary
+            label="Annuler"
+            color="primary-900"
+            onClick={() => {
+              setSourceState(getImg(user.avatar));
+            }}
+          />
+        </>
+      )}
     </form>
   );
 }

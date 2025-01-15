@@ -14,9 +14,8 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const body: Partial<UserProfil> = Object.fromEntries(formData.entries());
     if (body.age) {
-      body.age = Number(body.age); // Convertit `age` en nombre
+      body.age = Number(body.age);
     }
-    console.log(body);
 
     const user = token.user as User;
 

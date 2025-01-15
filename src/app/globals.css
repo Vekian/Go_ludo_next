@@ -4,6 +4,7 @@
 
 body {
   font-family: var(--font-nunito);
+  box-sizing: border-box;
 }
 
 h1,

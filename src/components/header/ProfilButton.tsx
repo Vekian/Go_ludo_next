@@ -71,7 +71,10 @@ function ProfilButton({ user }: { user: User }) {
       >
         <MenuItem
           className="font-semibold"
-          onClick={() => router.push(`/users/profil`)}
+          onClick={() => {
+            router.push(`/users/profil`);
+            handleClose();
+          }}
         >
           Mon compte
         </MenuItem>

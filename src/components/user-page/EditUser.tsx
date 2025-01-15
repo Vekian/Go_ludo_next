@@ -146,6 +146,9 @@ function EditUser({ user }: { user: UserProfil }) {
           <Button
             className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
             type="submit"
+            sx={{
+              textTransform: "none",
+            }}
           >
             Soumettre
           </Button>
