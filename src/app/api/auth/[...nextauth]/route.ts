@@ -14,7 +14,7 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          refresh_token: user.refreshToken,
+          refresh_token: token.refreshToken,
         }),
       }
     );
@@ -27,9 +27,16 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 
     return {
       ...token,
-      accessToken: data.token,
       accessTokenExpires: Date.now() + 60 * 60 * 1000, // 1 heure
-      refreshToken: data.refresh_token ?? token.refreshToken, // Utilisez le refresh token existant s'il n'est pas retourné
+      refreshToken: data.refresh_token,
+      user: {
+        id: user.id,
+        email: user.email,
+        roles: user.roles,
+        name: user.name,
+        avatar: user.avatar,
+        token: data.token,
+      },
     };
   } catch (error) {
     console.error("Error refreshing access token:", error);
@@ -97,10 +104,16 @@ export const authOptions = {
       if (user) {
         return {
           ...token,
-          accessToken: token.accessToken,
-          refreshToken: token.refreshToken,
+          refreshToken: user.refreshToken,
           accessTokenExpires: Date.now() + 60 * 60 * 1000, // 1 heure
-          user: user,
+          user: {
+            id: user.id,
+            email: user.email,
+            roles: user.roles,
+            name: user.name,
+            avatar: user.avatar,
+            token: user.token,
+          },
         };
       }
 

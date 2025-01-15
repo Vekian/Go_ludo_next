@@ -1,4 +1,3 @@
-import { getUser } from "@/lib/api/tempApi";
 import { getServerSession } from "next-auth";
 import React from "react";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
@@ -17,7 +16,10 @@ const Page = async () => {
   if (!session) {
     redirect("/");
   }
-  const user: UserProfil = await getUser(session.user.id, session.user.token);
+  const user: UserProfil = await fetch(
+    `${process.env.NEXTAUTH_URL}/api/user/${session.user.id}`,
+    { headers: { Authorization: "Bearer " + session.user.token } }
+  ).then((response) => response.json());
 
   return (
     <div>
