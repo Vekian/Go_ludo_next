@@ -27,11 +27,7 @@ async function GamesList({
       value: categoryParams,
     },
   ]);
-  return (
-    <>
-      <ListGames games={games} />
-    </>
-  );
+  return <ListGames games={games} />;
 }
 
 export default GamesList;

@@ -3,6 +3,7 @@ import { Game, GameCard } from "@/interfaces";
 import { getGames } from "@/lib/api/api";
 import Link from "next/link";
 import React from "react";
+import ListGames from "../list/ListGames";
 
 export default async function SimilarGames({ game }: { game: Game }) {
   const games: GameCard[] = await getGames();
@@ -12,24 +13,12 @@ export default async function SimilarGames({ game }: { game: Game }) {
       {game.extensions && (
         <div>
           <h2>Extensions</h2>
-          <div className="grid grid-cols-6">
-            {game.extensions.map((extension) => (
-              <Link key={extension.id} href={`/extensions/${extension.id}`}>
-                <CardGame game={extension} />
-              </Link>
-            ))}
-          </div>
+          <ListGames games={game.extensions} />
         </div>
       )}
       <div>
         <h2>Jeux similaires</h2>
-        <div className="grid grid-cols-6">
-          {games.map((game) => (
-            <Link key={game.id} href={`/games/${game.id}`}>
-              <CardGame game={game} />
-            </Link>
-          ))}
-        </div>
+        <ListGames games={games} />
       </div>
     </div>
   );

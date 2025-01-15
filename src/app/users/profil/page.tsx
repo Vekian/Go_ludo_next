@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { UserProfil } from "@/interfaces";
 import UserContent from "@/components/user-page/UserContent";
 import UserInfos from "@/components/user-page/UserInfos";
-import CardGame from "@/components/card/CardGame";
 import UserParams from "@/components/user-page/UserParams";
 import UserNotifs from "@/components/user-page/UserNotifs";
 import ListGames from "@/components/list/ListGames";

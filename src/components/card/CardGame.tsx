@@ -6,28 +6,23 @@ import { GameCard } from "@/interfaces";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { AlertColor } from "@mui/material";
+import { useSnackbarContext } from "../provider/SnackbarProvider";
 
-function CardGame({
-  game,
-  alert,
-}: {
-  game: GameCard;
-  alert: (message: string, status: AlertColor) => void;
-}) {
+function CardGame({ game }: { game: GameCard }) {
+  const { showSnackbar } = useSnackbarContext();
   const handleAdd = async () => {
     const body = {
       game: game.id,
     };
-    alert("Jeu en cours d'ajout", "info");
+    showSnackbar("Jeu en cours d'ajout", "info");
     const response = await fetch("/api/collection", {
       method: "POST",
       body: JSON.stringify(body),
     });
     if (!response.ok) {
-      alert("Impossible d'ajouter le jeu à la collection", "error");
+      showSnackbar("Impossible d'ajouter le jeu à la collection", "error");
     } else {
-      alert("Jeu ajouté à la collection", "success");
+      showSnackbar("Jeu ajouté à la collection", "success");
     }
   };
   return (
