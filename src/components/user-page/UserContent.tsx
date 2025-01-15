@@ -35,7 +35,7 @@ function UserContent({
         <div className="w-1/3"></div>
         <div className="flex-1" onClick={() => handleClick(1)}>
           <Onglet
-            label="Infos de jeu"
+            label="Infos publiques"
             color="primary-500"
             angle={0}
             active={onglet === 1 ? true : false}
@@ -43,7 +43,7 @@ function UserContent({
         </div>
         <div className="flex-1" onClick={() => handleClick(2)}>
           <Onglet
-            label="Infos techniques"
+            label="Paramètres"
             color="secondary-500"
             angle={1}
             active={onglet === 2 ? true : false}
@@ -51,7 +51,7 @@ function UserContent({
         </div>
         <div className="flex-1" onClick={() => handleClick(3)}>
           <Onglet
-            label="Statistiques"
+            label="Notifications"
             color="primary-800"
             angle={0}
             active={onglet === 3 ? true : false}
@@ -59,7 +59,7 @@ function UserContent({
         </div>
         <div className="flex-1" onClick={() => handleClick(4)}>
           <Onglet
-            label="À propos"
+            label="Confidentialité"
             color="neutral-500"
             angle={1}
             active={onglet === 4 ? true : false}

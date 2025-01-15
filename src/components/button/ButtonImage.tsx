@@ -28,7 +28,7 @@ function ButtonImage({
   const onSubmit: SubmitHandler<FormDataInputs> = (data) => {
     const formData = new FormData();
     formData.append("avatar", data.avatar[0]);
-    fetch(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/picture`, {
+    fetch(`/api/user/picture`, {
       method: "POST",
       headers: {
         Accept: "application/json",

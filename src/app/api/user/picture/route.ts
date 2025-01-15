@@ -1,0 +1,59 @@
+import { User } from "next-auth";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
+
+export async function POST(request: NextRequest) {
+  const token = await getToken({ req: request });
+
+  if (!token || !token.user) {
+    return NextResponse.json({ message: "unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const formData = await request.formData();
+
+    const user = token.user as User;
+
+    const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/picture`;
+    const headers = new Headers({
+      Authorization: `Bearer ${user.token}`,
+      Accept: "application/json",
+    });
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      // Gérer les erreurs de l'API Symfony
+      const errorMessage = await response.text();
+      console.error("Erreur API Symfony:", errorMessage);
+      return NextResponse.json(
+        { message: "Erreur API Symfony", details: errorMessage },
+        { status: response.status }
+      );
+    }
+
+    return NextResponse.json({ message: "Profil modifié" }, { status: 201 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Erreur dans la route:", error.message);
+      return NextResponse.json(
+        {
+          message: "Erreur lors de la modification du profil",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
+    // Cas où l'erreur n'est pas une instance d'Error
+    console.error("Erreur inconnue:", error);
+    return NextResponse.json(
+      { message: "Erreur inconnue lors de la modification du profil" },
+      { status: 500 }
+    );
+  }
+}

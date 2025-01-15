@@ -43,7 +43,7 @@ function ProfilButton({ user }: { user: User }) {
           src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${user.avatar}`}
           width={50}
           height={50}
-          className="-ml-10 mr-3"
+          className="-ml-10 mr-3 rounded-full"
         />
         {user.name}
       </Button>
