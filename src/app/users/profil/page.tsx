@@ -6,9 +6,9 @@ import { UserProfil } from "@/interfaces";
 import UserContent from "@/components/user-page/UserContent";
 import UserInfos from "@/components/user-page/UserInfos";
 import CardGame from "@/components/card/CardGame";
-import Link from "next/link";
 import UserParams from "@/components/user-page/UserParams";
 import UserNotifs from "@/components/user-page/UserNotifs";
+import ListGames from "@/components/list/ListGames";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
@@ -32,13 +32,7 @@ const Page = async () => {
       </div>
       <div>
         <h1 className="text-center">Collection</h1>
-        <div className="container grid grid-cols-6 gap-5 mt-5">
-          {user.games.map((game) => (
-            <Link key={`${game.id}list`} href={`/games/${game.id}`}>
-              <CardGame game={game} />
-            </Link>
-          ))}
-        </div>
+        <ListGames games={user.games} />
       </div>
     </div>
   );

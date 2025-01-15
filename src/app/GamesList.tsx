@@ -1,7 +1,5 @@
-import CardGame from "@/components/card/CardGame";
-import { GameCard } from "@/interfaces";
+import ListGames from "@/components/list/ListGames";
 import { getGames } from "@/lib/api/api";
-import Link from "next/link";
 import React from "react";
 
 async function GamesList({
@@ -30,13 +28,9 @@ async function GamesList({
     },
   ]);
   return (
-    <div className="container grid grid-cols-6 gap-5 mt-5">
-      {games.map((game: GameCard) => (
-        <Link key={`${game.id}list`} href={`/games/${game.id}`}>
-          <CardGame game={game} />
-        </Link>
-      ))}
-    </div>
+    <>
+      <ListGames games={games} />
+    </>
   );
 }
 

@@ -70,7 +70,7 @@ function UserContent({
         <div className="w-1/5">
           <UserStatus user={user} />
         </div>
-        <div className="w-4/5 relative">{children}</div>
+        <div className="w-4/5 relative overflow-hidden">{children}</div>
       </div>
     </div>
   );

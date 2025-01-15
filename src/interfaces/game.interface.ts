@@ -65,3 +65,8 @@ export interface GameAward {
   name: string;
   logo: string;
 }
+
+export interface UserGame {
+  owner: number;
+  game: number;
+}
