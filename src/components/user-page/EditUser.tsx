@@ -46,11 +46,8 @@ function EditUser({ user }: { user: UserProfil }) {
       if (data && update) {
         const updatedUser = await response.json();
         const updatedSessionUser = {
-          id: updatedUser.id,
-          email: updatedUser.email,
-          roles: updatedUser.roles,
+          ...updatedUser,
           name: updatedUser.username,
-          avatar: updatedUser.avatar,
           token: data.user.token,
         };
         await update({

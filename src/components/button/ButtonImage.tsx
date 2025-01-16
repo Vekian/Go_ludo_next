@@ -26,29 +26,38 @@ function ButtonImage({
   const [uploading, setUploading] = useState(false);
   const { register, handleSubmit } = useForm<FormDataInputs>();
 
-  const onSubmit: SubmitHandler<FormDataInputs> = (data) => {
+  const onSubmit: SubmitHandler<FormDataInputs> = async (data) => {
     const formData = new FormData();
     formData.append("avatar", data.avatar[0]);
     showSnackbar("Avatar en coours d'upload", "info");
-    fetch(`/api/user/picture`, {
+    const response = await fetch(`/api/user/picture`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${session?.user.token}`,
       },
       body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          showSnackbar("Impossible d'upload une nouvell e image", "error");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-        showSnackbar("Profil modifié", "success");
-        setUploading(false);
-      });
+    });
+
+    if (!response.ok) {
+      showSnackbar("Impossible d'upload une nouvelle image", "error");
+    } else {
+      if (session) {
+        const updatedUser = await response.json();
+        const updatedSessionUser = {
+          ...updatedUser,
+          name: updatedUser.username,
+          token: session.user.token,
+        };
+        await update({
+          ...data,
+          user: updatedSessionUser,
+        });
+      }
+
+      showSnackbar("Profil modifié", "success");
+      setUploading(false);
+    }
   };
   return (
     <form
