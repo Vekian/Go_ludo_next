@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import { GameCard } from "@/interfaces";
+import { Tooltip } from "@mui/material";
 
 function CardGameButtons({ game }: { game: GameCard }) {
   const { showSnackbar } = useSnackbarContext();
@@ -42,14 +43,21 @@ function CardGameButtons({ game }: { game: GameCard }) {
   };
   return (
     <div className="float-right " onClick={handleAdd}>
-      <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
-        <FontAwesomeIcon
-          icon={faPlus}
-          className={`transition-transform text-xl ${
-            owned ? "rotate-45 text-primary-700" : "rotate-0 text-primary-500"
-          }`}
-        />
-      </div>
+      <Tooltip
+        placement="top"
+        title={`${
+          owned ? "Supprimer de la collection" : "Ajouter à la collection"
+        }`}
+      >
+        <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
+          <FontAwesomeIcon
+            icon={faPlus}
+            className={`transition-transform text-xl ${
+              owned ? "rotate-45 text-primary-700" : "rotate-0 text-primary-500"
+            }`}
+          />
+        </div>
+      </Tooltip>
       <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
         <FontAwesomeIcon icon={faBarcode} className="text-primary-950" />
       </div>
