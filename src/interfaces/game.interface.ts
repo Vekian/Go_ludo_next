@@ -71,3 +71,17 @@ export interface UserGame {
   owner: number;
   game: number;
 }
+
+export interface GameReview {
+  id: number;
+  content: string;
+  rating: number;
+  game: number;
+  account: UserReview;
+}
+
+export interface UserReview {
+  id: number;
+  username: string;
+  avatar: string;
+}

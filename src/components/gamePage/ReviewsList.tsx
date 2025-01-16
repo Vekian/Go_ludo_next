@@ -1,25 +1,24 @@
-import ButtonPrimary from "@/components/button/ButtonPrimary";
 import ButtonSecondary from "@/components/button/ButtonSecondary";
 import Review from "@/components/card/Review";
-import Rating from "@/components/rating/Rating";
 import React from "react";
+import { Game, GameReview } from "@/interfaces";
+import ReviewModal from "./ReviewModal";
+import { getReviews } from "@/lib/api/api";
 
-function ReviewsList() {
+async function ReviewsList({ game }: { game: Game }) {
+  const reviews = await getReviews(game.id);
   return (
     <div className="mt-4 pl-10 pr-10">
-      <div className="flex items-center ">
-        <div className="flex flex-1">
+      <div className="flex items-center justify-center relative">
+        <div className="flex absolute left-0">
           <h3>5 avis</h3>
           <h3 className="ml-4">14 commentaires</h3>
         </div>
-        <div className="flex flex-2 items-center">
-          <ButtonPrimary label="Ajouter un avis" color="primary-500" />
-          <div className="ml-20">
-            <Rating />
-          </div>
-        </div>
+        <ReviewModal game={game} />
       </div>
-      <Review />
+      {reviews.map((review: GameReview) => (
+        <Review key={review.id} review={review} />
+      ))}
       <div className="flex justify-center p-5">
         <ButtonSecondary
           label="Voir plus de commentaires"

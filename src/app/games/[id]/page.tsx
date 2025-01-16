@@ -44,7 +44,7 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <h2>Description</h2>
         <p>{game.description}</p>
       </div>
-      <ReviewsList />
+      <ReviewsList game={game} />
       <Suspense fallback={<p>Chargement...</p>}>
         <SimilarGames game={game} />
       </Suspense>

@@ -24,7 +24,8 @@ function EditUser({ user }: { user: UserProfil }) {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (event: React.SyntheticEvent<Element, Event>) => {
+    event.preventDefault();
     setOpen(false);
   };
 
@@ -57,7 +58,7 @@ function EditUser({ user }: { user: UserProfil }) {
         showSnackbar("Profil modifié", "success");
       }
     }
-    handleClose();
+    handleClose(event);
     router.refresh();
   };
   return (

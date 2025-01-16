@@ -42,3 +42,10 @@ export function getCategories(type: string) {
   );
   return fetch(url, { headers }).then((response) => response.json());
 }
+
+export function getReviews(gameId: number) {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/private/game/review/${gameId}`
+  );
+  return fetch(url, { headers }).then((response) => response.json());
+}

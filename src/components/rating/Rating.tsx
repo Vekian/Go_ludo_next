@@ -5,7 +5,18 @@ import { theme } from "../../../theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
-function Rating({ value }: { value?: number }) {
+function Rating({
+  value,
+  readOnly = true,
+  onChange,
+}: {
+  value?: number | null;
+  readOnly?: boolean;
+  onChange?: (
+    event: React.SyntheticEvent<Element, Event>,
+    value: number | null
+  ) => void;
+}) {
   return (
     <div className="flex items-center">
       <div className="flex items-center justify-center rounded-full z-40 bg-primary-600 text-lg font-bold text-white h-10 w-10">
@@ -15,10 +26,11 @@ function Rating({ value }: { value?: number }) {
         <Stack spacing={1}>
           <div className="flex items-center bg-primary-900 rounded-e-full pl-4 p-2">
             <MaterialRating
-              name="half-rating"
-              defaultValue={value}
+              name="rating"
+              value={value}
               precision={0.5}
-              readOnly
+              onChange={onChange}
+              readOnly={readOnly}
               icon={
                 <FontAwesomeIcon
                   icon={faStar}
