@@ -1,5 +1,4 @@
 "use client";
-// ButtonSelect.tsx
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -52,7 +51,7 @@ const ButtonSelectXl = ({
   async function loadOptions(params?: Param[]) {
     setLoading(true);
     if (type === "game") {
-      const games: GameCard[] = await getPublicGlobal(params);
+      const games = await getPublicGlobal(params);
       setOptions([...games]);
     }
     setLoading(false);

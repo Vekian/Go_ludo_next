@@ -1,38 +1,15 @@
-"use client";
 import Image from "next/image";
 import React from "react";
 import Rating from "../rating/Rating";
 import { GameCard } from "@/interfaces";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { useSnackbarContext } from "../provider/SnackbarProvider";
+import CardGameButtons from "./CardGameButtons";
 
 function CardGame({ game }: { game: GameCard }) {
-  const { showSnackbar } = useSnackbarContext();
-  const handleAdd = async () => {
-    const body = {
-      game: game.id,
-    };
-    showSnackbar("Jeu en cours d'ajout", "info");
-    const response = await fetch("/api/collection", {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-    if (!response.ok) {
-      showSnackbar("Impossible d'ajouter le jeu à la collection", "error");
-    } else {
-      showSnackbar("Jeu ajouté à la collection", "success");
-    }
-  };
   return (
     <div className="drop-shadow-lg">
-      <div
-        className="float-right flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer"
-        onClick={handleAdd}
-      >
-        <FontAwesomeIcon icon={faPlus} className="text-primary-600 text-lg" />
-      </div>
+      <CardGameButtons game={game} />
+
       <Link
         key={`${game.id}list`}
         href={`/${game.type === "base" ? "game" : game.type}s/${game.id}`}

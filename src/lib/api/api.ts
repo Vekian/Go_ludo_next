@@ -1,13 +1,16 @@
 import { Param } from "@/interfaces";
+import { User } from "next-auth";
 
-const headers = process.env.KEY_SYMFONY_API
-  ? new Headers({
-      "X-AUTH-TOKEN": process.env.KEY_SYMFONY_API,
-    })
-  : undefined;
-export function getGames(params: Param[] = []) {
+const headers = new Headers();
+
+if (process.env.KEY_SYMFONY_API) {
+  headers.append("X-AUTH-TOKEN", process.env.KEY_SYMFONY_API);
+}
+export function getGames(params: Param[] = [], user?: User | null) {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/private/game/base`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/${
+      user ? "api" : "private"
+    }/game/base`
   );
   params
     .filter((param) => param.value)
@@ -21,7 +24,9 @@ export function getGames(params: Param[] = []) {
       }
     });
 
-  return fetch(url, { headers }).then((response) => response.json());
+  return fetch(url, {
+    headers: user ? { Authorization: `Bearer ${user.token}` } : headers,
+  }).then((response) => response.json());
 }
 
 export function getGame(id: number, type: string) {

@@ -6,6 +6,7 @@ export interface GameCard {
   cover: ImageInterface;
   rating: number;
   type: string;
+  owned?: boolean;
 }
 
 export interface GameSearch {

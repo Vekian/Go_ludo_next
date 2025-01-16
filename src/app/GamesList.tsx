@@ -1,6 +1,8 @@
 import ListGames from "@/components/list/ListGames";
 import { getGames } from "@/lib/api/api";
+import { getServerSession } from "next-auth";
 import React from "react";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 async function GamesList({
   searchParams,
@@ -11,6 +13,7 @@ async function GamesList({
     mode: string | string[];
   }>;
 }) {
+  const session = await getServerSession(authOptions);
   const params = await searchParams;
   const toArray = (param: string | string[]): string[] => {
     if (param === undefined) return [];
@@ -21,12 +24,15 @@ async function GamesList({
     ...toArray(params.theme),
     ...toArray(params.mode),
   ];
-  const games = await getGames([
-    {
-      key: "category[]",
-      value: categoryParams,
-    },
-  ]);
+  const games = await getGames(
+    [
+      {
+        key: "category[]",
+        value: categoryParams,
+      },
+    ],
+    session && session.user
+  );
   return <ListGames games={games} />;
 }
 
