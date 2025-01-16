@@ -31,17 +31,14 @@ export async function POST(request: NextRequest) {
       method: "PUT",
     });
 
+    const data = await response.json();
     if (!response.ok) {
       // Gérer les erreurs de l'API Symfony
-      const errorMessage = await response.text();
-      console.error("Erreur API Symfony:", errorMessage);
-      return NextResponse.json(
-        { message: "Erreur API Symfony", details: errorMessage },
-        { status: response.status }
-      );
+
+      return NextResponse.json(data.error, { status: response.status });
     }
 
-    return NextResponse.json({ message: "Profil modifié" }, { status: 201 });
+    return NextResponse.json(data, { status: 201 });
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error("Erreur dans la route:", error.message);

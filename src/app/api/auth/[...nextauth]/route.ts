@@ -100,7 +100,30 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User }) {
+    async jwt({
+      token,
+      session,
+      user,
+      trigger,
+    }: {
+      token: JWT;
+      user?: User;
+      trigger?: string;
+      session?: Session;
+    }) {
+      if (trigger === "update" && session?.user) {
+        const userToken = token.user as User;
+        token.user = {
+          id: session.user.id,
+          email: session.user.email,
+          roles: session.user.roles,
+          name: session.user.name,
+          avatar: session.user.avatar,
+          token: userToken.token,
+        };
+
+        return token;
+      }
       if (user) {
         return {
           ...token,

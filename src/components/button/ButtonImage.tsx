@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ButtonSecondary from "./ButtonSecondary";
 import { UserProfil } from "@/interfaces";
+import { useSnackbarContext } from "../provider/SnackbarProvider";
 
 type FormDataInputs = {
   avatar: FileList; // Typage pour le champ "avatar"
@@ -20,14 +21,15 @@ function ButtonImage({
   setSourceState: React.Dispatch<React.SetStateAction<string>>;
   user: UserProfil;
 }) {
-  const { data: session } = useSession();
+  const { showSnackbar } = useSnackbarContext();
+  const { data: session, update } = useSession();
   const [uploading, setUploading] = useState(false);
-
   const { register, handleSubmit } = useForm<FormDataInputs>();
 
   const onSubmit: SubmitHandler<FormDataInputs> = (data) => {
     const formData = new FormData();
     formData.append("avatar", data.avatar[0]);
+    showSnackbar("Avatar en coours d'upload", "info");
     fetch(`/api/user/picture`, {
       method: "POST",
       headers: {
@@ -38,11 +40,13 @@ function ButtonImage({
     })
       .then((response) => {
         if (!response.ok) {
+          showSnackbar("Impossible d'upload une nouvell e image", "error");
         }
         return response.json();
       })
       .then((data) => {
         console.log(data);
+        showSnackbar("Profil modifié", "success");
         setUploading(false);
       });
   };

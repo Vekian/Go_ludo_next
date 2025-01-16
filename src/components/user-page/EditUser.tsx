@@ -11,8 +11,12 @@ import SelectClassic from "../input/SelectClassic";
 import { theme } from "../../../theme/theme";
 import { useRouter } from "next/navigation";
 import ButtonSecondary from "../button/ButtonSecondary";
+import { useSession } from "next-auth/react";
+import { useSnackbarContext } from "../provider/SnackbarProvider";
 
 function EditUser({ user }: { user: UserProfil }) {
+  const { data, update } = useSession();
+  const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [gender, setGender] = React.useState(user.gender);
@@ -24,11 +28,38 @@ function EditUser({ user }: { user: UserProfil }) {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     formData.append("gender", gender);
-    fetch("/api/user", { body: formData, method: "POST" });
+    showSnackbar("Profil en cours de modification", "info");
+    const response = await fetch("/api/user", {
+      body: formData,
+      method: "POST",
+    });
+    if (!response.ok) {
+      showSnackbar(
+        "Impossible de modifier le profil, veuillez réessayer plus tard",
+        "error"
+      );
+    } else {
+      if (data && update) {
+        const updatedUser = await response.json();
+        const updatedSessionUser = {
+          id: updatedUser.id,
+          email: updatedUser.email,
+          roles: updatedUser.roles,
+          name: updatedUser.username,
+          avatar: updatedUser.avatar,
+          token: data.user.token,
+        };
+        await update({
+          ...data,
+          user: updatedSessionUser,
+        });
+        showSnackbar("Profil modifié", "success");
+      }
+    }
     handleClose();
     router.refresh();
   };
