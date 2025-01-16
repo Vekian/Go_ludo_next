@@ -58,12 +58,16 @@ function CardGameButtons({ game }: { game: GameCard }) {
           />
         </div>
       </Tooltip>
-      <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
-        <FontAwesomeIcon icon={faBarcode} className="text-primary-950" />
-      </div>
-      <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer">
-        <FontAwesomeIcon icon={faDice} className="text-primary-600 text-xl" />
-      </div>
+      <Tooltip placement="right" title="Scanner le jeu">
+        <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
+          <FontAwesomeIcon icon={faBarcode} className="text-primary-950" />
+        </div>
+      </Tooltip>
+      <Tooltip placement="bottom" title="Lancer une partie">
+        <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer">
+          <FontAwesomeIcon icon={faDice} className="text-primary-600 text-xl" />
+        </div>
+      </Tooltip>
     </div>
   );
 }
