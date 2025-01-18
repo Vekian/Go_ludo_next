@@ -7,7 +7,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import React from "react";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 
 function SelectClassic({
   value,

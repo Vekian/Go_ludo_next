@@ -1,7 +1,7 @@
 "use client";
 import { Box, Slider } from "@mui/material";
 import React from "react";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 
 function SimpleSlider({ value }: { value: number }) {
   const firstColor = theme.colors.secondary[500];

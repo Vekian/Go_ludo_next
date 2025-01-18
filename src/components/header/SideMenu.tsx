@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { slide as Menu } from "react-burger-menu";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleQuestion,

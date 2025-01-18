@@ -1,7 +1,7 @@
 "use client";
 import { Stack, Rating as MaterialRating } from "@mui/material";
 import React from "react";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 

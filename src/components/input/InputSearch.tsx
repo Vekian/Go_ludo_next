@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import dynamic from "next/dynamic";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faE, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getPublicGames } from "@/lib/api/publicApi";

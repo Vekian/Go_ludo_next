@@ -1,5 +1,5 @@
 import React from "react";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 import styles from "./Onglet.module.scss";
 function Onglet({
   label,

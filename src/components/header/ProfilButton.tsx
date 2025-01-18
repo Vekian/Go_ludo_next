@@ -7,7 +7,7 @@ import { Button, Divider, Menu, MenuItem } from "@mui/material";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
 import { User } from "next-auth";
 

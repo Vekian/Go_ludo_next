@@ -8,7 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import SelectClassic from "../input/SelectClassic";
-import { theme } from "../../../theme/theme";
+import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
 import ButtonSecondary from "../button/ButtonSecondary";
 import { useSession } from "next-auth/react";
