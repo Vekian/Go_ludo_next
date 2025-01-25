@@ -1,12 +1,29 @@
+import { User } from "next-auth";
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  console.log("test");
-}
+export default withAuth(
+  async function middleware(req) {
+    const token = req.nextauth.token;
+    const user = token?.user as User;
 
-// See "Matching Paths" below to learn more
-export const config = {
-  matcher: "/:path*",
-};
+    const response = NextResponse.next();
+    response.headers.set("Authorization", `Bearer ${user.token}`);
+    return response;
+  },
+  {
+    pages: {
+      signIn: "/",
+    },
+    callbacks: {
+      authorized: async ({ token }) => {
+        if (token) {
+          return true;
+        }
+        return false;
+      },
+    },
+  }
+);
+
+export const config = { matcher: ["/api/:path*", "/user/:path*"] };

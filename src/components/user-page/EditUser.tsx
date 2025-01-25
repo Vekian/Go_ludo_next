@@ -34,9 +34,9 @@ function EditUser({ user }: { user: UserProfil }) {
     const formData = new FormData(event.currentTarget);
     formData.append("gender", gender);
     showSnackbar("Profil en cours de modification", "info");
-    const response = await fetch("/api/user", {
+    const response = await fetch(`/api/user/${data?.user.id}`, {
       body: formData,
-      method: "POST",
+      method: "PUT",
     });
     if (!response.ok) {
       showSnackbar(

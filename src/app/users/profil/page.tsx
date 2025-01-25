@@ -8,6 +8,7 @@ import UserInfos from "@/components/user-page/UserInfos";
 import UserParams from "@/components/user-page/UserParams";
 import UserNotifs from "@/components/user-page/UserNotifs";
 import ListGames from "@/components/list/ListGames";
+import { getUser } from "@/lib/api/loggedApi";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
@@ -15,10 +16,7 @@ const Page = async () => {
   if (!session) {
     redirect("/");
   }
-  const user: UserProfil = await fetch(
-    `${process.env.NEXTAUTH_URL}/api/user/${session.user.id}`,
-    { headers: { Authorization: "Bearer " + session.user.token } }
-  ).then((response) => response.json());
+  const user: UserProfil = await getUser(session.user.id, session.user.token);
 
   return (
     <div>
