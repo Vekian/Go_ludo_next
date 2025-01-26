@@ -77,6 +77,7 @@ export interface GameReview {
   content: string;
   rating: number;
   account: UserReview;
+  game: GameCard;
 }
 
 export interface UserReview {

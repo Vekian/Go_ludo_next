@@ -1,12 +1,17 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Param } from "@/interfaces";
-import { User } from "next-auth";
+import { getServerSession } from "next-auth";
 
 const headers = new Headers();
 
 if (process.env.KEY_SYMFONY_API) {
   headers.append("X-AUTH-TOKEN", process.env.KEY_SYMFONY_API);
 }
-export function getGames(params: Param[] = [], user?: User | null) {
+export async function getGames(params: Param[] = []) {
+  const session = await getServerSession(authOptions);
+  if (session?.user.token) {
+    headers.set("Authorization", `Bearer ${session?.user.token}`);
+  }
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/base`
   );
@@ -21,10 +26,6 @@ export function getGames(params: Param[] = [], user?: User | null) {
         );
       }
     });
-
-  if (user) {
-    headers.append("Authorization", `Bearer ${user.token}`);
-  }
 
   return fetch(url, {
     headers: headers,
@@ -45,9 +46,10 @@ export function getCategories(type: string) {
   return fetch(url, { headers }).then((response) => response.json());
 }
 
-export async function getReviews(gameId: number, token: string | undefined) {
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
+export async function getReviews(gameId: number) {
+  const session = await getServerSession(authOptions);
+  if (session?.user.token) {
+    headers.set("Authorization", `Bearer ${session?.user.token}`);
   }
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}`

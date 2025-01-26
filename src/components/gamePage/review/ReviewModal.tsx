@@ -11,14 +11,15 @@ import ButtonSecondary from "../../button/ButtonSecondary";
 import ButtonPrimary from "../../button/ButtonPrimary";
 import Rating from "../../rating/Rating";
 import { useSnackbarContext } from "../../provider/SnackbarProvider";
-import { Game, GameReview } from "@/interfaces";
+import { GameReview } from "@/interfaces";
 import { useRouter } from "next/navigation";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 function ReviewModal({
-  game,
+  gameId,
   review,
 }: {
-  game: Game;
+  gameId: number;
   review?: GameReview | null;
 }) {
   const { showSnackbar } = useSnackbarContext();
@@ -43,7 +44,7 @@ function ReviewModal({
     const formJson = Object.fromEntries(formData.entries());
     const body = {
       content: formJson.content,
-      game: game.id,
+      game: gameId,
       rating: rating,
     };
     if (!reviewed) {
@@ -136,9 +137,10 @@ function ReviewModal({
       </Dialog>
       <div className="flex items-center">
         <ButtonPrimary
-          label={review ? "Modifier votre avis" : "Ajouter un avis"}
+          label={review ? "Éditer" : "Ajouter un avis"}
           color="primary-500"
           onClick={handleClickOpen}
+          icon={faPenToSquare}
         />
         <div className="ml-20">
           <Rating onChange={handleChange} readOnly={false} value={rating} />

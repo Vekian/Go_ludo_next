@@ -37,3 +37,39 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: number }> }
+) {
+  try {
+    const id = (await params).id;
+
+    const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${id}`;
+    const headers = new Headers();
+    headers.set("Authorization", request.headers.get("Authorization") || "");
+    headers.set("Content-Type", "application/json");
+
+    const response = await fetch(url, {
+      headers: headers,
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      // Gérer les erreurs de l'API Symfony
+      const errorMessage = await response.json();
+      return NextResponse.json(errorMessage.error, { status: response.status });
+    }
+
+    return NextResponse.json("", { status: 201 });
+  } catch (error: unknown) {
+    const e = error as Error;
+    return NextResponse.json(
+      {
+        message: "Erreur lors de l'envoi du commentaire",
+        error: e?.message,
+      },
+      { status: 500 }
+    );
+  }
+}

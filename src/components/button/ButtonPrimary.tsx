@@ -1,14 +1,18 @@
 import React from "react";
 import { theme } from "@/theme/theme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 function ButtonPrimary({
   label,
   color,
   onClick,
+  icon,
 }: {
   label: string;
   color: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  icon?: IconProp;
 }) {
   const partsColor: [string, string] = color?.split("-") as [string, string];
   const tailwindColor =
@@ -21,6 +25,7 @@ function ButtonPrimary({
       style={{ backgroundColor: tailwindColor }}
       onClick={onClick}
     >
+      {icon && <FontAwesomeIcon icon={icon} className="me-2" />}
       {label}
     </button>
   );
