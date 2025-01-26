@@ -89,6 +89,6 @@ export interface UserReview {
 export interface ReviewList {
   reviews: GameReview[];
   accountReview: GameReview | null;
-  totalPages: number;
+  totalResults: number;
   page: number;
 }

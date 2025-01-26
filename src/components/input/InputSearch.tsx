@@ -57,7 +57,9 @@ const InputSearch = ({ label }: { label: string }) => {
     value: GameCard | null
   ) {
     if (value) {
-      router.push(`/${value.type}s/${value.id}`);
+      router.push(
+        `/${value.type === "base" ? "game" : value.type}s/${value.id}`
+      );
     }
   }
 

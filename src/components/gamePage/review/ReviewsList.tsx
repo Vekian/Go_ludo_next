@@ -12,8 +12,7 @@ async function ReviewsList({ game }: { game: Game }) {
     <div className="mt-4 pl-10 pr-10">
       <div className="flex items-center justify-center relative mb-5 mt-10">
         <div className="flex absolute left-0">
-          <h3>5 avis</h3>
-          <h3 className="ml-4">14 commentaires</h3>
+          <h3>{reviewList.totalResults} avis</h3>
         </div>
         {!reviewList.accountReview && (
           <ReviewModal gameId={game.id} review={reviewList.accountReview} />
