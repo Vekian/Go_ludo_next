@@ -8,9 +8,7 @@ if (process.env.KEY_SYMFONY_API) {
 }
 export function getGames(params: Param[] = [], user?: User | null) {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/${
-      user ? "api" : "private"
-    }/game/base`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/base`
   );
   params
     .filter((param) => param.value)
@@ -24,28 +22,35 @@ export function getGames(params: Param[] = [], user?: User | null) {
       }
     });
 
+  if (user) {
+    headers.append("Authorization", `Bearer ${user.token}`);
+  }
+
   return fetch(url, {
-    headers: user ? { Authorization: `Bearer ${user.token}` } : headers,
+    headers: headers,
   }).then((response) => response.json());
 }
 
 export function getGame(id: number, type: string) {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/private/game/${type}/${id}`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`
   );
   return fetch(url, { headers }).then((response) => response.json());
 }
 
 export function getCategories(type: string) {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/private/game/${type}`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}`
   );
   return fetch(url, { headers }).then((response) => response.json());
 }
 
-export function getReviews(gameId: number) {
+export async function getReviews(gameId: number, token: string | undefined) {
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/private/game/review/${gameId}`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}`
   );
   return fetch(url, { headers }).then((response) => response.json());
 }

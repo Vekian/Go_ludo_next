@@ -27,10 +27,12 @@ export async function GET(
     // Return the data in the response
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    // Handle any errors that occur during the fetch or JSON parsing
-    console.error(error);
+    const e = error as Error;
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      {
+        message: "Erreur lors de la modification du profil",
+        error: e?.message,
+      },
       { status: 500 }
     );
   }

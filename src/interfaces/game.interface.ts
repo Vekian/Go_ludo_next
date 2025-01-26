@@ -76,7 +76,6 @@ export interface GameReview {
   id: number;
   content: string;
   rating: number;
-  game: number;
   account: UserReview;
 }
 
@@ -84,4 +83,11 @@ export interface UserReview {
   id: number;
   username: string;
   avatar: string;
+}
+
+export interface ReviewList {
+  reviews: GameReview[];
+  accountReview: GameReview | null;
+  totalPages: number;
+  page: number;
 }

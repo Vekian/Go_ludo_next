@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: number }> }
+) {
   try {
     const body = await request.json();
+    const id = (await params).id;
 
-    const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review`;
+    const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${id}`;
     const headers = new Headers();
     headers.set("Authorization", request.headers.get("Authorization") || "");
     headers.set("Content-Type", "application/json");
@@ -12,7 +16,7 @@ export async function POST(request: NextRequest) {
     const response = await fetch(url, {
       headers: headers,
       body: JSON.stringify(body),
-      method: "POST",
+      method: "PUT",
     });
 
     if (!response.ok) {

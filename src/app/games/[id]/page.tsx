@@ -9,7 +9,7 @@ import SimilarGames from "../../../components/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/api";
 import { Game } from "@/interfaces";
 import GameContent from "@/components/gamePage/GameContent";
-import ReviewsList from "@/components/gamePage/ReviewsList";
+import ReviewsList from "@/components/gamePage/review/ReviewsList";
 
 async function page({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;

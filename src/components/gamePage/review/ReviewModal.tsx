@@ -7,17 +7,27 @@ import {
   DialogTitle,
 } from "@mui/material";
 import React, { useState } from "react";
-import ButtonSecondary from "../button/ButtonSecondary";
-import ButtonPrimary from "../button/ButtonPrimary";
-import Rating from "../rating/Rating";
-import { useSnackbarContext } from "../provider/SnackbarProvider";
-import { Game } from "@/interfaces";
+import ButtonSecondary from "../../button/ButtonSecondary";
+import ButtonPrimary from "../../button/ButtonPrimary";
+import Rating from "../../rating/Rating";
+import { useSnackbarContext } from "../../provider/SnackbarProvider";
+import { Game, GameReview } from "@/interfaces";
+import { useRouter } from "next/navigation";
 
-function ReviewModal({ game }: { game: Game }) {
+function ReviewModal({
+  game,
+  review,
+}: {
+  game: Game;
+  review?: GameReview | null;
+}) {
   const { showSnackbar } = useSnackbarContext();
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [reviewed, setReviewed] = useState(false);
-  const [rating, setRating] = useState<number | null>(null);
+  const [reviewed, setReviewed] = useState(review ? true : false);
+  const [rating, setRating] = useState<number | null>(
+    review ? review.rating : null
+  );
   const handleChange = async (
     event: React.SyntheticEvent<Element, Event>,
     value: number | null
@@ -47,10 +57,12 @@ function ReviewModal({ game }: { game: Game }) {
       } else {
         showSnackbar("Avis ajouté au jeu", "success");
         setReviewed(true);
+        setOpen(false);
+        router.refresh();
       }
-    } else {
+    } else if (review) {
       showSnackbar("Avis en cours de modfication", "info");
-      const response = await fetch("/api/game/rating", {
+      const response = await fetch(`/api/game/rating/${review.id}`, {
         method: "PUT",
         body: JSON.stringify(body),
       });
@@ -58,7 +70,8 @@ function ReviewModal({ game }: { game: Game }) {
         showSnackbar("Impossible de modifier l'avis au jeu: ", "error");
       } else {
         showSnackbar("Avis modifié", "success");
-        setReviewed(true);
+        setOpen(false);
+        router.refresh();
       }
     }
   };
@@ -83,7 +96,9 @@ function ReviewModal({ game }: { game: Game }) {
             handleSubmit(event),
         }}
       >
-        <DialogTitle className="font-farro">Ajouter un avis</DialogTitle>
+        <DialogTitle className="font-farro">
+          {review ? "Modifier votre avis" : "Ajouter un avis"}
+        </DialogTitle>
         <DialogContent>
           <div className="flex flex-col">
             <div className="flex justify-end">
@@ -98,6 +113,7 @@ function ReviewModal({ game }: { game: Game }) {
               id="content"
               className="bg-neutral-50 rounded-md px-3 py-1"
               rows={5}
+              defaultValue={review?.content}
             />
           </div>
         </DialogContent>
@@ -120,7 +136,7 @@ function ReviewModal({ game }: { game: Game }) {
       </Dialog>
       <div className="flex items-center">
         <ButtonPrimary
-          label="Ajouter un avis"
+          label={review ? "Modifier votre avis" : "Ajouter un avis"}
           color="primary-500"
           onClick={handleClickOpen}
         />
