@@ -9,13 +9,16 @@ function UserStatus({ user }: { user: UserProfil }) {
   const [sourceState, setSourceState] = useState(getImg(user.avatar));
   return (
     <div className="flex flex-col items-center -mt-28">
-      <Image
-        src={sourceState}
-        alt={user.username}
-        width={150}
-        height={150}
-        className="rounded-full"
-      />
+      {user.avatar && (
+        <Image
+          src={sourceState}
+          alt={user.username}
+          width={150}
+          height={150}
+          className="rounded-full"
+        />
+      )}
+
       <ButtonImage setSourceState={setSourceState} user={user} />
       <h3 className="text-center">{user.username}</h3>
     </div>

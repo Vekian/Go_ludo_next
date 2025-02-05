@@ -9,6 +9,11 @@ export interface GameCard {
   owned?: boolean;
 }
 
+export interface GameLocalisation {
+  id: number;
+  name: string;
+  codePostal: string;
+}
 export interface GameSearch {
   id: number;
   name: string;

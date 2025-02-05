@@ -7,20 +7,18 @@ import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { getPublicGlobal } from "@/lib/api/publicApi";
-import { GameCard, Param } from "@/interfaces";
+import { getPublicCity } from "@/lib/api/publicApi";
+import { GameLocalisation, Param } from "@/interfaces";
 
-const ButtonSelectXl = ({
+const InputSearchCity = ({
   label,
   icon,
-  type,
 }: {
   label: string;
   icon: IconDefinition;
-  type: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<GameCard[]>([]);
+  const [options, setOptions] = useState<GameLocalisation[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -50,10 +48,8 @@ const ButtonSelectXl = ({
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    if (type === "game") {
-      const games = await getPublicGlobal(params);
-      setOptions([...games]);
-    }
+    const cities = await getPublicCity(params);
+    setOptions([...cities]);
     setLoading(false);
   }
 
@@ -117,12 +113,14 @@ const ButtonSelectXl = ({
 
         return (
           <li
-            key={`${key}${option.id}${type}`}
+            key={`${key}${option.id}city`}
             {...rest}
-            className="flex items-center justify-between px-5 py-2 hover:bg-neutral-100 cursor-pointer"
+            className="flex items-center  px-5 py-2 hover:bg-neutral-100 cursor-pointer"
           >
-            <div>{option.name}</div>
-            <div>{option.type === "base" ? "jeu" : option.type}</div>
+            <div>
+              {option.name}{" "}
+              <span className="text-neutral-400">({option.codePostal})</span>
+            </div>
           </li>
         );
       }}
@@ -170,4 +168,4 @@ const ButtonSelectXl = ({
 };
 
 // Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(ButtonSelectXl), { ssr: false });
+export default dynamic(() => Promise.resolve(InputSearchCity), { ssr: false });

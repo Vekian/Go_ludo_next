@@ -38,13 +38,16 @@ function ProfilButton({ user }: { user: User }) {
         sx={{ textTransform: "none" }}
         className="rounded-md bg-primary-600 hover:brightness-90 h-10 font-semibold"
       >
-        <Image
-          alt="avatar"
-          src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${user.avatar}`}
-          width={50}
-          height={50}
-          className="-ml-10 mr-3 rounded-full"
-        />
+        {user.avatar && (
+          <Image
+            alt="avatar"
+            src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${user.avatar}`}
+            width={50}
+            height={50}
+            className="-ml-10 mr-3 rounded-full"
+          />
+        )}
+
         {user.name}
       </Button>
       <Menu

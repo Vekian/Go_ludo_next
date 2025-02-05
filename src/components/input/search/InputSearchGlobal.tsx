@@ -1,0 +1,173 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import dynamic from "next/dynamic";
+import { theme } from "@/theme/theme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { CircularProgress, InputAdornment } from "@mui/material";
+import { getPublicGlobal } from "@/lib/api/publicApi";
+import { GameCard, Param } from "@/interfaces";
+
+const InputSearchGlobal = ({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: IconDefinition;
+}) => {
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState<GameCard[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (inputValue.length > 2) {
+      loadOptions([
+        {
+          key: "search",
+          value: inputValue,
+        },
+      ]);
+    } else if (inputValue === "") {
+      loadOptions();
+    }
+  }, [inputValue]);
+
+  const handleOpen = () => {
+    setOpen(true);
+    if (options.length === 0) {
+      loadOptions();
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  async function loadOptions(params?: Param[]) {
+    setLoading(true);
+    const games = await getPublicGlobal(params);
+    setOptions([...games]);
+    setLoading(false);
+  }
+
+  const styleLabel = {
+    border: "none",
+    color: theme.colors.neutral[300],
+    transform: "",
+    fontFamily: "nunito",
+    fontWeight: 700,
+    fontSize: "17px",
+    marginLeft: "50px",
+  };
+
+  return (
+    <Autocomplete
+      popupIcon={
+        <FontAwesomeIcon
+          icon={faAngleDown}
+          style={{ color: theme.colors.black }} // Couleur personnalisable
+        />
+      }
+      open={open}
+      onOpen={handleOpen}
+      onClose={handleClose}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
+      getOptionLabel={(option) => option.name}
+      options={options}
+      loading={loading}
+      inputValue={inputValue}
+      clearOnBlur={false}
+      filterOptions={(x) => x}
+      noOptionsText="Pas de résultats..."
+      slotProps={{
+        paper: {
+          sx: {
+            fontFamily: "nunito",
+            fontWeight: 700,
+          },
+        },
+      }}
+      sx={{
+        marginLeft: "10px",
+        marginRight: "10px",
+        ".MuiInputLabel-root": styleLabel,
+        ".MuiAutocomplete-input": {
+          marginLeft: "10px",
+          marginRight: "10px", // Change la couleur de la valeur sélectionnée
+        },
+        ".MuiOutlinedInput-root": {
+          borderRadius: "50px",
+          fontFamily: "nunito",
+          fontWeight: 700,
+          // Applique un border-radius au champ de texte à l'intérieur de l'Autocomplete
+        },
+      }}
+      renderOption={(props, option) => {
+        const { key, ...rest } = props; // On extrait explicitement la clé
+
+        return (
+          <li
+            key={`${key}${option.id}game`}
+            {...rest}
+            className="flex items-center justify-between px-5 py-2 hover:bg-neutral-100 cursor-pointer"
+          >
+            <div>{option.name}</div>
+            <div className="text-neutral-400">
+              {option.type === "base" ? "jeu" : option.type}
+            </div>
+          </li>
+        );
+      }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          size="small"
+          slotProps={{
+            input: {
+              ...params.InputProps,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <FontAwesomeIcon
+                    icon={icon}
+                    style={{
+                      color: theme.colors.primary[900],
+                      marginLeft: 12,
+                      marginRight: 0,
+                      width: 20,
+                    }}
+                  />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <React.Fragment>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
+                  {params.InputProps.endAdornment}
+                </React.Fragment>
+              ),
+            },
+            inputLabel: {
+              shrink: Boolean(params.inputProps?.value),
+              style: params.inputProps?.value
+                ? { transform: "translate(-26%,-30%)", fontSize: "0.8rem" }
+                : {},
+            },
+          }}
+        />
+      )}
+    />
+  );
+};
+
+// Dynamic import with SSR disabled
+export default dynamic(() => Promise.resolve(InputSearchGlobal), {
+  ssr: false,
+});
