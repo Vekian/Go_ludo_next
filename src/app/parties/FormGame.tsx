@@ -13,16 +13,37 @@ export default function FormGame({
   categories,
   themes,
   modes,
+  handleChange,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
+  handleChange: (name: string, value: string | number | null) => void;
 }) {
   const [categoryValue, setCategoryValue] = useState<Option | null>(null);
   const [modeValue, setModeValue] = useState<Option | null>(null);
   const [themeValue, setThemeValue] = useState<Option | null>(null);
   const [durationValue, setDurationValue] = useState<string>("0");
   const [ratingValue, setRatingValue] = useState<number | null>(null);
+
+  function handleGameChange(newGameValue: number | null) {
+    handleChange("game", newGameValue);
+  }
+
+  function handleCategoryValue(newCategoryValue: Option | null) {
+    setCategoryValue(newCategoryValue);
+    handleChange("category", newCategoryValue ? newCategoryValue.value : null);
+  }
+
+  function handleThemeValue(newThemeValue: Option | null) {
+    setThemeValue(newThemeValue);
+    handleChange("theme", newThemeValue ? newThemeValue.value : null);
+  }
+
+  function handleModeValue(newModeValue: Option | null) {
+    setModeValue(newModeValue);
+    handleChange("mode", newModeValue ? newModeValue.value : null);
+  }
   return (
     <div className="bg-white gap-y-5 flex flex-col flex-1 p-10 rounded-lg">
       <h2>À quoi veux-tu jouer ?</h2>
@@ -33,6 +54,7 @@ export default function FormGame({
             label="Un jeu, une extension..."
             icon={faDice}
             global={false}
+            onChange={handleGameChange}
           />
         </div>
       </div>
@@ -46,7 +68,7 @@ export default function FormGame({
               name="category"
               value={categoryValue}
               options={categories}
-              setValue={setCategoryValue}
+              setValue={handleCategoryValue}
             />
           </div>
           <div className="flex-1">
@@ -56,7 +78,7 @@ export default function FormGame({
               name="mode"
               value={modeValue}
               options={modes}
-              setValue={setModeValue}
+              setValue={handleModeValue}
             />
           </div>
           <div className="flex-1">
@@ -66,7 +88,7 @@ export default function FormGame({
               name="category"
               value={themeValue}
               options={themes}
-              setValue={setThemeValue}
+              setValue={handleThemeValue}
             />
           </div>
         </div>
@@ -87,6 +109,7 @@ export default function FormGame({
             ]}
             onChange={(event: SelectChangeEvent<string>) => {
               setDurationValue(event.target.value);
+              handleChange("duration", event.target.value);
             }}
             value={durationValue}
           />
@@ -101,6 +124,7 @@ export default function FormGame({
               value: number | null
             ) => {
               setRatingValue(value);
+              handleChange("rating", value);
             }}
           />
         </div>

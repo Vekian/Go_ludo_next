@@ -28,17 +28,13 @@ function SelectClassic({
             value={value}
             onChange={onChange}
             sx={{
-              marginLeft: "10px",
-              marginRight: "10px",
-              marginTop: "10px",
               textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)",
-
               ".MuiOutlinedInput-notchedOutline": {
                 border: "none", // Supprime la bordure autour du champ
               },
 
               ".MuiSelect-select": {
-                padding: "5px 16px", // Ajuste le padding du texte à l'intérieur du champ
+                padding: "8px 16px", // Ajuste le padding du texte à l'intérieur du champ
                 color: theme.colors.white, // Change la couleur de la valeur sélectionnée
                 fontFamily: "nunito",
                 fontWeight: 700,

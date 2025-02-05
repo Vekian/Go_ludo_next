@@ -1,5 +1,4 @@
 "use client";
-import ButtonSelect from "@/components/input/ButtonSelect";
 import PartyDatePicker from "@/components/input/PartyDatePicker";
 import PartyTimePicker from "@/components/input/PartyTimePicker";
 import InputSearchCity from "@/components/input/search/InputSearchCity";
@@ -11,12 +10,15 @@ import {
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SliderThumb } from "@mui/material";
+import { SelectChangeEvent, SliderThumb } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import "dayjs/locale/fr";
+import SelectClassic from "@/components/input/SelectClassic";
+import { theme } from "@/theme/theme";
+import { FormData } from "./Form";
 
 interface RangeThumbProps extends React.HTMLAttributes<unknown> {
   "data-index"?: number; // Ajout de la propriété manquante
@@ -43,7 +45,14 @@ function RangeThumbComponent(props: RangeThumbProps) {
   );
 }
 
-export default function FormLocalisation() {
+export default function FormLocalisation({
+  handleChange,
+  errors,
+}: {
+  handleChange: (name: string, value: string | number | null) => void;
+  errors: { [key in keyof FormData]?: string };
+}) {
+  const [ageValue, setAgeValue] = React.useState("18");
   const [slideValue, setSlideValue] = React.useState(20);
   const [rangeValue, setRangeValue] = React.useState([2, 30]);
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
@@ -57,13 +66,22 @@ export default function FormLocalisation() {
     newSlideValue: number | number[]
   ) => {
     setSlideValue(newSlideValue as number);
+    handleChange("zone", newSlideValue as number);
   };
 
   const handleRangeChange = (
     event: Event,
     newRangeValue: number | number[]
   ) => {
-    setRangeValue(newRangeValue as number[]);
+    if (Array.isArray(newRangeValue)) {
+      setRangeValue(newRangeValue as number[]);
+      handleChange("playersMin", newRangeValue[0]);
+      handleChange("playersMax", newRangeValue[1]);
+    }
+  };
+
+  const handleCityChange = (newCityValue: number | null) => {
+    handleChange("city", newCityValue);
   };
   return (
     <div className="bg-white flex-1 p-10 rounded-lg">
@@ -73,22 +91,30 @@ export default function FormLocalisation() {
           <InputSearchCity
             label="Où ? (ville, code postal...)"
             icon={faLocationDot}
+            onChange={handleCityChange}
           />
+          {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
         </div>
         <div className="flex-1">
-          <ButtonSelect
-            label="Âge max"
-            color="primary-900"
-            options={[
-              { id: 18, name: "18-24 ans" },
-              { id: 25, name: "25-34 ans" },
-              { id: 35, name: "35-44 ans" },
-              { id: 45, name: "45-54 ans" },
-              { id: 55, name: "55 ans et plus" },
-            ]}
-            name="age"
-            width={250}
-          />
+          <div className="w-2/3">
+            {" "}
+            <SelectClassic
+              value={ageValue}
+              color={theme.colors.primary[800]}
+              options={[
+                { value: "0", label: "N'importe quel âge" },
+                { value: "18", label: "18-24 ans" },
+                { value: "25", label: "25-34 ans" },
+                { value: "35", label: "35-44 ans" },
+                { value: "45", label: "45-54 ans" },
+                { value: "55", label: "55 ans et plus" },
+              ]}
+              onChange={(event: SelectChangeEvent<string>) => {
+                setAgeValue(event.target.value);
+                handleChange("age", event.target.value);
+              }}
+            />
+          </div>
         </div>
       </div>
       <div className="mt-5 flex gap-x-10">
@@ -145,7 +171,12 @@ export default function FormLocalisation() {
             <PartyDatePicker
               value={selectedDate}
               format="DD/MM/YYYY"
-              onChange={(newDate) => newDate && setSelectedDate(newDate)}
+              onChange={(newDate) => {
+                if (newDate) {
+                  setSelectedDate(newDate);
+                  handleChange("date", newDate.format("YYYY-MM-DD"));
+                }
+              }}
               className="w-1/2"
               slotProps={{
                 textField: {
@@ -155,28 +186,44 @@ export default function FormLocalisation() {
                 },
               }}
             />
+            {errors.date && (
+              <p className="text-red-500 text-sm">{errors.date}</p>
+            )}
           </div>
           <div className="flex-1 flex gap-x-5">
             <div className="flex-1">
               <h5 className="font-semibold">De</h5>
-
               <PartyTimePicker
                 ampm={false}
                 value={timeStartValue}
-                onChange={(timeStart) =>
-                  timeStart && setTimeStartValue(timeStart)
-                }
+                onChange={(timeStart) => {
+                  if (timeStart) {
+                    setTimeStartValue(timeStart);
+                    handleChange("startTime", timeStart.format("HH:mm:ss"));
+                  }
+                }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
+              {errors.startTime && (
+                <p className="text-red-500 text-sm">{errors.startTime}</p>
+              )}
             </div>
             <div className="flex-1">
               <h5 className="font-semibold">À</h5>
               <PartyTimePicker
                 ampm={false}
                 value={timeEndValue}
-                onChange={(timeEnd) => timeEnd && setTimeEndValue(timeEnd)}
+                onChange={(timeEnd) => {
+                  if (timeEnd) {
+                    setTimeEndValue(timeEnd);
+                    handleChange("endTime", timeEnd.format("HH:mm:ss"));
+                  }
+                }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
+              {errors.endTime && (
+                <p className="text-red-500 text-sm">{errors.endTime}</p>
+              )}
             </div>
           </div>
         </LocalizationProvider>

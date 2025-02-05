@@ -14,10 +14,12 @@ const InputSearchGlobal = ({
   label,
   icon,
   global = true,
+  onChange,
 }: {
   label: string;
   icon: IconDefinition;
   global?: boolean;
+  onChange?: (newCityValue: number | null) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameCard[]>([]);
@@ -84,6 +86,11 @@ const InputSearchGlobal = ({
       onClose={handleClose}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
+      }}
+      onChange={(event, newValue) => {
+        if (onChange) {
+          onChange(newValue ? newValue.id : null);
+        }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionLabel={(option) => option.name}

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import dynamic from "next/dynamic";
 import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
@@ -13,9 +12,11 @@ import { GameLocalisation, Param } from "@/interfaces";
 const InputSearchCity = ({
   label,
   icon,
+  onChange,
 }: {
   label: string;
   icon: IconDefinition;
+  onChange?: (newCityValue: number | null) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameLocalisation[]>([]);
@@ -76,6 +77,11 @@ const InputSearchCity = ({
       onClose={handleClose}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
+      }}
+      onChange={(event, newValue) => {
+        if (onChange) {
+          onChange(newValue ? newValue.id : null);
+        }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionLabel={(option) => option.name}
@@ -166,4 +172,4 @@ const InputSearchCity = ({
 };
 
 // Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(InputSearchCity), { ssr: false });
+export default InputSearchCity;
