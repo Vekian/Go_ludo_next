@@ -66,7 +66,7 @@ export default function FormLocalisation() {
     setRangeValue(newRangeValue as number[]);
   };
   return (
-    <div className="bg-white flex-1 p-5 rounded-lg">
+    <div className="bg-white flex-1 p-10 rounded-lg">
       <h2 className="mb-5">Avec qui veux-tu jouer ?</h2>
       <div className="flex  gap-x-10">
         <div className="flex-1">
@@ -133,7 +133,13 @@ export default function FormLocalisation() {
         </div>
       </div>
       <div className="flex gap-x-10 mt-5">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider
+          dateAdapter={AdapterDayjs}
+          localeText={{
+            cancelButtonLabel: "Annuler", // Personnaliser le bouton Cancel
+            okButtonLabel: "Valider", // Personnaliser le bouton OK
+          }}
+        >
           <div className="flex-1">
             <h5 className="font-semibold">Disponibilités</h5>
             <PartyDatePicker

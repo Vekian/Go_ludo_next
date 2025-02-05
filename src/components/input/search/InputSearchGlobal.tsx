@@ -7,15 +7,17 @@ import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { getPublicGlobal } from "@/lib/api/publicApi";
+import { getPublicGames, getPublicGlobal } from "@/lib/api/publicApi";
 import { GameCard, Param } from "@/interfaces";
 
 const InputSearchGlobal = ({
   label,
   icon,
+  global = true,
 }: {
   label: string;
   icon: IconDefinition;
+  global?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameCard[]>([]);
@@ -48,8 +50,14 @@ const InputSearchGlobal = ({
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    const games = await getPublicGlobal(params);
-    setOptions([...games]);
+    if (global) {
+      const games = await getPublicGlobal(params);
+      setOptions([...games]);
+    } else {
+      const games = await getPublicGames(params);
+      setOptions([...games]);
+    }
+
     setLoading(false);
   }
 

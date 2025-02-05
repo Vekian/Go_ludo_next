@@ -1,40 +1,26 @@
 "use client";
-// ButtonSelect.tsx
-import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-import dynamic from "next/dynamic";
+import { GameCategory, Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { Paper } from "@mui/material";
-import { GameCategory } from "@/interfaces";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Autocomplete, Paper, TextField } from "@mui/material";
+import React from "react";
 
-interface Option {
-  name: string;
-  label: string;
-  value: string;
-}
-
-const ButtonSelect = ({
+export default function InputAutoComplete({
   label,
   options,
   color,
-  width,
   name,
+  value,
+  setValue,
 }: {
   label: string;
   options: GameCategory[];
   color: string | null;
-  width: number | string;
   name: string;
-}) => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const [selectedValue, setSelectedValue] = useState<Option | null>(null);
+  value: Option | null;
+  setValue: (value: Option | null) => void;
+}) {
   const optionsSelect = options.map((option) => ({
     name: name,
     label: option.name,
@@ -51,14 +37,14 @@ const ButtonSelect = ({
 
   const styleLabel = {
     border: "none",
-    color: selectedValue ? theme.colors.black : white,
+    color: value ? theme.colors.black : white,
     transform: "",
     fontFamily: "nunito",
     fontWeight: 700,
     fontSize: "16px",
   };
 
-  if (selectedValue) {
+  if (value) {
     styleLabel.transform = "translate(30%,-100%)";
     styleLabel.fontSize = "0.8rem";
   }
@@ -67,16 +53,7 @@ const ButtonSelect = ({
     event: React.ChangeEvent<unknown>,
     value: Option | null
   ) => {
-    setSelectedValue(value);
-    const newSearchParams = new URLSearchParams(searchParams.toString());
-
-    if (value) {
-      newSearchParams.set(value.name, value.value);
-    } else {
-      newSearchParams.delete(name);
-    }
-
-    router.replace(`${pathname}?${newSearchParams.toString()}`);
+    setValue(value);
   };
 
   return (
@@ -89,7 +66,7 @@ const ButtonSelect = ({
       }
       disablePortal
       options={optionsSelect}
-      value={selectedValue} // Liaison avec la valeur sélectionnée
+      value={value} // Liaison avec la valeur sélectionnée
       onChange={handleSelect}
       PaperComponent={({ children }) => (
         <Paper style={{ fontFamily: "nunito", fontWeight: 700 }}>
@@ -97,7 +74,6 @@ const ButtonSelect = ({
         </Paper>
       )}
       sx={{
-        width: width,
         textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)",
         ".MuiInputLabel-root": styleLabel,
         ".MuiOutlinedInput-notchedOutline": {
@@ -133,7 +109,4 @@ const ButtonSelect = ({
       )}
     />
   );
-};
-
-// Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(ButtonSelect), { ssr: false });
+}

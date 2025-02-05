@@ -1,13 +1,16 @@
 import React from "react";
-import FormLocalisation from "./FormLocalisation";
 
-export default function page() {
+import { getCategories } from "@/lib/api/api";
+import { GameCategory } from "@/interfaces";
+import Form from "./Form";
+
+export default async function page() {
+  const categories: GameCategory[] = await getCategories("category");
+  const modes: GameCategory[] = await getCategories("mode");
+  const themes: GameCategory[] = await getCategories("theme");
   return (
     <main>
-      <div className="flex gap-x-10 p-10">
-        <FormLocalisation />
-        <div className="flex-1"></div>
-      </div>
+      <Form categories={categories} themes={themes} modes={modes} />
     </main>
   );
 }
