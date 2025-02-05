@@ -36,7 +36,6 @@ const InputSearch = ({ label }: { label: string }) => {
   const handleOpen = () => {
     setOpen(true);
     if (options.length === 0) {
-      console.log("prout");
       loadOptions();
     }
   };

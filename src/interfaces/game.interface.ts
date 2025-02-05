@@ -51,7 +51,7 @@ export interface GameCategories {
 export interface GameCategory {
   id: number;
   name: string;
-  icon: string;
+  icon?: string;
 }
 
 export interface GameCreators {

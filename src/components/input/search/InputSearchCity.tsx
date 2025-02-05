@@ -94,8 +94,6 @@ const InputSearchCity = ({
         },
       }}
       sx={{
-        marginLeft: "10px",
-        marginRight: "10px",
         ".MuiInputLabel-root": styleLabel,
         ".MuiAutocomplete-input": {
           marginLeft: "10px",

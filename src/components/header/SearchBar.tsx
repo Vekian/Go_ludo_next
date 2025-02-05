@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBarcode } from "@fortawesome/free-solid-svg-icons";
-import InputSearch from "../input/InputSearch";
+import InputSearch from "../input/search/InputSearch";
 
 function SearchBar() {
   return (

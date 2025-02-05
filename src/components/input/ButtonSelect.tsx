@@ -27,7 +27,7 @@ const ButtonSelect = ({
   label: string;
   options: GameCategory[];
   color: string | null;
-  width: number;
+  width: number | string;
   name: string;
 }) => {
   const [isClient, setIsClient] = useState(false);
@@ -105,9 +105,6 @@ const ButtonSelect = ({
         </Paper>
       )}
       sx={{
-        marginLeft: "10px",
-        marginRight: "10px",
-        marginTop: "10px",
         width: width,
         textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)",
         ".MuiInputLabel-root": styleLabel,
