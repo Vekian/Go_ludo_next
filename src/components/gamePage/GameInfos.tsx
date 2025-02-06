@@ -1,5 +1,5 @@
-import ButtonPrimary from "@/components/button/ButtonPrimary";
-import SimpleSlider from "@/components/slider/SimpleSlider";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import SimpleSlider from "@/components/ui/slider/SimpleSlider";
 import { Game } from "@/interfaces";
 import { getDurationFromTimestamp } from "@/lib/date";
 import {

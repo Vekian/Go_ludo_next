@@ -2,7 +2,7 @@
 
 import React from "react";
 import LogInModal from "../modal/LogInModal";
-import ButtonPrimary from "../button/ButtonPrimary";
+import ButtonPrimary from "../ui/button/ButtonPrimary";
 import { useSession } from "next-auth/react";
 import ProfilButton from "./ProfilButton";
 

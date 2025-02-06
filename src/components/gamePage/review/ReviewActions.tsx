@@ -4,7 +4,7 @@ import ReviewModal from "./ReviewModal";
 import { GameReview } from "@/interfaces";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { useRouter } from "next/navigation";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 function ReviewActions({ review }: { review: GameReview }) {

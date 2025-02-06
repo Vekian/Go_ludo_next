@@ -1,4 +1,4 @@
-import ButtonSecondary from "@/components/button/ButtonSecondary";
+import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import Review from "@/components/gamePage/review/Review";
 import React from "react";
 import { Game, GameReview, ReviewList } from "@/interfaces";

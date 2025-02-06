@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-import Carousel from "@/components/carousel/Carousel";
-import Rating from "@/components/rating/Rating";
+import Carousel from "@/components/ui/carousel/Carousel";
+import Rating from "@/components/ui/rating/Rating";
 import GameInfos from "@/components/gamePage/GameInfos";
 import GameTech from "@/components/gamePage/GameTech";
 import GameStats from "@/components/gamePage/GameStats";

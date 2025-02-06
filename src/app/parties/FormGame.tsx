@@ -1,8 +1,8 @@
 "use client";
-import InputAutoComplete from "@/components/input/InputAutoComplete";
-import InputSearchGlobal from "@/components/input/search/InputSearchGlobal";
-import SelectClassic from "@/components/input/SelectClassic";
-import Rating from "@/components/rating/Rating";
+import InputAutoComplete from "@/components/ui/input/InputAutoComplete";
+import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
+import SelectClassic from "@/components/ui/input/SelectClassic";
+import Rating from "@/components/ui/rating/Rating";
 import { GameCategory, Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faDice } from "@fortawesome/free-solid-svg-icons";

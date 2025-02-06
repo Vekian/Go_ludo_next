@@ -1,4 +1,4 @@
-import ButtonSelect from "@/components/input/ButtonSelect";
+import ButtonSelect from "@/components/ui/input/ButtonSelect";
 import { GameCategory } from "@/interfaces";
 import { getCategories } from "@/lib/api/api";
 import React from "react";

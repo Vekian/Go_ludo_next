@@ -1,9 +1,9 @@
 "use client";
-import PartyDatePicker from "@/components/input/PartyDatePicker";
-import PartyTimePicker from "@/components/input/PartyTimePicker";
-import InputSearchCity from "@/components/input/search/InputSearchCity";
-import DoubleSlider from "@/components/slider/DoubleSlider";
-import ZoneSlider from "@/components/slider/ZoneSlider";
+import PartyDatePicker from "@/components/ui/input/PartyDatePicker";
+import PartyTimePicker from "@/components/ui/input/PartyTimePicker";
+import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
+import DoubleSlider from "@/components/ui/slider/DoubleSlider";
+import ZoneSlider from "@/components/ui/slider/ZoneSlider";
 import {
   faLocationDot,
   faMinus,
@@ -16,7 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import "dayjs/locale/fr";
-import SelectClassic from "@/components/input/SelectClassic";
+import SelectClassic from "@/components/ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
 import { FormData } from "./Form";
 

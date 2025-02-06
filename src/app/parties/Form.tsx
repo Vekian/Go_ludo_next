@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import FormLocalisation from "./FormLocalisation";
 import FormGame from "./FormGame";
 import { GameCategory } from "@/interfaces";
-import ButtonPrimary from "@/components/button/ButtonPrimary";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { z } from "zod";
 
 const formSchema = z.object({

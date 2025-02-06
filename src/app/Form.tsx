@@ -1,6 +1,6 @@
-import ButtonPrimary from "@/components/button/ButtonPrimary";
-import InputSearchCity from "@/components/input/search/InputSearchCity";
-import InputSearchGlobal from "@/components/input/search/InputSearchGlobal";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
+import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 

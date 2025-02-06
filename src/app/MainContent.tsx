@@ -1,5 +1,5 @@
 import React from "react";
-import Carousel from "@/components/carousel/Carousel";
+import Carousel from "@/components/ui/carousel/Carousel";
 import { ImageInterface } from "@/interfaces";
 import Form from "./Form";
 function MainContent() {

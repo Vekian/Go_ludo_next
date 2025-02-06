@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ButtonSecondary from "./ButtonSecondary";
 import { UserProfil } from "@/interfaces";
-import { useSnackbarContext } from "../provider/SnackbarProvider";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 
 type FormDataInputs = {
   avatar: FileList; // Typage pour le champ "avatar"

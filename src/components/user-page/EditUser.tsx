@@ -1,16 +1,16 @@
 "use client";
 import { UserProfil } from "@/interfaces";
 import React from "react";
-import ButtonInput from "../button/ButtonInput";
+import ButtonInput from "../ui/button/ButtonInput";
 import { Button, SelectChangeEvent } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import SelectClassic from "../input/SelectClassic";
+import SelectClassic from "../ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
-import ButtonSecondary from "../button/ButtonSecondary";
+import ButtonSecondary from "../ui/button/ButtonSecondary";
 import { useSession } from "next-auth/react";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 

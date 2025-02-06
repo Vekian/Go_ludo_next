@@ -7,9 +7,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 import React, { useState } from "react";
-import ButtonSecondary from "../../button/ButtonSecondary";
-import ButtonPrimary from "../../button/ButtonPrimary";
-import Rating from "../../rating/Rating";
+import ButtonSecondary from "../../ui/button/ButtonSecondary";
+import ButtonPrimary from "../../ui/button/ButtonPrimary";
+import Rating from "../../ui/rating/Rating";
 import { useSnackbarContext } from "../../provider/SnackbarProvider";
 import { GameReview } from "@/interfaces";
 import { useRouter } from "next/navigation";
