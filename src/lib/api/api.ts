@@ -1,17 +1,8 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { Param } from "@/interfaces";
-import { getServerSession } from "next-auth";
+import { handleAuth } from "./authServer";
 
-const headers = new Headers();
-
-if (process.env.KEY_SYMFONY_API) {
-  headers.append("X-AUTH-TOKEN", process.env.KEY_SYMFONY_API);
-}
 export async function getGames(params: Param[] = []) {
-  const session = await getServerSession(authOptions);
-  if (session?.user.token) {
-    headers.set("Authorization", `Bearer ${session?.user.token}`);
-  }
+  const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/base`
   );
@@ -27,32 +18,75 @@ export async function getGames(params: Param[] = []) {
       }
     });
 
-  return fetch(url, {
-    headers: headers,
-  }).then((response) => response.json());
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    throw new Error("Impossible de charger les jeux");
+  }
+  const data = await response.json();
+  return data;
 }
 
-export function getGame(id: number, type: string) {
+export async function getGame(id: number, type: string) {
+  const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`
   );
-  return fetch(url, { headers }).then((response) => response.json());
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    throw new Error("Impossible de charger le jeu");
+  }
+  const data = await response.json();
+  return data;
 }
 
-export function getCategories(type: string) {
+export async function getCategories(type: string) {
+  const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}`
   );
-  return fetch(url, { headers }).then((response) => response.json());
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    throw new Error("Impossible de charger les catégories");
+  }
+  const data = await response.json();
+  return data;
 }
 
 export async function getReviews(gameId: number) {
-  const session = await getServerSession(authOptions);
-  if (session?.user.token) {
-    headers.set("Authorization", `Bearer ${session?.user.token}`);
-  }
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}`
+  );
+  const headers = await handleAuth();
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    throw new Error("Impossible de charger les avis");
+  }
+  const data = await response.json();
+  return data;
+}
+
+export async function getParty(id: number) {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/${id}`
+  );
+  const headers = await handleAuth();
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    throw new Error("Impossible de charger la partie");
+  }
+  const data = await response.json();
+  return data;
+}
+
+export async function getUser(id: string) {
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${id}`
   );
   return fetch(url, { headers }).then((response) => response.json());
 }

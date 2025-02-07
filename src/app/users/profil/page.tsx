@@ -8,7 +8,7 @@ import UserInfos from "@/components/user-page/UserInfos";
 import UserParams from "@/components/user-page/UserParams";
 import UserNotifs from "@/components/user-page/UserNotifs";
 import ListGames from "@/components/list/ListGames";
-import { getUser } from "@/lib/api/loggedApi";
+import { getUser } from "@/lib/api/api";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
@@ -16,7 +16,7 @@ const Page = async () => {
   if (!session) {
     redirect("/");
   }
-  const user: UserProfil = await getUser(session.user.id, session.user.token);
+  const user: UserProfil = await getUser(session.user.id);
 
   return (
     <div>

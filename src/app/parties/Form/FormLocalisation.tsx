@@ -18,7 +18,7 @@ import React from "react";
 import "dayjs/locale/fr";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
-import { FormData } from "./Form";
+import { FormData } from "./Form/Form";
 
 interface RangeThumbProps extends React.HTMLAttributes<unknown> {
   "data-index"?: number; // Ajout de la propriété manquante
