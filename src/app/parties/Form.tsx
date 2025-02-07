@@ -5,6 +5,7 @@ import FormGame from "./FormGame";
 import { GameCategory } from "@/interfaces";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { z } from "zod";
+import { PartyCard } from "@/interfaces/party.interface";
 
 const formSchema = z.object({
   age: z.coerce.number().nullable(),
@@ -29,10 +30,12 @@ export default function Form({
   categories,
   themes,
   modes,
+  setParties,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
+  setParties: (parties: PartyCard[] | null) => void;
 }) {
   const [formData, setFormData] = useState<FormData>({
     age: null,
@@ -70,10 +73,11 @@ export default function Form({
       setErrors({});
       const response = await fetch("/api/party", {
         body: JSON.stringify(result.data),
+        method: "POST",
       });
       if (response.ok) {
-        const parties = await response.json();
-        console.log(parties);
+        const parties: PartyCard[] = await response.json();
+        setParties(parties);
       }
     } else {
       const newErrors: { [key in keyof FormData]?: string } = {};
