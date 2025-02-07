@@ -6,6 +6,7 @@ import { GameCategory } from "@/interfaces";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { z } from "zod";
 import { PartyCard } from "@/interfaces/party.interface";
+import { getParties } from "@/lib/api/api";
 
 const formSchema = z.object({
   age: z.coerce.number().nullable(),
@@ -71,13 +72,9 @@ export default function Form({
     if (result.success) {
       // Si tout est valide, on affiche les données soumises
       setErrors({});
-      const response = await fetch("/api/party", {
-        body: JSON.stringify(result.data),
-        method: "POST",
-      });
-      if (response.ok) {
-        const parties: PartyCard[] = await response.json();
-        setParties(parties);
+      const data = await getParties(result.data);
+      if (data) {
+        setParties(data);
       }
     } else {
       const newErrors: { [key in keyof FormData]?: string } = {};

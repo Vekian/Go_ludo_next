@@ -1,5 +1,6 @@
 import { Param } from "@/interfaces";
 import { handleAuth } from "./authServer";
+import { PartyCard } from "@/interfaces/party.interface";
 
 export async function getGames(params: Param[] = []) {
   const headers = await handleAuth();
@@ -89,4 +90,15 @@ export async function getUser(id: string) {
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${id}`
   );
   return fetch(url, { headers }).then((response) => response.json());
+}
+
+export async function getParties(data: unknown) {
+  const response = await fetch("/api/party", {
+    body: JSON.stringify(data),
+    method: "POST",
+  });
+  if (response.ok) {
+    const parties: PartyCard[] = await response.json();
+    return parties;
+  }
 }

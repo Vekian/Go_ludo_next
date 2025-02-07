@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import dynamic from "next/dynamic";
 import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
@@ -19,7 +18,7 @@ const InputSearchGlobal = ({
   label: string;
   icon: IconDefinition;
   global?: boolean;
-  onChange?: (newCityValue: number | null) => void;
+  onChange?: (newCityValue: number | null, newType: string | null) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameCard[]>([]);
@@ -87,9 +86,9 @@ const InputSearchGlobal = ({
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      onChange={(event, newValue) => {
-        if (onChange) {
-          onChange(newValue ? newValue.id : null);
+      onChange={(event, object) => {
+        if (onChange && object) {
+          onChange(object.id, object.type);
         }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -181,8 +180,4 @@ const InputSearchGlobal = ({
     />
   );
 };
-
-// Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(InputSearchGlobal), {
-  ssr: false,
-});
+export default InputSearchGlobal;
