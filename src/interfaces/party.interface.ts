@@ -29,6 +29,7 @@ export interface Party {
   capacity: number;
   participants: UserProfil[];
   closedAt: string;
+  joined?: boolean;
 }
 
 export interface City {

@@ -7,7 +7,7 @@ import CardGameButtons from "./CardGameButtons";
 
 function CardGame({ game }: { game: GameCard }) {
   return (
-    <div className="drop-shadow-lg">
+    <div className="drop-shadow-lg min-w-44">
       <CardGameButtons game={game} />
 
       <Link

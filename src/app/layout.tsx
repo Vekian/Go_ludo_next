@@ -19,14 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body
-        className={`${nunito.variable} ${farro.variable} bg-neutral-100  min-h-screen`}
-      >
+      <body className={`${nunito.variable} ${farro.variable} bg-neutral-100  `}>
         <SnackbarProvider>
           <AuthProvider>
             <SideMenu />
             <Header />
-            <div className="pt-16">{children}</div>
+            <div className="pt-12 h-screen">{children}</div>
           </AuthProvider>
         </SnackbarProvider>
       </body>
