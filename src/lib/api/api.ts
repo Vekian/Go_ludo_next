@@ -1,6 +1,6 @@
 import { Param } from "@/interfaces";
 import { handleAuth } from "./authServer";
-import { PartyCard } from "@/interfaces/party.interface";
+import { Message, PartyCard } from "@/interfaces/party.interface";
 
 export async function getGames(params: Param[] = []) {
   const headers = await handleAuth();
@@ -100,5 +100,16 @@ export async function getParties(data: unknown) {
   if (response.ok) {
     const parties: PartyCard[] = await response.json();
     return parties;
+  }
+}
+
+export async function sendMessage(data: unknown) {
+  const response = await fetch("/api/party/message", {
+    body: JSON.stringify(data),
+    method: "POST",
+  });
+  if (response.ok) {
+    const message: Message = await response.json();
+    return message;
   }
 }

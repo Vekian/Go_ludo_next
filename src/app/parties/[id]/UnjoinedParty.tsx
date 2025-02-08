@@ -7,7 +7,7 @@ import { Party } from "@/interfaces/party.interface";
 import React from "react";
 import Cover from "./CardInfos/Cover";
 import Infos from "./CardInfos/Infos";
-import Author from "./CardInfos/Author";
+import UserInfos from "./CardInfos/UserInfos";
 
 export default function UnjoinedParty({ party }: { party: Party }) {
   return (
@@ -15,7 +15,7 @@ export default function UnjoinedParty({ party }: { party: Party }) {
       <div className="bg-white rounded-lg flex  gap-x-14 px-10 py-8">
         <Cover party={party} />
         <Infos party={party} />
-        <Author party={party} />
+        <UserInfos user={party.author} />
       </div>
       <div className="flex justify-center pt-5">
         <ButtonPrimary color="primary-500" label="Rejoindre la partie" />

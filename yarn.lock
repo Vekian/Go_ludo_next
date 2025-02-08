@@ -1284,6 +1284,11 @@ classnames@^2.2.5, classnames@^2.2.6:
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
 
+cldrjs@^0.5.4:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/cldrjs/-/cldrjs-0.5.5.tgz#5c92ca2de89a8a16dea76cb2dfc4e00104428e52"
+  integrity sha512-KDwzwbmLIPfCgd8JERVDpQKrUUM1U4KpFJJg2IROv89rF172lLufoJnqJ/Wea6fXL5bO6WjuLMzY8V52UWPvkA==
+
 client-only@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/client-only/-/client-only-0.0.1.tgz#38bba5d403c41ab150bff64a95c85013cf73bca1"
@@ -2081,6 +2086,13 @@ glob@^10.3.10:
     minipass "^7.1.2"
     package-json-from-dist "^1.0.0"
     path-scurry "^1.11.1"
+
+globalize@^1.1.1:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/globalize/-/globalize-1.7.0.tgz#321201eb18ded16d3f03c8d4ddbcb5d1edd6d4c2"
+  integrity sha512-faR46vTIbFCeAemyuc9E6/d7Wrx9k2ae2L60UhakztFg6VuE42gENVJNuPFtt7Sdjrk9m2w8+py7Jj+JTNy59w==
+  dependencies:
+    cldrjs "^0.5.4"
 
 globals@^11.1.0:
   version "11.12.0"
@@ -3101,6 +3113,14 @@ regexp.prototype.flags@^1.5.3:
     gopd "^1.2.0"
     set-function-name "^2.0.2"
 
+relative-time@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/relative-time/-/relative-time-1.0.0.tgz#f8cf4f1568b46e8185440951ca1f712ae5f5c55e"
+  integrity sha512-nmG1az4PhB8JyMmywuyNHaaO4PeTCB8OoNxuaBBV1Wl8AH2QgjYEmL16iI4iRRx2PedA8il613Cqcm5phvvteg==
+  dependencies:
+    globalize "^1.1.1"
+    zoned-date-time "^1.0.0"
+
 resolve-from@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-4.0.0.tgz#4abcd852ad32dd7baabfe9b40e00a36db5f392e6"
@@ -3807,3 +3827,8 @@ zod@^3.24.1:
   version "3.24.1"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.1.tgz#27445c912738c8ad1e9de1bea0359fa44d9d35ee"
   integrity sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==
+
+zoned-date-time@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/zoned-date-time/-/zoned-date-time-1.1.0.tgz#6df31549f539bdab1acf188515f6e59d904a360e"
+  integrity sha512-MhjAUwM1ABOmE9J5SzjNnoXQL83NDaZbRYsZtVTTIjKxXeGJ70GZNEC/NJAyhYiyFiteu24N8Q6gaGhOI/A51A==

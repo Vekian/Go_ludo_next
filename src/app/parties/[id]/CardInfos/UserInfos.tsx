@@ -1,8 +1,8 @@
-import { Party } from "@/interfaces/party.interface";
+import { UserProfil } from "@/interfaces";
 import Image from "next/image";
 import React from "react";
 
-export default function Author({ party }: { party: Party }) {
+export default function UserInfos({ user }: { user: UserProfil }) {
   return (
     <div className="h-full w-1/6 flex flex-col items-center me-10 ">
       <div className="h-36 relative w-full max-w-36  ">
@@ -13,7 +13,7 @@ export default function Author({ party }: { party: Party }) {
           className="object-contain"
         />
       </div>
-      <p>{party.author.username}</p>
+      <p>{user.username}</p>
     </div>
   );
 }

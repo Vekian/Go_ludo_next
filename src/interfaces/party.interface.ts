@@ -30,8 +30,17 @@ export interface Party {
   participants: UserProfil[];
   closedAt: string;
   joined?: boolean;
+  messages?: Message[] | [];
+  createdAt: string;
 }
 
+export interface Message {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  author: UserProfil;
+}
 export interface City {
   name: string;
 }
