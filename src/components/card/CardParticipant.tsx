@@ -13,7 +13,7 @@ export default function CardParticipant({
       <div className="h-28 relative w-28 max-w-36 ">
         <Image
           alt="test"
-          src={getImg(`/images/users/${participant.id}/${participant.avatar}`)}
+          src={getImg(`${participant.avatar}`)}
           fill
           className="object-contain"
         />
