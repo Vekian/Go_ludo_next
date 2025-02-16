@@ -18,7 +18,7 @@ export default function CardParty({ party }: { party: PartyCard }) {
           {party.games[0] && (
             <Image
               alt="test"
-              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${party.games[0].cover?.filepath}`}
+              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${party.games[0].cover}`}
               fill
               className="object-contain"
             />

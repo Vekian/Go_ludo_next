@@ -1,17 +1,10 @@
 import React from "react";
 import Carousel from "@/components/ui/carousel/Carousel";
-import { ImageInterface } from "@/interfaces";
 import Form from "./Form";
 function MainContent() {
-  const imgs: ImageInterface[] = [
-    {
-      id: 2,
-      filepath: "/images/banniere/banniere.webp",
-    },
-    {
-      id: 3,
-      filepath: "/images/banniere/banniere2.jpg",
-    },
+  const imgs: string[] = [
+    "/images/banniere/banniere.webp",
+    "/images/banniere/banniere2.jpg",
   ];
   return (
     <div className="flex">
