@@ -1,4 +1,6 @@
 import ListGames from "@/components/list/ListGames";
+import { GameListItem } from "@/interfaces";
+import { ListPaginated } from "@/interfaces/paginator.interface";
 import { getGames } from "@/lib/api/api";
 import React from "react";
 
@@ -21,13 +23,13 @@ async function GamesList({
     ...toArray(params.theme),
     ...toArray(params.mode),
   ];
-  const games = await getGames([
+  const gamesList: ListPaginated<GameListItem> = await getGames([
     {
       key: "category[]",
       value: categoryParams,
     },
   ]);
-  return <ListGames games={games} />;
+  return <ListGames games={gamesList.items} />;
 }
 
 export default GamesList;

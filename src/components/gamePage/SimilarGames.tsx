@@ -1,10 +1,10 @@
-import { Game, GameCard } from "@/interfaces";
+import { Game, GameListItem } from "@/interfaces";
 import { getGames } from "@/lib/api/api";
 import React from "react";
 import ListGames from "../list/ListGames";
 
 export default async function SimilarGames({ game }: { game: Game }) {
-  const games: GameCard[] = await getGames();
+  const games: GameListItem[] = await getGames();
 
   return (
     <div className="mt-4 pl-10 pr-10">

@@ -7,7 +7,7 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import ListParticipants from "@/components/list/ListParticipants";
 import CardGame from "@/components/card/CardGame";
-import { GameCard } from "@/interfaces";
+import { GameListItem } from "@/interfaces";
 import Chat from "./Chat/Chat";
 import InputChat from "./Chat/InputChat";
 
@@ -51,7 +51,7 @@ export default function PendingParty({ party }: { party: Party }) {
         <div className=" w-full">
           <h3>Jeux proposés :</h3>
           <div className="flex  gap-5 mt-5">
-            {party.games.map((game: GameCard) => (
+            {party.games.map((game: GameListItem) => (
               <CardGame game={game} key={`${game.id}list`} />
             ))}
           </div>

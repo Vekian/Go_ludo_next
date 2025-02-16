@@ -3,10 +3,10 @@ import { faBarcode, faDice, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
-import { GameCard } from "@/interfaces";
+import { GameListItem } from "@/interfaces";
 import { Tooltip } from "@mui/material";
 
-function CardGameButtons({ game }: { game: GameCard }) {
+function CardGameButtons({ game }: { game: GameListItem }) {
   const { showSnackbar } = useSnackbarContext();
   const [owned, setOwned] = useState(game.owned);
   const handleAdd = async () => {

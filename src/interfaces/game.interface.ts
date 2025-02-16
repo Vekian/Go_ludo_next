@@ -1,6 +1,6 @@
 import { ImageInterface } from "./ui.interface";
 
-export interface GameCard {
+export interface GameListItem {
   id: number;
   name: string;
   cover: ImageInterface;
@@ -39,7 +39,7 @@ export interface Game {
   categories: GameCategories;
   creators: GameCreators;
   awards: GameAward[];
-  extensions?: GameCard[];
+  extensions?: GameListItem[];
 }
 
 export interface GameCategories {
@@ -82,7 +82,7 @@ export interface GameReview {
   content: string;
   rating: number;
   account: UserReview;
-  game: GameCard;
+  game: GameListItem;
 }
 
 export interface UserReview {

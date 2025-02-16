@@ -8,7 +8,7 @@ import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faE, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { getPublicGames } from "@/lib/api/publicApi";
-import { GameCard, Param } from "@/interfaces";
+import { GameListItem, Param } from "@/interfaces";
 import { InputAdornment } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -16,7 +16,7 @@ import Image from "next/image";
 const InputSearch = ({ label }: { label: string }) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<GameCard[]>([]);
+  const [options, setOptions] = useState<GameListItem[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -46,14 +46,14 @@ const InputSearch = ({ label }: { label: string }) => {
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    const games: GameCard[] = await getPublicGames(params);
+    const games: GameListItem[] = await getPublicGames(params);
     setOptions([...games]);
     setLoading(false);
   }
 
   function handleChange(
     event: React.ChangeEvent<unknown>,
-    value: GameCard | null
+    value: GameListItem | null
   ) {
     if (value) {
       router.push(

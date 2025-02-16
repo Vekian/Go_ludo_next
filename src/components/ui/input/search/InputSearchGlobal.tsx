@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
 import { getPublicGames, getPublicGlobal } from "@/lib/api/publicApi";
-import { GameCard, Param } from "@/interfaces";
+import { GameListItem, Param } from "@/interfaces";
 
 const InputSearchGlobal = ({
   label,
@@ -21,7 +21,7 @@ const InputSearchGlobal = ({
   onChange?: (newCityValue: number | null, newType: string | null) => void;
 }) => {
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<GameCard[]>([]);
+  const [options, setOptions] = useState<GameListItem[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
 

@@ -1,4 +1,4 @@
-import { GameCard } from "./game.interface";
+import { GameListItem } from "./game.interface";
 import { UserProfil } from "./user.interface";
 
 export interface PartyCard {
@@ -7,7 +7,7 @@ export interface PartyCard {
   playersMax: number;
   playersCount: number;
   cover: string;
-  games: Partial<GameCard>[];
+  games: Partial<GameListItem>[];
   city: City;
   date: string;
   author: UserProfil;
@@ -22,7 +22,7 @@ export interface Party {
   playersMax: number;
   playersCount: number;
   cover: string;
-  games: GameCard[];
+  games: GameListItem[];
   city: City;
   date: string;
   author: UserProfil;

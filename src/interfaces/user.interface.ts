@@ -1,4 +1,4 @@
-import { GameCard } from "./game.interface";
+import { GameListItem } from "./game.interface";
 
 export interface UserProfil {
   id: number;
@@ -11,5 +11,5 @@ export interface UserProfil {
   gender: string;
   avatar: string;
   description: string;
-  games: GameCard[];
+  games: GameListItem[];
 }
