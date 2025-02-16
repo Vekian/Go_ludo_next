@@ -22,7 +22,7 @@ async function ReviewsList({ game }: { game: Game }) {
         {reviewList.accountReview && (
           <Review review={reviewList.accountReview} owner={true} />
         )}
-        {reviewList.reviews.map((review: GameReview) => (
+        {reviewList.items.map((review: GameReview) => (
           <Review key={review.id} review={review} />
         ))}
       </div>

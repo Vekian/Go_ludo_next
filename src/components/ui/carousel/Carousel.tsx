@@ -4,7 +4,6 @@ import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loaders
 import { Carousel as ReactCarousel } from "react-responsive-carousel";
 import Image from "next/image";
-import { ImageInterface } from "@/interfaces";
 
 function Carousel({
   imgs,
@@ -13,7 +12,7 @@ function Carousel({
   thumbs = false,
   autoPlay = true,
 }: {
-  imgs: ImageInterface[];
+  imgs: string[];
   width: number;
   height: number;
   thumbs?: boolean;
@@ -36,7 +35,7 @@ function Carousel({
             thumbs && (
               <div key={idx} className="w-full h-20 relative">
                 <Image
-                  src={`${url}${img.filepath}`}
+                  src={`${url}${img}`}
                   layout="fill"
                   objectFit="contain"
                   alt="carousel"
@@ -46,8 +45,8 @@ function Carousel({
         )
       }
     >
-      {imgs.map((img) => (
-        <div key={img.id} className="flex justify-center">
+      {imgs.map((img, index) => (
+        <div key={`img${index}`} className="flex justify-center">
           <div
             style={{
               position: "relative",
@@ -57,7 +56,7 @@ function Carousel({
           >
             <Image
               alt="Carousel"
-              src={`${url}${img.filepath}`}
+              src={`${url}${img}`}
               fill
               style={{
                 objectFit: "cover",

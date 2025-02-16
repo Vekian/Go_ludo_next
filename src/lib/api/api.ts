@@ -63,10 +63,11 @@ export async function getReviews(gameId: number) {
   const headers = await handleAuth();
   const response = await fetch(url, { headers });
 
-  if (!response.ok) {
-    throw new Error("Impossible de charger les avis");
-  }
   const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+
   return data;
 }
 

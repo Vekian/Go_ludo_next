@@ -129,7 +129,7 @@ const InputSearch = ({ label }: { label: string }) => {
               <div className=" h-10 w-16 relative mr-4">
                 <Image
                   alt={option.name}
-                  src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${option.cover.filepath}`}
+                  src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${option.cover}`}
                   fill
                   className="object-contain"
                 />

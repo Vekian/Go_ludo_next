@@ -1,22 +1,27 @@
-import { Game, GameListItem } from "@/interfaces";
+import { GameDetails, GameListItem } from "@/interfaces";
 import { getGames } from "@/lib/api/api";
 import React from "react";
 import ListGames from "../list/ListGames";
+import { ListPaginated } from "@/interfaces/paginator.interface";
 
-export default async function SimilarGames({ game }: { game: Game }) {
-  const games: GameListItem[] = await getGames();
+export default async function SimilarGames({
+  gameData,
+}: {
+  gameData: GameDetails;
+}) {
+  const gamesList: ListPaginated<GameListItem> = await getGames();
 
   return (
     <div className="mt-4 pl-10 pr-10">
-      {game.extensions && (
+      {gameData.extensions && (
         <div>
           <h2>Extensions</h2>
-          <ListGames games={game.extensions} />
+          <ListGames games={gameData.extensions} />
         </div>
       )}
       <div>
         <h2>Jeux similaires</h2>
-        <ListGames games={games} />
+        <ListGames games={gamesList.items} />
       </div>
     </div>
   );

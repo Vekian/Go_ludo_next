@@ -18,7 +18,7 @@ function CardGame({ game }: { game: GameListItem }) {
           <div className="h-36 relative w-full max-w-36 ">
             <Image
               alt={game.name}
-              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${game.cover.filepath}`}
+              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${game.cover}`}
               fill
               className="object-contain"
             />

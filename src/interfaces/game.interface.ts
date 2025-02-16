@@ -1,9 +1,7 @@
-import { ImageInterface } from "./ui.interface";
-
 export interface GameListItem {
   id: number;
   name: string;
-  cover: ImageInterface;
+  cover: string;
   rating: number;
   type: string;
   owned?: boolean;
@@ -17,7 +15,7 @@ export interface GameLocalisation {
 export interface GameSearch {
   id: number;
   name: string;
-  cover?: ImageInterface;
+  cover?: string;
   icon?: string;
   type: string;
 }
@@ -35,10 +33,15 @@ export interface Game {
   ageMax: number;
   barCode: string;
   publishedAt: string;
-  imageGames: ImageInterface[];
+  images: string[];
   categories: GameCategories;
   creators: GameCreators;
   awards: GameAward[];
+  extensions?: GameListItem[];
+}
+
+export interface GameDetails {
+  game: Game;
   extensions?: GameListItem[];
 }
 
@@ -92,7 +95,7 @@ export interface UserReview {
 }
 
 export interface ReviewList {
-  reviews: GameReview[];
+  items: GameReview[];
   accountReview: GameReview | null;
   totalResults: number;
   page: number;
