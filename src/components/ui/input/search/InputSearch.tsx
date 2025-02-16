@@ -7,11 +7,12 @@ import dynamic from "next/dynamic";
 import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faE, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { getPublicGames } from "@/lib/api/publicApi";
 import { GameListItem, Param } from "@/interfaces";
 import { InputAdornment } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ListPaginated } from "@/interfaces/paginator.interface";
+import { searchGames } from "@/lib/api/search";
 
 const InputSearch = ({ label }: { label: string }) => {
   const router = useRouter();
@@ -46,8 +47,8 @@ const InputSearch = ({ label }: { label: string }) => {
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    const games: GameListItem[] = await getPublicGames(params);
-    setOptions([...games]);
+    const gamesList: ListPaginated<GameListItem> = await searchGames(params);
+    setOptions([...gamesList.items]);
     setLoading(false);
   }
 

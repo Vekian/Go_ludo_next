@@ -6,8 +6,8 @@ import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { getPublicCity } from "@/lib/api/publicApi";
 import { GameLocalisation, Param } from "@/interfaces";
+import { searchCities } from "@/lib/api/search";
 
 const InputSearchCity = ({
   label,
@@ -49,7 +49,7 @@ const InputSearchCity = ({
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    const cities = await getPublicCity(params);
+    const cities = await searchCities(params);
     setOptions([...cities]);
     setLoading(false);
   }
