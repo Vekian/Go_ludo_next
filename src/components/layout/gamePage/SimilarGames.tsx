@@ -1,14 +1,10 @@
-import { GameDetails, GameListItem } from "@/interfaces";
-import { getGames } from "@/lib/api/api";
+import { Game, GameListItem } from "@/interfaces";
+import { getGames } from "@/lib/api/server/game";
 import React from "react";
 import ListGames from "@/components/list/ListGames";
 import { ListPaginated } from "@/interfaces/paginator.interface";
 
-export default async function SimilarGames({
-  gameData,
-}: {
-  gameData: GameDetails;
-}) {
+export default async function SimilarGames({ gameData }: { gameData: Game }) {
   const gamesList: ListPaginated<GameListItem> = await getGames();
 
   return (

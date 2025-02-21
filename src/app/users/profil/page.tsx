@@ -8,7 +8,7 @@ import UserInfos from "@/components/layout/user-page/UserInfos";
 import UserParams from "@/components/layout/user-page/UserParams";
 import UserNotifs from "@/components/layout/user-page/UserNotifs";
 import ListGames from "@/components/list/ListGames";
-import { getUser } from "@/lib/api/api";
+import { getUser } from "@/lib/api/server/user";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);

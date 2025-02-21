@@ -4,7 +4,7 @@ import Form from "./Form/Form";
 import ListParties from "@/components/list/ListParties";
 import { GameCategory } from "@/interfaces";
 import { PartyCard } from "@/interfaces/party.interface";
-import { getParties } from "@/lib/api/api";
+import { getParties } from "@/lib/api/client/party";
 
 export default function Main({
   categories,

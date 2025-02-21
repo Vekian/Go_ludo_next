@@ -1,6 +1,6 @@
 import React from "react";
 
-import { getCategories } from "@/lib/api/api";
+import { getCategories } from "@/lib/api/server/category";
 import { GameCategory } from "@/interfaces";
 import Main from "./Main";
 

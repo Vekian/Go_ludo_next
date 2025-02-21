@@ -6,7 +6,7 @@ import GameTech from "@/components/layout/gamePage/GameTech";
 import GameStats from "@/components/layout/gamePage/GameStats";
 import GameAbout from "@/components/layout/gamePage/GameAbout";
 import SimilarGames from "../../../components/layout/gamePage/SimilarGames";
-import { getGame } from "@/lib/api/api";
+import { getGame } from "@/lib/api/server/game";
 import { Game } from "@/interfaces";
 import GameContent from "@/components/layout/gamePage/GameContent";
 import ReviewsList from "@/components/layout/gamePage/review/ReviewsList";
@@ -21,7 +21,7 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <div className="w-1/3 pt-5">
           <Carousel
             autoPlay={false}
-            imgs={game.imageGames}
+            imgs={game.images}
             thumbs={true}
             height={300}
             width={200}
@@ -44,9 +44,9 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <h2>Description</h2>
         <p>{game.description}</p>
       </div>
-      <ReviewsList />
+      <ReviewsList game={game} />
       <Suspense fallback={<p>Chargement...</p>}>
-        <SimilarGames game={game} />
+        <SimilarGames gameData={game} />
       </Suspense>
     </div>
   );

@@ -2,7 +2,7 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import { Message, Party } from "@/interfaces/party.interface";
-import { sendMessage } from "@/lib/api/api";
+import { sendMessage } from "@/lib/api/server/party";
 import { theme } from "@/theme/theme";
 import React, { useState } from "react";
 

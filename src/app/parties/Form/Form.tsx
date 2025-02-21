@@ -6,7 +6,7 @@ import { GameCategory } from "@/interfaces";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { z } from "zod";
 import { PartyCard } from "@/interfaces/party.interface";
-import { getParties } from "@/lib/api/api";
+import { getParties } from "@/lib/api/client/party";
 import { theme } from "@/theme/theme";
 
 const formSchema = z.object({

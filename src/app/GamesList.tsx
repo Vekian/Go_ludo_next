@@ -1,7 +1,7 @@
 import ListGames from "@/components/list/ListGames";
 import { GameListItem } from "@/interfaces";
 import { ListPaginated } from "@/interfaces/paginator.interface";
-import { getGames } from "@/lib/api/api";
+import { getGames } from "@/lib/api/server/game";
 import React from "react";
 
 async function GamesList({

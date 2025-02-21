@@ -3,7 +3,7 @@ import Review from "@/components/layout/gamePage/review/Review";
 import React from "react";
 import { Game, GameReview, ReviewList } from "@/interfaces";
 import ReviewModal from "./ReviewModal";
-import { getReviews } from "@/lib/api/api";
+import { getReviews } from "@/lib/api/server/review";
 import { theme } from "@/theme/theme";
 
 async function ReviewsList({ game }: { game: Game }) {

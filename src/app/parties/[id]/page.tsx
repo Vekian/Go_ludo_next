@@ -1,5 +1,5 @@
 import { Party } from "@/interfaces/party.interface";
-import { getParty } from "@/lib/api/api";
+import { getParty } from "@/lib/api/server/party";
 import React from "react";
 import UnjoinedParty from "./UnjoinedParty";
 import PendingParty from "./PendingParty";
