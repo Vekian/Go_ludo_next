@@ -5,6 +5,10 @@ import React, { useState } from "react";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import { GameListItem } from "@/interfaces";
 import { Tooltip } from "@mui/material";
+import {
+  addGameToCollection,
+  deleteGameFromCollection,
+} from "@/lib/api/server/collection";
 
 function CardGameButtons({ game }: { game: GameListItem }) {
   const { showSnackbar } = useSnackbarContext();
@@ -12,31 +16,20 @@ function CardGameButtons({ game }: { game: GameListItem }) {
   const handleAdd = async () => {
     if (owned) {
       showSnackbar("Retrait du jeu de la collection", "info");
-      const response = await fetch(`/api/collection/${game.id}`, {
-        method: "DELETE",
-      });
+      const response = await deleteGameFromCollection(game.id);
       if (!response.ok) {
-        showSnackbar(
-          "Impossible de supprimer le jeu de la collection",
-          "error"
-        );
+        showSnackbar(response.message, "error");
       } else {
-        showSnackbar("Jeu supprimé de la collection", "success");
+        showSnackbar(response.message, "success");
         setOwned(false);
       }
     } else {
-      const body = {
-        game: game.id,
-      };
       showSnackbar("Jeu en cours d'ajout", "info");
-      const response = await fetch("/api/collection", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
+      const response = await addGameToCollection(game.id);
       if (!response.ok) {
-        showSnackbar("Impossible d'ajouter le jeu à la collection", "error");
+        showSnackbar(response.message, "error");
       } else {
-        showSnackbar("Jeu ajouté à la collection", "success");
+        showSnackbar(response.message, "success");
         setOwned(true);
       }
     }
