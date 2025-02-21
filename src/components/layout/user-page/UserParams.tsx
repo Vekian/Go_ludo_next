@@ -1,6 +1,6 @@
 import { UserProfil } from "@/interfaces";
 import React from "react";
-import ButtonPrimary from "../ui/button/ButtonPrimary";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 
 function UserParams({ user }: { user: UserProfil }) {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { UserProfil } from "@/interfaces";
-import CardParticipant from "../card/CardParticipant";
+import CardParticipant from "../cards/CardParticipant";
 
 export default function ListParticipants({
   participants,

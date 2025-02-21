@@ -3,10 +3,10 @@ import React from "react";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import { UserProfil } from "@/interfaces";
-import UserContent from "@/components/user-page/UserContent";
-import UserInfos from "@/components/user-page/UserInfos";
-import UserParams from "@/components/user-page/UserParams";
-import UserNotifs from "@/components/user-page/UserNotifs";
+import UserContent from "@/components/layout/user-page/UserContent";
+import UserInfos from "@/components/layout/user-page/UserInfos";
+import UserParams from "@/components/layout/user-page/UserParams";
+import UserNotifs from "@/components/layout/user-page/UserNotifs";
 import ListGames from "@/components/list/ListGames";
 import { getUser } from "@/lib/api/api";
 

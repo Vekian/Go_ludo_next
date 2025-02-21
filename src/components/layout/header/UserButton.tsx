@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import LogInModal from "../modal/LogInModal";
-import ButtonPrimary from "../ui/button/ButtonPrimary";
+import LogInModal from "@/components/modal/LogInModal";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { useSession } from "next-auth/react";
 import ProfilButton from "./ProfilButton";
 

@@ -3,7 +3,7 @@ import { UserProfil } from "@/interfaces";
 import { getImg } from "@/lib/utils";
 import Image from "next/image";
 import React, { useState } from "react";
-import ButtonImage from "../ui/button/ButtonImage";
+import ButtonImage from "@/components/ui/button/ButtonImage";
 
 function UserStatus({ user }: { user: UserProfil }) {
   const [sourceState, setSourceState] = useState(getImg(user.avatar));

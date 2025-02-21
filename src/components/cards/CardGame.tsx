@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import Rating from "../ui/rating/Rating";
+import Rating from "@/components/ui/rating/Rating";
 import { GameListItem } from "@/interfaces";
 import Link from "next/link";
 import CardGameButtons from "./CardGameButtons";

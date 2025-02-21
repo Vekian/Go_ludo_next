@@ -1,15 +1,15 @@
 import React, { Suspense } from "react";
 import Carousel from "@/components/ui/carousel/Carousel";
 import Rating from "@/components/ui/rating/Rating";
-import GameInfos from "@/components/gamePage/GameInfos";
-import GameTech from "@/components/gamePage/GameTech";
-import GameStats from "@/components/gamePage/GameStats";
-import GameAbout from "@/components/gamePage/GameAbout";
-import SimilarGames from "../../../components/gamePage/SimilarGames";
+import GameInfos from "@/components/layout/gamePage/GameInfos";
+import GameTech from "@/components/layout/gamePage/GameTech";
+import GameStats from "@/components/layout/gamePage/GameStats";
+import GameAbout from "@/components/layout/gamePage/GameAbout";
+import SimilarGames from "@/components/layout/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/api";
 import { GameDetails } from "@/interfaces";
-import GameContent from "@/components/gamePage/GameContent";
-import ReviewsList from "@/components/gamePage/review/ReviewsList";
+import GameContent from "@/components/layout/gamePage/GameContent";
+import ReviewsList from "@/components/layout/gamePage/review/ReviewsList";
 
 async function page({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;

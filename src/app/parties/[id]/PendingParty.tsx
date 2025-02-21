@@ -6,7 +6,7 @@ import UserInfos from "./CardInfos/UserInfos";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import ListParticipants from "@/components/list/ListParticipants";
-import CardGame from "@/components/card/CardGame";
+import CardGame from "@/components/cards/CardGame";
 import { GameListItem } from "@/interfaces";
 import Chat from "./Chat/Chat";
 import InputChat from "./Chat/InputChat";

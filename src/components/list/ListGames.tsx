@@ -1,6 +1,6 @@
 import { GameListItem } from "@/interfaces";
 import React from "react";
-import CardGame from "../card/CardGame";
+import CardGame from "../cards/CardGame";
 
 function ListGames({ games }: { games: GameListItem[] }) {
   return (

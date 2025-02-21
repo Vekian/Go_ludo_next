@@ -1,5 +1,5 @@
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
-import Review from "@/components/gamePage/review/Review";
+import Review from "@/components/layout/gamePage/review/Review";
 import React from "react";
 import { Game, GameReview, ReviewList } from "@/interfaces";
 import ReviewModal from "./ReviewModal";

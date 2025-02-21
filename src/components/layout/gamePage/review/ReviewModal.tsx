@@ -7,10 +7,10 @@ import {
   DialogTitle,
 } from "@mui/material";
 import React, { useState } from "react";
-import ButtonSecondary from "../../ui/button/ButtonSecondary";
-import ButtonPrimary from "../../ui/button/ButtonPrimary";
-import Rating from "../../ui/rating/Rating";
-import { useSnackbarContext } from "../../provider/SnackbarProvider";
+import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import Rating from "@/components/ui/rating/Rating";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { GameReview } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";

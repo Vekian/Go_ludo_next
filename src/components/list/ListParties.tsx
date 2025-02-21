@@ -1,6 +1,6 @@
 import React from "react";
 import { PartyCard } from "@/interfaces/party.interface";
-import CardParty from "../card/CardParty";
+import CardParty from "../cards/CardParty";
 
 function ListParties({ parties }: { parties: PartyCard[] }) {
   return (

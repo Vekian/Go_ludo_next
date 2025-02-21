@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Header from "@/components/header/Header";
+import Header from "@/components/layout/header/Header";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { farro, nunito } from "../fonts/fonts";
-import SideMenu from "@/components/header/SideMenu";
+import SideMenu from "@/components/layout/header/SideMenu";
 import AuthProvider from "@/components/provider/AuthProvider";
 import SnackbarProvider from "@/components/provider/SnackbarProvider";
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import Rating from "../../ui/rating/Rating";
+import Rating from "@/components/ui/rating/Rating";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { GameReview } from "@/interfaces";

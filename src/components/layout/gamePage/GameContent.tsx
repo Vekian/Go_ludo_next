@@ -1,16 +1,8 @@
 "use client";
-import Onglet from "@/components/card/Onglet";
+import Onglet from "@/components/cards/Onglet";
 import React, { useState } from "react";
-import UserStatus from "./UserStatus";
-import { UserProfil } from "@/interfaces";
 
-function UserContent({
-  children,
-  user,
-}: {
-  children: React.ReactNode;
-  user: UserProfil;
-}) {
+function GameContent({ children }: { children: React.ReactNode }) {
   const [onglet, setOnglet] = useState(1);
 
   const handleClick = (number: number) => {
@@ -30,12 +22,11 @@ function UserContent({
     }
   };
   return (
-    <div className="p-10 ">
+    <div className="p-5 ">
       <div className="flex justify-between">
-        <div className="w-1/3"></div>
         <div className="flex-1" onClick={() => handleClick(1)}>
           <Onglet
-            label="Infos publiques"
+            label="Infos de jeu"
             color="primary-500"
             angle={0}
             active={onglet === 1 ? true : false}
@@ -43,7 +34,7 @@ function UserContent({
         </div>
         <div className="flex-1" onClick={() => handleClick(2)}>
           <Onglet
-            label="Paramètres"
+            label="Infos techniques"
             color="secondary-500"
             angle={1}
             active={onglet === 2 ? true : false}
@@ -51,7 +42,7 @@ function UserContent({
         </div>
         <div className="flex-1" onClick={() => handleClick(3)}>
           <Onglet
-            label="Notifications"
+            label="Statistiques"
             color="primary-800"
             angle={0}
             active={onglet === 3 ? true : false}
@@ -59,21 +50,18 @@ function UserContent({
         </div>
         <div className="flex-1" onClick={() => handleClick(4)}>
           <Onglet
-            label="Confidentialité"
+            label="À propos"
             color="neutral-500"
             angle={1}
             active={onglet === 4 ? true : false}
           />
         </div>
       </div>
-      <div className=" bg-neutral-50 flex border-white border-2 shadow-card h-80 rounded-b-xxl text-primary-950 font-semibold p-8 z-40 relative">
-        <div className="w-1/5">
-          <UserStatus user={user} />
-        </div>
-        <div className="w-4/5 relative overflow-hidden">{children}</div>
+      <div className=" bg-neutral-50 border-white border-2 overflow-x-hidden shadow-card h-80 rounded-b-xxl text-primary-950 font-semibold p-8 z-40 relative ">
+        {children}
       </div>
     </div>
   );
 }
 
-export default UserContent;
+export default GameContent;
