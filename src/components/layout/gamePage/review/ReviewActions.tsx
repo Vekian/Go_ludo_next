@@ -7,18 +7,17 @@ import { useRouter } from "next/navigation";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
+import { deleteReview } from "@/lib/api/server/review";
 
 function ReviewActions({ review }: { review: GameReview }) {
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   async function handleDelete() {
-    const response = await fetch(`/api/game/rating/${review.id}`, {
-      method: "DELETE",
-    });
+    const response = await deleteReview(review.id);
     if (!response.ok) {
-      showSnackbar("Impossible de supprimer l'avis ", "error");
+      showSnackbar(response.message, "error");
     } else {
-      showSnackbar("Avis supprimé", "success");
+      showSnackbar(response.message, "success");
       router.refresh();
     }
   }

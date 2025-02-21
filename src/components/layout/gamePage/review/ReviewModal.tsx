@@ -15,6 +15,7 @@ import { GameReview } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
+import { addReview, updateReview } from "@/lib/api/server/review";
 
 function ReviewModal({
   gameId,
@@ -26,10 +27,11 @@ function ReviewModal({
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [reviewed, setReviewed] = useState(review ? true : false);
   const [rating, setRating] = useState<number | null>(
     review ? review.rating : null
   );
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+
   const handleChange = async (
     event: React.SyntheticEvent<Element, Event>,
     value: number | null
@@ -42,32 +44,25 @@ function ReviewModal({
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
-    const body = {
-      content: formJson.content,
-      game: gameId,
-      rating: rating,
-    };
-    if (!reviewed) {
+    formData.set("rating", String(rating ?? ""));
+    formData.set("game", String(gameId));
+    if (!review) {
       showSnackbar("Avis en cours d'ajout", "info");
-      const response = await fetch("/api/game/rating", {
-        method: "POST",
-        body: JSON.stringify(body),
-      });
+      const response = await addReview(formData);
       if (!response.ok) {
-        showSnackbar("Impossible d'ajouter l'avis au jeu: ", "error");
+        if (response.errors) {
+          setErrors(response.errors);
+        }
       } else {
-        showSnackbar("Avis ajouté au jeu", "success");
-        setReviewed(true);
         setOpen(false);
         router.refresh();
       }
-    } else if (review) {
+      if (response.message) {
+        showSnackbar(response.message, response.ok ? "success" : "error");
+      }
+    } else {
       showSnackbar("Avis en cours de modfication", "info");
-      const response = await fetch(`/api/game/rating/${review.id}`, {
-        method: "PUT",
-        body: JSON.stringify(body),
-      });
+      const response = await updateReview(formData, review.id);
       if (!response.ok) {
         showSnackbar("Impossible de modifier l'avis au jeu: ", "error");
       } else {
@@ -103,8 +98,11 @@ function ReviewModal({
         </DialogTitle>
         <DialogContent>
           <div className="flex flex-col">
-            <div className="flex justify-end">
+            <div className="flex flex-col items-end">
               <Rating readOnly={false} value={rating} onChange={handleChange} />
+              {errors?.rating && (
+                <p className="text-red-500">{errors.rating[0]}</p>
+              )}
             </div>
 
             <label htmlFor="content" className="text-primary-950 font-semibold">
@@ -117,6 +115,9 @@ function ReviewModal({
               rows={5}
               defaultValue={review?.content}
             />
+            {errors?.content && (
+              <p className="text-red-500">{errors.content[0]}</p>
+            )}
           </div>
         </DialogContent>
         <DialogActions>
