@@ -1,6 +1,7 @@
 import { UserProfil } from "@/interfaces";
 import React from "react";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import { theme } from "@/theme/theme";
 
 function UserParams({ user }: { user: UserProfil }) {
   return (
@@ -46,7 +47,10 @@ function UserParams({ user }: { user: UserProfil }) {
             Mot de passe oublié:
           </label>
           <div>
-            <ButtonPrimary label="Envoyer par mail" color="primary-600" />
+            <ButtonPrimary
+              label="Envoyer par mail"
+              color={theme.colors.primary[600]}
+            />
           </div>
         </div>
         <div className="mt-6 flex flex-col flex-1">

@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import ButtonSecondary from "./ButtonSecondary";
 import { UserProfil } from "@/interfaces";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
+import { theme } from "@/theme/theme";
 
 type FormDataInputs = {
   avatar: FileList; // Typage pour le champ "avatar"
@@ -105,7 +106,7 @@ function ButtonImage({
           />
           <ButtonSecondary
             label="Annuler"
-            color="primary-900"
+            color={theme.colors.primary[900]}
             onClick={() => {
               setSourceState(getImg(user.avatar));
             }}

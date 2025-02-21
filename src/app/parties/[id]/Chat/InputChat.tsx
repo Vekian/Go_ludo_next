@@ -3,6 +3,7 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import { Message, Party } from "@/interfaces/party.interface";
 import { sendMessage } from "@/lib/api/api";
+import { theme } from "@/theme/theme";
 import React, { useState } from "react";
 
 export default function InputChat({
@@ -38,7 +39,7 @@ export default function InputChat({
 
       <ButtonPrimary
         label="Envoyer"
-        color="primary-600"
+        color={theme.colors.primary[600]}
         onClick={handleSubmit}
       />
     </div>

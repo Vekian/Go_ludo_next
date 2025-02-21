@@ -4,6 +4,7 @@ import React from "react";
 import { Game, GameReview, ReviewList } from "@/interfaces";
 import ReviewModal from "./ReviewModal";
 import { getReviews } from "@/lib/api/api";
+import { theme } from "@/theme/theme";
 
 async function ReviewsList({ game }: { game: Game }) {
   const reviewList: ReviewList = await getReviews(game.id);
@@ -30,7 +31,7 @@ async function ReviewsList({ game }: { game: Game }) {
       <div className="flex justify-center p-5">
         <ButtonSecondary
           label="Voir plus de commentaires"
-          color="primary-800"
+          color={theme.colors.primary[800]}
         />
       </div>
     </div>

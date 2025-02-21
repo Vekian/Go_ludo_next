@@ -5,6 +5,7 @@ import LogInModal from "@/components/modal/LogInModal";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { useSession } from "next-auth/react";
 import ProfilButton from "./ProfilButton";
+import { theme } from "@/theme/theme";
 
 function UserButton() {
   const { status, data: session } = useSession();
@@ -17,7 +18,7 @@ function UserButton() {
       ) : (
         <>
           <LogInModal />
-          <ButtonPrimary label="S'inscrire" color="primary-900" />
+          <ButtonPrimary label="S'inscrire" color={theme.colors.primary[900]} />
         </>
       )}
     </div>

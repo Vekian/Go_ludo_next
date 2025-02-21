@@ -9,6 +9,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { signIn } from "next-auth/react";
+import { theme } from "@/theme/theme";
 
 function LogInModal() {
   const [open, setOpen] = React.useState(false);
@@ -25,7 +26,7 @@ function LogInModal() {
     <React.Fragment>
       <ButtonPrimary
         label="Se connecter"
-        color="primary-600"
+        color={theme.colors.primary[600]}
         onClick={handleClickOpen}
       />
       <Dialog

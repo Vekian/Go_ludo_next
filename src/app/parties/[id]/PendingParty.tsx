@@ -10,6 +10,7 @@ import CardGame from "@/components/cards/CardGame";
 import { GameListItem } from "@/interfaces";
 import Chat from "./Chat/Chat";
 import InputChat from "./Chat/InputChat";
+import { theme } from "@/theme/theme";
 
 export default function PendingParty({ party }: { party: Party }) {
   const [messages, setMessages] = useState<Message[] | undefined>(
@@ -41,8 +42,14 @@ export default function PendingParty({ party }: { party: Party }) {
           <Infos party={party} />
         </div>
         <div className="flex justify-around items-center">
-          <ButtonPrimary label="Inviter un ami" color="primary-500" />
-          <ButtonSecondary label="Quitter le groupe" color="primary-800" />
+          <ButtonPrimary
+            label="Inviter un ami"
+            color={theme.colors.primary[600]}
+          />
+          <ButtonSecondary
+            label="Quitter le groupe"
+            color={theme.colors.primary[800]}
+          />
         </div>
         <div>
           <h3>Participants :</h3>

@@ -14,6 +14,7 @@ import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { GameReview } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { theme } from "@/theme/theme";
 
 function ReviewModal({
   gameId,
@@ -122,7 +123,7 @@ function ReviewModal({
           <ButtonSecondary
             onClick={handleClose}
             label="Annuler"
-            color={"primary-800"}
+            color={theme.colors.primary[800]}
           />
           <Button
             className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
@@ -138,7 +139,7 @@ function ReviewModal({
       <div className="flex items-center">
         <ButtonPrimary
           label={review ? "Éditer" : "Ajouter un avis"}
-          color="primary-500"
+          color={theme.colors.primary[500]}
           onClick={handleClickOpen}
           icon={faPenToSquare}
         />

@@ -170,7 +170,7 @@ function EditUser({ user }: { user: UserProfil }) {
           <ButtonSecondary
             onClick={handleClose}
             label="Annuler"
-            color={"primary-800"}
+            color={theme.colors.primary[800]}
           />
           <Button
             className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}

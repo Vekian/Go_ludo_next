@@ -2,6 +2,7 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import SimpleSlider from "@/components/ui/slider/SimpleSlider";
 import { Game } from "@/interfaces";
 import { getDurationFromTimestamp } from "@/lib/date";
+import { theme } from "@/theme/theme";
 import {
   faCakeCandles,
   faClock,
@@ -46,11 +47,11 @@ function GameInfos({ game }: { game: Game }) {
           <h5>Catégories</h5>
           <div>
             {game.categories.categories &&
-              game.categories.categories.map((theme) => (
+              game.categories.categories.map((themeCategory) => (
                 <ButtonPrimary
-                  label={theme.name}
-                  color="primary-500"
-                  key={theme.id}
+                  label={themeCategory.name}
+                  color={theme.colors.primary[500]}
+                  key={themeCategory.id}
                 />
               ))}
           </div>
@@ -59,11 +60,11 @@ function GameInfos({ game }: { game: Game }) {
           <h5>Mode de jeu</h5>
           <div>
             {game.categories.modes &&
-              game.categories.modes.map((theme) => (
+              game.categories.modes.map((themeCategory) => (
                 <ButtonPrimary
-                  label={theme.name}
-                  color="secondary-500"
-                  key={theme.id}
+                  label={themeCategory.name}
+                  color={theme.colors.secondary[500]}
+                  key={themeCategory.id}
                 />
               ))}
           </div>
@@ -72,11 +73,11 @@ function GameInfos({ game }: { game: Game }) {
           <h5>Thèmes</h5>
           <div>
             {game.categories.themes &&
-              game.categories.themes.map((theme) => (
+              game.categories.themes.map((themeCategory) => (
                 <ButtonPrimary
-                  label={theme.name}
-                  color="neutral-500"
-                  key={theme.id}
+                  label={themeCategory.name}
+                  color={theme.colors.neutral[500]}
+                  key={themeCategory.id}
                 />
               ))}
           </div>

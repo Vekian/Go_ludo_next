@@ -6,6 +6,7 @@ import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { useRouter } from "next/navigation";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { theme } from "@/theme/theme";
 
 function ReviewActions({ review }: { review: GameReview }) {
   const { showSnackbar } = useSnackbarContext();
@@ -26,7 +27,7 @@ function ReviewActions({ review }: { review: GameReview }) {
       <ButtonPrimary
         onClick={handleDelete}
         label="Supprimer"
-        color="primary-700"
+        color={theme.colors.primary[700]}
         icon={faTrash}
       />
       <ReviewModal review={review} gameId={review.game.id} />

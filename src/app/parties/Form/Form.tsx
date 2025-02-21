@@ -7,6 +7,7 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { z } from "zod";
 import { PartyCard } from "@/interfaces/party.interface";
 import { getParties } from "@/lib/api/api";
+import { theme } from "@/theme/theme";
 
 const formSchema = z.object({
   age: z.coerce.number().nullable(),
@@ -98,14 +99,14 @@ export default function Form({
       <div className="flex justify-center px--10 gap-x-10">
         <div className="flex-1 flex justify-end">
           <ButtonPrimary
-            color="primary-600"
+            color={theme.colors.primary[600]}
             label="Créer une partie"
             addClass="px-16 py-2"
           />
         </div>
         <div className="flex-1 justify-start">
           <ButtonPrimary
-            color="primary-900"
+            color={theme.colors.primary[900]}
             label="Rechercher"
             addClass="px-16 py-2"
             onClick={handleSubmitAll}

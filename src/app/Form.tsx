@@ -2,6 +2,7 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
+import { theme } from "@/theme/theme";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -52,7 +53,7 @@ export default function Form() {
       <div className="mt-3">
         <ButtonPrimary
           label="Chercher"
-          color="primary-600"
+          color={theme.colors.primary[600]}
           onClick={handleSubmit}
         />
       </div>

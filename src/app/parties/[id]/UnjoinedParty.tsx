@@ -8,6 +8,7 @@ import React from "react";
 import Cover from "./CardInfos/Cover";
 import Infos from "./CardInfos/Infos";
 import UserInfos from "./CardInfos/UserInfos";
+import { theme } from "@/theme/theme";
 
 export default function UnjoinedParty({ party }: { party: Party }) {
   return (
@@ -18,7 +19,10 @@ export default function UnjoinedParty({ party }: { party: Party }) {
         <UserInfos user={party.author} />
       </div>
       <div className="flex justify-center pt-5">
-        <ButtonPrimary color="primary-500" label="Rejoindre la partie" />
+        <ButtonPrimary
+          color={theme.colors.primary[500]}
+          label="Rejoindre la partie"
+        />
       </div>
       <div className="py-3">
         <h2>
