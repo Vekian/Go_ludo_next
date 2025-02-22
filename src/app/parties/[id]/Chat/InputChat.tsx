@@ -2,7 +2,7 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import { Message, Party } from "@/interfaces/party.interface";
-import { sendMessage } from "@/lib/api/server/party";
+import { sendMessage } from "@/lib/api/server/chat";
 import { theme } from "@/theme/theme";
 import React, { useState } from "react";
 
@@ -16,13 +16,11 @@ export default function InputChat({
   const [value, setValue] = useState<string>();
 
   const handleSubmit = async () => {
-    const body = {
-      party: party.id,
-      content: value,
-    };
-    const message = await sendMessage(body);
-    if (message) {
-      addMessage(message);
+    const response = await sendMessage(value as string, party.id);
+    if (!response.ok) {
+    }
+    if (response.data) {
+      addMessage(response.data);
       setValue("");
     }
   };

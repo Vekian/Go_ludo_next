@@ -1,18 +1,11 @@
 "use server";
 
-import { Message } from "@/interfaces/party.interface";
 import { handleAuth } from "../authServer";
 import { z } from "zod";
 
 const formSchema = z.object({
   age: z.coerce.number().optional(),
-  city: z
-    .string({ required_error: "Veuillez choisir une ville" })
-    .transform((value) => parseFloat(value))
-    .refine(
-      (value) => !isNaN(value) && value > 0,
-      "Veuillez choisir une ville"
-    ),
+  city: z.coerce.number().optional(),
   zone: z.coerce.number().optional(),
   playersMin: z.coerce.number().optional(),
   playersMax: z.coerce.number().optional(),
@@ -39,16 +32,6 @@ export async function getParty(id: number) {
   }
   const data = await response.json();
   return data;
-}
-export async function sendMessage(data: unknown) {
-  const response = await fetch("/api/party/message", {
-    body: JSON.stringify(data),
-    method: "POST",
-  });
-  if (response.ok) {
-    const message: Message = await response.json();
-    return message;
-  }
 }
 
 export async function searchParties(formData: FormData) {

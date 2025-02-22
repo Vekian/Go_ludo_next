@@ -4,7 +4,7 @@ import Form from "./Form/Form";
 import ListParties from "@/components/list/ListParties";
 import { GameCategory } from "@/interfaces";
 import { PartyCard } from "@/interfaces/party.interface";
-import { getParties } from "@/lib/api/client/party";
+import { searchParties } from "@/lib/api/server/party";
 
 export default function Main({
   categories,
@@ -15,7 +15,7 @@ export default function Main({
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
-  params?: unknown;
+  params?: Record<string, string | undefined>;
 }) {
   const [parties, setParties] = useState<PartyCard[] | null>(null);
 
@@ -25,9 +25,19 @@ export default function Main({
 
   async function fetchParties() {
     if (!parties) {
-      const data = await getParties(params);
-      if (data) {
-        setParties(data);
+      const formData = new FormData();
+
+      if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined) {
+            formData.append(key, value);
+          }
+        });
+      }
+
+      const response = await searchParties(formData);
+      if (response.ok) {
+        setParties(response.data);
       }
     }
   }
