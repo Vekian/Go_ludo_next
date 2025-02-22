@@ -3,12 +3,12 @@ import React from "react";
 import Infos from "./CardInfos/Infos";
 import UserInfos from "./CardInfos/UserInfos";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
-import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import ListParticipants from "@/components/list/ListParticipants";
 import CardGame from "@/components/cards/CardGame";
 import { GameListItem } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import Chat from "./Chat/Chat";
+import ButtonLeave from "./CardInfos/ButtonLeave";
 
 export default function PendingParty({ party }: { party: Party }) {
   return (
@@ -25,10 +25,7 @@ export default function PendingParty({ party }: { party: Party }) {
             label="Inviter un ami"
             color={theme.colors.primary[600]}
           />
-          <ButtonSecondary
-            label="Quitter le groupe"
-            color={theme.colors.primary[800]}
-          />
+          <ButtonLeave party={party} />
         </div>
         <div>
           <h3>Participants :</h3>

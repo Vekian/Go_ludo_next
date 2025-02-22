@@ -70,3 +70,29 @@ export async function searchParties(formData: FormData) {
     data: data,
   };
 }
+
+export async function leaveParty(idParty: number, idParticipant: number) {
+  const body = {
+    participant: idParticipant,
+  };
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/leave/${idParty}`
+  );
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers,
+    method: "PUT",
+    body: JSON.stringify(body),
+  });
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      message: "Impossible de quitter la partie",
+    };
+  }
+  return {
+    ok: true,
+    message: "Vous avez quitté la partie avec succès",
+  };
+}
