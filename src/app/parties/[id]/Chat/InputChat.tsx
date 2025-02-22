@@ -4,6 +4,7 @@ import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import { Message, Party } from "@/interfaces/party.interface";
 import { sendMessage } from "@/lib/api/server/chat";
 import { theme } from "@/theme/theme";
+import { CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 
 export default function InputChat({
@@ -14,15 +15,24 @@ export default function InputChat({
   addMessage: (message: Message) => void;
 }) {
   const [value, setValue] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const handleSubmit = async () => {
-    const response = await sendMessage(value as string, party.id);
+    setLoading(true);
+    const response = await sendMessage(value ?? "", party.id);
+
     if (!response.ok) {
+      if (response.errors) {
+        setErrors(response.errors);
+      }
     }
     if (response.data) {
       addMessage(response.data);
       setValue("");
+      setErrors(null);
     }
+    setLoading(false);
   };
   return (
     <div className="flex flex-col justify-center items-center h-full px-6 gap-y-3">
@@ -34,12 +44,18 @@ export default function InputChat({
           onChange={(e) => setValue(e.currentTarget.value)}
         />
       </div>
-
-      <ButtonPrimary
-        label="Envoyer"
-        color={theme.colors.primary[600]}
-        onClick={handleSubmit}
-      />
+      {errors?.content && (
+        <p className="text-red-500 text-sm">{errors.content}</p>
+      )}
+      {loading ? (
+        <CircularProgress color="inherit" />
+      ) : (
+        <ButtonPrimary
+          label="Envoyer"
+          color={theme.colors.primary[600]}
+          onClick={handleSubmit}
+        />
+      )}
     </div>
   );
 }

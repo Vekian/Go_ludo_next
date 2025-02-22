@@ -17,6 +17,8 @@ export async function sendMessage(message: string, partyId: number) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       ok: false,
+      message:
+        "Impossible d'envoyer le message, veuillez vérifier vos informations",
     };
   }
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/message`;
@@ -32,7 +34,7 @@ export async function sendMessage(message: string, partyId: number) {
     return {
       ok: false,
       message:
-        "Impossible d'envoyer le message', veuillez vérifier vos informations",
+        "Impossible d'envoyer le message, veuillez vérifier vos informations",
     };
   }
   const data = await response.json();
