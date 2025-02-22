@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Message } from "@/interfaces/party.interface";
 import Image from "next/image";
@@ -43,7 +44,11 @@ export default function MessageCard({
           }`}
         >
           <p>{getRelativeTime(message.createdAt)}</p>
-          <MessageCardActions message={message} setContent={setContent} />
+          <MessageCardActions
+            message={message}
+            setContent={setContent}
+            author={author}
+          />
         </div>
 
         <p>{content}</p>

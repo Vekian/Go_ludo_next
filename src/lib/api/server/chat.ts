@@ -83,3 +83,25 @@ export async function updateMessage(message: string, messageId: number) {
     data: data,
   };
 }
+
+export async function deleteMessage(messageId: number) {
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/message/${messageId}`;
+
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      message: "Impossible de supprimer le message",
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Message supprimé avec succès",
+  };
+}

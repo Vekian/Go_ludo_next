@@ -1,3 +1,4 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -6,10 +7,12 @@ function ButtonInput({
   label,
   color,
   onClick,
+  icon,
 }: {
   label: string;
   color: string;
   onClick: () => void;
+  icon?: IconProp;
 }) {
   return (
     <button
@@ -19,7 +22,7 @@ function ButtonInput({
       onClick={() => onClick()}
       style={{ backgroundColor: color }}
     >
-      <FontAwesomeIcon icon={faEdit} className={`${label && "mr-2"}`} />
+      <FontAwesomeIcon icon={icon ?? faEdit} className={`${label && "mr-2"}`} />
       {label}
     </button>
   );
