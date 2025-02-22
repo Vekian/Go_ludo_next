@@ -14,11 +14,10 @@ import { SelectChangeEvent, SliderThumb } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import React from "react";
+import React, { useEffect } from "react";
 import "dayjs/locale/fr";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
-import { FormData } from "./Form";
 
 interface RangeThumbProps extends React.HTMLAttributes<unknown> {
   "data-index"?: number; // Ajout de la propriété manquante
@@ -50,9 +49,9 @@ export default function FormLocalisation({
   errors,
 }: {
   handleChange: (name: string, value: string | number | null) => void;
-  errors: { [key in keyof FormData]?: string };
+  errors: Record<string, string[]> | null;
 }) {
-  const [ageValue, setAgeValue] = React.useState("18");
+  const [ageValue, setAgeValue] = React.useState("0");
   const [slideValue, setSlideValue] = React.useState(20);
   const [rangeValue, setRangeValue] = React.useState([2, 30]);
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
@@ -60,6 +59,12 @@ export default function FormLocalisation({
     null
   );
   const [timeEndValue, setTimeEndValue] = React.useState<Dayjs | null>(null);
+
+  useEffect(() => {
+    handleChange("playersMin", rangeValue[0]);
+    handleChange("playersMax", rangeValue[1]);
+    handleChange("zone", slideValue);
+  }, []);
 
   const handleSliderChange = (
     event: Event,
@@ -91,9 +96,11 @@ export default function FormLocalisation({
           <InputSearchCity
             label="Où ? (ville, code postal...)"
             icon={faLocationDot}
-            onChange={handleCityChange}
+            onChange={(id) => handleCityChange(id ?? 0)}
           />
-          {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
+          {errors?.city && (
+            <p className="text-red-500 text-sm">{errors.city}</p>
+          )}
         </div>
         <div className="flex-1">
           <div className="w-2/3">
@@ -186,7 +193,7 @@ export default function FormLocalisation({
                 },
               }}
             />
-            {errors.date && (
+            {errors?.date && (
               <p className="text-red-500 text-sm">{errors.date}</p>
             )}
           </div>
@@ -204,7 +211,7 @@ export default function FormLocalisation({
                 }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
-              {errors.startTime && (
+              {errors?.startTime && (
                 <p className="text-red-500 text-sm">{errors.startTime}</p>
               )}
             </div>
@@ -221,7 +228,7 @@ export default function FormLocalisation({
                 }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
-              {errors.endTime && (
+              {errors?.endTime && (
                 <p className="text-red-500 text-sm">{errors.endTime}</p>
               )}
             </div>

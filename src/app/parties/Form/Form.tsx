@@ -4,29 +4,9 @@ import FormLocalisation from "./FormLocalisation";
 import FormGame from "./FormGame";
 import { GameCategory } from "@/interfaces";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
-import { z } from "zod";
 import { PartyCard } from "@/interfaces/party.interface";
-import { getParties } from "@/lib/api/client/party";
 import { theme } from "@/theme/theme";
-
-const formSchema = z.object({
-  age: z.coerce.number().nullable(),
-  city: z.coerce.number().gt(0, "Veuillez choisir une ville valide."),
-  zone: z.coerce.number().nullable(),
-  playersMin: z.coerce.number().nullable(),
-  playersMax: z.coerce.number().nullable(),
-  date: z.string().date().nullable(),
-  startTime: z.string().time().nullable(),
-  endTime: z.string().time().nullable(),
-  game: z.coerce.number().nullable(),
-  category: z.coerce.number().nullable(),
-  theme: z.coerce.number().nullable(),
-  mode: z.coerce.number().nullable(),
-  duration: z.coerce.number().nullable(),
-  rating: z.coerce.number().nullable(),
-});
-
-export type FormData = z.infer<typeof formSchema>;
+import { searchParties } from "@/lib/api/server/party";
 
 export default function Form({
   categories,
@@ -39,50 +19,31 @@ export default function Form({
   modes: GameCategory[];
   setParties: (parties: PartyCard[] | null) => void;
 }) {
-  const [formData, setFormData] = useState<FormData>({
-    age: null,
-    city: 0,
-    zone: null,
-    playersMin: null,
-    playersMax: null,
-    game: null,
-    category: null,
-    theme: null,
-    mode: null,
-    duration: null,
-    rating: null,
-    startTime: null,
-    endTime: null,
-    date: null,
-  });
-  const [errors, setErrors] = useState<{ [key in keyof FormData]?: string }>(
-    {}
-  );
+  const [formData, setFormData] = useState<FormData>(new FormData());
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const handleChange = (name: string, value: string | number | null) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const newFormData = formData;
+    if (value) {
+      formData.set(name, String(value));
+    } else {
+      formData.delete(name);
+    }
+    setFormData(newFormData);
   };
   const handleSubmitAll = async (e: React.FormEvent) => {
     e.preventDefault();
+    const response = await searchParties(formData);
 
-    // Validation
-    const result = formSchema.safeParse(formData);
-    if (result.success) {
-      // Si tout est valide, on affiche les données soumises
-      setErrors({});
-      const data = await getParties(result.data);
-      if (data) {
-        setParties(data);
+    if (!response.ok) {
+      if (response.errors) {
+        setErrors(response.errors);
       }
     } else {
-      const newErrors: { [key in keyof FormData]?: string } = {};
-      result.error.errors.forEach((err) => {
-        newErrors[err.path[0] as keyof FormData] = err.message;
-      });
-      setErrors(newErrors);
+      if (response.data) {
+        setParties(response.data);
+        setErrors(null);
+      }
     }
   };
   return (

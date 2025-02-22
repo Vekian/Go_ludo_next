@@ -31,14 +31,9 @@ export async function getUser(id: string) {
 }
 
 export async function updateProfil(formData: FormData, userId: number) {
-  const validatedFields = schema.safeParse({
-    username: formData.get("username"),
-    firstname: formData.get("firstname"),
-    lastname: formData.get("lastname"),
-    gender: formData.get("gender"),
-    description: formData.get("description"),
-    age: formData.get("age"),
-  });
+  const validatedFields = schema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!validatedFields.success) {
     return {

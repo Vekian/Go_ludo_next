@@ -33,11 +33,9 @@ export async function getReviews(gameId: number) {
 }
 
 export async function addReview(formData: FormData) {
-  const validatedFields = schema.safeParse({
-    content: formData.get("content"),
-    rating: formData.get("rating"),
-    game: formData.get("game"),
-  });
+  const validatedFields = schema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
 
   if (!validatedFields.success) {
     return {

@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`;
+    const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/search`;
     const headers = new Headers();
     headers.set("Authorization", request.headers.get("Authorization") || "");
     headers.set("Content-Type", "application/json");
