@@ -6,8 +6,8 @@ export interface UserProfil {
   email: string;
   roles: string[];
   age: number;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   gender: string;
   avatar: string;
   description: string;

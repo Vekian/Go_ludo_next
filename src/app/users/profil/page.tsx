@@ -19,7 +19,7 @@ const Page = async () => {
   const user: UserProfil = await getUser(session.user.id);
 
   return (
-    <div>
+    <div className="pt-6">
       <div>
         <UserContent user={user}>
           <UserInfos user={user} />

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import { useSession } from "next-auth/react";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
+import { updateProfil } from "@/lib/api/server/user";
 
 function EditUser({ user }: { user: UserProfil }) {
   const { data, update } = useSession();
@@ -20,10 +21,13 @@ function EditUser({ user }: { user: UserProfil }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [gender, setGender] = React.useState(user.gender);
+  const [errors, setErrors] = React.useState<Record<string, string[]> | null>(
+    null
+  );
+
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = (event: React.SyntheticEvent<Element, Event>) => {
     event.preventDefault();
     setOpen(false);
@@ -34,18 +38,20 @@ function EditUser({ user }: { user: UserProfil }) {
     const formData = new FormData(event.currentTarget);
     formData.append("gender", gender);
     showSnackbar("Profil en cours de modification", "info");
-    const response = await fetch(`/api/user/${data?.user.id}`, {
-      body: formData,
-      method: "PUT",
-    });
+
+    const response = await updateProfil(formData, Number(data?.user.id));
+
     if (!response.ok) {
+      if (response.errors) {
+        setErrors(response.errors);
+      }
       showSnackbar(
         "Impossible de modifier le profil, veuillez réessayer plus tard",
         "error"
       );
     } else {
       if (data && update) {
-        const updatedUser = await response.json();
+        const updatedUser = response.user;
         const updatedSessionUser = {
           ...updatedUser,
           name: updatedUser.username,
@@ -56,10 +62,11 @@ function EditUser({ user }: { user: UserProfil }) {
           user: updatedSessionUser,
         });
         showSnackbar("Profil modifié", "success");
+        setErrors(null);
       }
+      handleClose(event);
+      router.refresh();
     }
-    handleClose(event);
-    router.refresh();
   };
   return (
     <div>
@@ -88,38 +95,47 @@ function EditUser({ user }: { user: UserProfil }) {
               className="bg-neutral-50 rounded-full px-3 py-1"
               defaultValue={user.username}
             />
+            {errors?.username && (
+              <p className="text-red-500">{errors.username[0]}</p>
+            )}
           </div>
           <div className="mt-5">
             <div className="flex">
               <div className="flex flex-col">
                 <label
-                  htmlFor="firstName"
+                  htmlFor="firstname"
                   className="text-primary-950 font-semibold"
                 >
                   Prénom:
                 </label>
                 <input
                   type="text"
-                  name="firstName"
-                  id="firstName"
+                  name="firstname"
+                  id="firstname"
                   className="bg-neutral-50 rounded-full px-3 py-1"
-                  defaultValue={user.firstName}
+                  defaultValue={user.firstname}
                 />
+                {errors?.firstname && (
+                  <p className="text-red-500">{errors.firstname[0]}</p>
+                )}
               </div>
               <div className="flex flex-col ml-5">
                 <label
-                  htmlFor="username"
+                  htmlFor="lastname"
                   className="text-primary-950 font-semibold"
                 >
                   Nom:
                 </label>
                 <input
                   type="text"
-                  name="lastName"
-                  id="lastName"
+                  name="lastname"
+                  id="lastname"
                   className="bg-neutral-50 rounded-full px-3 py-1"
-                  defaultValue={user.lastName}
+                  defaultValue={user.lastname}
                 />
+                {errors?.lastname && (
+                  <p className="text-red-500">{errors.lastname[0]}</p>
+                )}
               </div>
             </div>
             <div className="mt-5 flex">
@@ -134,6 +150,7 @@ function EditUser({ user }: { user: UserProfil }) {
                   className="bg-neutral-50 rounded-full px-3 py-1"
                   defaultValue={user.age}
                 />
+                {errors?.age && <p className="text-red-500">{errors.age[0]}</p>}
               </div>
               <div className="flex flex-col justify-end w-full">
                 <SelectClassic
@@ -147,6 +164,9 @@ function EditUser({ user }: { user: UserProfil }) {
                   }}
                   color={theme.colors.primary[700]}
                 />
+                {errors?.gender && (
+                  <p className="text-red-500">{errors.gender[0]}</p>
+                )}
               </div>
             </div>
             <div className="w-full flex flex-col mt-5">
@@ -163,6 +183,9 @@ function EditUser({ user }: { user: UserProfil }) {
                 defaultValue={user.description}
                 rows={5}
               />
+              {errors?.description && (
+                <p className="text-red-500">{errors.description[0]}</p>
+              )}
             </div>
           </div>
         </DialogContent>
