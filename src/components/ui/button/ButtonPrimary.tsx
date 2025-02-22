@@ -17,12 +17,16 @@ function ButtonPrimary({
 }) {
   return (
     <button
-      className={` hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 ${addClass} `}
+      className={` hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 ${
+        addClass ?? ""
+      } `}
       style={{ backgroundColor: color }}
       onClick={onClick}
     >
-      {icon && <FontAwesomeIcon icon={icon} className="me-2" />}
-      {label}
+      <div className="h-3 flex items-center py-3">
+        {icon && <FontAwesomeIcon icon={icon} className="me-2" />}
+        {label}
+      </div>
     </button>
   );
 }

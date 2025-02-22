@@ -22,7 +22,7 @@ function ReviewActions({ review }: { review: GameReview }) {
     }
   }
   return (
-    <div className="flex ">
+    <div className="flex items-center gap-x-3">
       <ButtonPrimary
         onClick={handleDelete}
         label="Supprimer"
