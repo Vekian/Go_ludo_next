@@ -10,6 +10,7 @@ import ButtonSecondary from "./ButtonSecondary";
 import { UserProfil } from "@/interfaces";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { theme } from "@/theme/theme";
+import { uploadAvatar } from "@/lib/api/server/user";
 
 type FormDataInputs = {
   avatar: FileList; // Typage pour le champ "avatar"
@@ -26,29 +27,25 @@ function ButtonImage({
   const { data: session, update } = useSession();
   const [uploading, setUploading] = useState(false);
   const { register, handleSubmit } = useForm<FormDataInputs>();
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const onSubmit: SubmitHandler<FormDataInputs> = async (data) => {
     const formData = new FormData();
     formData.append("avatar", data.avatar[0]);
     showSnackbar("Avatar en coours d'upload", "info");
-    const response = await fetch(`/api/user/picture`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${session?.user.token}`,
-      },
-      body: formData,
-    });
+    const response = await uploadAvatar(formData);
 
     if (!response.ok) {
+      if (response.errors) {
+        setErrors(response.errors as Record<string, string[]>);
+      }
       showSnackbar("Impossible d'upload une nouvelle image", "error");
     } else {
-      if (session) {
-        const updatedUser = await response.json();
+      if (session && response.avatar) {
+        const avatar = response.avatar;
         const updatedSessionUser = {
-          ...updatedUser,
-          name: updatedUser.username,
-          token: session.user.token,
+          ...session.user,
+          avatar: avatar,
         };
         await update({
           ...data,
@@ -113,6 +110,7 @@ function ButtonImage({
           />
         </>
       )}
+      {errors?.avatar && <p className="text-red-500">{errors.avatar[0]}</p>}
     </form>
   );
 }
