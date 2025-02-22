@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Message } from "@/interfaces/party.interface";
 import Image from "next/image";
 import { getRelativeTime } from "@/lib/date";
+import MessageCardActions from "./MessageCardActions";
 
 export default function MessageCard({
   message,
@@ -10,6 +11,7 @@ export default function MessageCard({
   message: Message;
   author: boolean;
 }) {
+  const [content, setContent] = useState<string>(message.content);
   return (
     <div
       className={`${
@@ -31,12 +33,20 @@ export default function MessageCard({
         <p>{message.author.username}</p>
       </div>
       <div
-        className={`w-10/12 flex flex-col gap-y-1 ${
-          author ? "items-start" : "items-end"
+        className={`w-10/12 flex flex-col gap-y-1 pr-3 ${
+          author ? "items-start" : "items-end pl-3"
         }`}
       >
-        <p>{getRelativeTime(message.createdAt)}</p>
-        <p>{message.content}</p>
+        <div
+          className={`flex w-full justify-between ${
+            !author && "flex-row-reverse"
+          }`}
+        >
+          <p>{getRelativeTime(message.createdAt)}</p>
+          <MessageCardActions message={message} setContent={setContent} />
+        </div>
+
+        <p>{content}</p>
       </div>
     </div>
   );

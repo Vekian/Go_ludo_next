@@ -4,19 +4,22 @@ import React from "react";
 
 function ButtonInput({
   label,
-  classColor,
+  color,
   onClick,
 }: {
   label: string;
-  classColor: string;
+  color: string;
   onClick: () => void;
 }) {
   return (
     <button
-      className={`bg-${classColor} px-5 py-1 rounded-full text-white hover:brightness-75`}
+      className={` ${
+        label ? "px-5" : "px-3"
+      } py-1 rounded-full text-white hover:brightness-75`}
       onClick={() => onClick()}
+      style={{ backgroundColor: color }}
     >
-      <FontAwesomeIcon icon={faEdit} className="mr-2" />
+      <FontAwesomeIcon icon={faEdit} className={`${label && "mr-2"}`} />
       {label}
     </button>
   );

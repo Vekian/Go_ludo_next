@@ -1,41 +1,38 @@
 "use client";
+import React, { useEffect, useRef, useState } from "react";
+import ListMessages from "./ListMessages";
+import InputChat from "./InputChat";
+import { Message, Party } from "@/interfaces/party.interface";
 
-import React from "react";
-import { Message } from "@/interfaces/party.interface";
-import MessageCard from "./MessageCard";
-import { useSession } from "next-auth/react";
+export default function Chat({ party }: { party: Party }) {
+  const [messages, setMessages] = useState<Message[] | undefined>(
+    party.messages
+  );
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
 
-export default function Chat({
-  messages,
-}: {
-  messages: Message[] | undefined;
-}) {
-  const { data } = useSession();
+  useEffect(() => {
+    // Scrolle en bas à chaque mise à jour des messages
+    if (chatEndRef?.current) {
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
+  const addMessage = (message: Message) => {
+    if (messages) {
+      setMessages([...messages, message]);
+    } else {
+      setMessages([message]);
+    }
+  };
   return (
-    <div className=" flex flex-col gap-y-6 p-10">
-      {messages &&
-        messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex  ${
-              Number(data?.user.id) === message.author.id
-                ? "justify-start"
-                : "justify-end"
-            }`}
-          >
-            <div
-              className={`w-10/12 ${
-                Number(data?.user.id) === message.author.id ? "" : ""
-              }`}
-            >
-              <MessageCard
-                message={message}
-                author={Number(data?.user.id) === message.author.id}
-              />
-            </div>
-          </div>
-        ))}
+    <div className="flex flex-col w-2/3 gap-y-6">
+      <div className="bg-white rounded-lg h-4/5 overflow-y-scroll">
+        <ListMessages messages={messages} />
+        <div ref={chatEndRef} />
+      </div>
+      <div className="bg-white rounded-lg h-1/5">
+        <InputChat party={party} addMessage={addMessage} />
+      </div>
     </div>
   );
 }

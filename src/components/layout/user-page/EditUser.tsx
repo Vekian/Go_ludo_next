@@ -208,7 +208,7 @@ function EditUser({ user }: { user: UserProfil }) {
       </Dialog>
       <ButtonInput
         label="Éditer"
-        classColor="primary-700"
+        color={theme.colors.primary[700]}
         onClick={handleClickOpen}
       />
     </div>
