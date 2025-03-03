@@ -3,9 +3,10 @@ import Header from "@/components/layout/header/Header";
 import "./globals.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { farro, nunito } from "../fonts/fonts";
-import SideMenu from "@/components/layout/header/SideMenu";
 import AuthProvider from "@/components/provider/AuthProvider";
 import SnackbarProvider from "@/components/provider/SnackbarProvider";
+import SidemenuProvider from "@/components/provider/SidemenuProvider";
+import Sidemenu from "@/components/layout/sidemenu/Sidemenu";
 
 export const metadata: Metadata = {
   title: "Go Ludo",
@@ -22,9 +23,14 @@ export default function RootLayout({
       <body className={`${nunito.variable} ${farro.variable} bg-neutral-100  `}>
         <SnackbarProvider>
           <AuthProvider>
-            <SideMenu />
-            <Header />
-            <div className="pt-16 h-screen">{children}</div>
+            <SidemenuProvider>
+              <Header />
+
+              <div className="pt-16 h-screen">
+                <Sidemenu />
+                {children}
+              </div>
+            </SidemenuProvider>
           </AuthProvider>
         </SnackbarProvider>
       </body>

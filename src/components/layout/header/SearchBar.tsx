@@ -7,7 +7,7 @@ import InputSearch from "@/components/ui/input/search/InputSearch";
 function SearchBar() {
   return (
     <div
-      className={`${styles.inputWrapper} order-last md:order-2 ml-6 mr-6  md:w-1/3
+      className={`${styles.inputWrapper} order-last md:order-2 ml-6 mr-6 flex items-center md:w-1/3
       `}
     >
       <div className="w-full">
@@ -15,7 +15,7 @@ function SearchBar() {
       </div>
 
       <div className="pl-6 hidden md:block">
-        <FontAwesomeIcon icon={faBarcode} />
+        <FontAwesomeIcon icon={faBarcode} className="text-black" />
       </div>
     </div>
   );
