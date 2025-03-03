@@ -4,13 +4,8 @@ import PartyTimePicker from "@/components/ui/input/PartyTimePicker";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import ZoneSlider from "@/components/ui/slider/ZoneSlider";
-import {
-  faLocationDot,
-  faMinus,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SelectChangeEvent, SliderThumb } from "@mui/material";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { SelectChangeEvent } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
@@ -18,31 +13,9 @@ import React, { useEffect } from "react";
 import "dayjs/locale/fr";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
-
-interface RangeThumbProps extends React.HTMLAttributes<unknown> {
-  "data-index"?: number; // Ajout de la propriété manquante
-}
+import RangeThumb from "@/components/ui/input/range/RangeThumb";
 
 dayjs.locale("fr");
-function RangeThumbComponent(props: RangeThumbProps) {
-  const { children, ...other } = props;
-  return (
-    <SliderThumb {...other}>
-      {children}
-      {props["data-index"] === 0 ? (
-        <FontAwesomeIcon
-          icon={faMinus}
-          className="MuiSlider-thumbIcon text-white"
-        />
-      ) : (
-        <FontAwesomeIcon
-          icon={faPlus}
-          className="MuiSlider-thumbIcon text-white"
-        />
-      )}
-    </SliderThumb>
-  );
-}
 
 export default function FormLocalisation({
   handleChange,
@@ -150,9 +123,6 @@ export default function FormLocalisation({
           </div>
 
           <DoubleSlider
-            getAriaLabel={(index) =>
-              index === 0 ? "Minimum price" : "Maximum price"
-            }
             max={30}
             min={2}
             defaultValue={[5, 10]}
@@ -160,7 +130,7 @@ export default function FormLocalisation({
             value={rangeValue}
             onChange={handleRangeChange}
             slots={{
-              thumb: RangeThumbComponent,
+              thumb: RangeThumb,
             }}
           />
         </div>

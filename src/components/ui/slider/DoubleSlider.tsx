@@ -15,7 +15,8 @@ const DoubleSlider = styled(Slider)(({ theme }) => ({
   },
   "& .MuiSlider-valueLabel": {
     lineHeight: 1.2,
-    fontSize: 12,
+    fontSize: 14,
+    fontWeight: "bold",
     background: "unset",
     padding: 0,
     width: 32,

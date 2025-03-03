@@ -24,7 +24,7 @@ export default function RootLayout({
           <AuthProvider>
             <SideMenu />
             <Header />
-            <div className="pt-12 h-screen">{children}</div>
+            <div className="pt-16 h-screen">{children}</div>
           </AuthProvider>
         </SnackbarProvider>
       </body>

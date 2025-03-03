@@ -7,6 +7,7 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { PartyCard } from "@/interfaces/party.interface";
 import { theme } from "@/theme/theme";
 import { searchParties } from "@/lib/api/server/party";
+import Link from "next/link";
 
 export default function Form({
   categories,
@@ -59,11 +60,13 @@ export default function Form({
       </div>
       <div className="flex justify-center px--10 gap-x-10">
         <div className="flex-1 flex justify-end">
-          <ButtonPrimary
-            color={theme.colors.primary[600]}
-            label="Créer une partie"
-            addClass="px-16 py-2"
-          />
+          <Link href="/parties/create">
+            <ButtonPrimary
+              color={theme.colors.primary[600]}
+              label="Créer une partie"
+              addClass="px-16 py-2"
+            />
+          </Link>
         </div>
         <div className="flex-1 justify-start">
           <ButtonPrimary
