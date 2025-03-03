@@ -6,6 +6,7 @@ import MuiDrawer from "@mui/material/Drawer";
 import ListCollection from "./ListCollection";
 import ListParties from "./ListParties";
 import ListAssistance from "./ListAssistance";
+import SidemenuMobile from "./SidemenuMobile";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -62,16 +63,24 @@ const Drawer = styled(MuiDrawer, {
 export default function Sidemenu() {
   const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
-    <Drawer variant="permanent" open={isMenuOpen}>
-      <DrawerHeader>
-        <IconButton onClick={toggleSidemenu}></IconButton>
-      </DrawerHeader>
-      <Divider />
-      <ListCollection isMenuOpen={isMenuOpen} />
-      <Divider />
-      <ListParties isMenuOpen={isMenuOpen} />
-      <Divider />
-      <ListAssistance isMenuOpen={isMenuOpen} />
-    </Drawer>
+    <>
+      <Drawer
+        variant="permanent"
+        open={isMenuOpen}
+        sx={{}}
+        className="hidden md:block"
+      >
+        <DrawerHeader>
+          <IconButton onClick={toggleSidemenu}></IconButton>
+        </DrawerHeader>
+        <Divider />
+        <ListCollection isMenuOpen={isMenuOpen} />
+        <Divider />
+        <ListParties isMenuOpen={isMenuOpen} />
+        <Divider />
+        <ListAssistance isMenuOpen={isMenuOpen} />
+      </Drawer>
+      <SidemenuMobile isMenuOpen={isMenuOpen} />
+    </>
   );
 }

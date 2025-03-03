@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import styles from "./Header.module.scss";
 import Image from "next/image";
 import SearchBar from "./SearchBar";
 import Link from "next/link";
@@ -19,17 +18,22 @@ export default function Header() {
         boxShadow: "none",
       }}
     >
-      <div
-        className={`${styles.imageWrapper} order-1 flex items-center justify-around`}
-      >
-        <div className={`${styles.imageWrapper} order-1 flex items-center`}>
-          <SidemenuButton />
-          <Link href="/">
-            <Image src="/images/logo.png" alt="logo" width={200} height={50} />
-          </Link>
+      <div className={` order-1 flex items-center min-h-16`}>
+        <div className="flex w-full justify-around">
+          <div className={` order-1 flex items-center`}>
+            <SidemenuButton />
+            <Link href="/" className=" lg:block hidden">
+              <Image
+                src="/images/logo.png"
+                alt="logo"
+                width={200}
+                height={50}
+              />
+            </Link>
+          </div>
+          <SearchBar />
+          <UserButton />
         </div>
-        <SearchBar />
-        <UserButton />
       </div>
     </AppBar>
   );

@@ -34,21 +34,25 @@ function ProfilButton({ user }: { user: User }) {
         variant="contained"
         disableElevation
         onClick={handleClick}
-        endIcon={<FontAwesomeIcon icon={faAngleDown} />}
+        endIcon={
+          <span className="hidden md:block">
+            <FontAwesomeIcon icon={faAngleDown} />
+          </span>
+        }
         sx={{ textTransform: "none" }}
-        className="rounded-md bg-primary-600 hover:brightness-90 h-10 font-semibold"
+        className="md:rounded-md rounded-full md:min-w-32 md:w-auto min-w-0 w-0 bg-primary-600   hover:brightness-90 h-10 font-semibold"
       >
         {user.avatar && (
-          <Image
-            alt="avatar"
-            src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${user.avatar}`}
-            width={50}
-            height={50}
-            className="-ml-10 mr-3 rounded-full"
-          />
+          <div className="w-14 h-14 absolute">
+            <Image
+              alt="avatar"
+              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${user.avatar}`}
+              className="md:-ml-16 mr-3 rounded-full"
+              fill
+            />
+          </div>
         )}
-
-        {user.name}
+        <span className="hidden md:block md:ml-6">{user.name}</span>
       </Button>
       <Menu
         id="basic-menu"

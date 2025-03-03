@@ -30,11 +30,11 @@ export default function Form() {
     setGlobalType(type);
   }
   return (
-    <div className="w-1/3 flex pl-16 pr-16 flex-col items-center justify-center">
+    <div className="xl:w-1/3 w-full flex sm:px-16 px-3  flex-col items-center justify-center xl:mt-0 mt-6">
       <h1 className="text-primary-950 text-center mb-2">
         Près de chez vous, des joueurs vous attendent !
       </h1>
-      <div className="w-full flex flex-col mb-3">
+      <div className="xl:w-full md:w-1/2 w-full flex flex-col mb-3">
         <label className="mb-2">Chercher une partie</label>
         <InputSearchCity
           label="Où ? (ville, code postal...)"
@@ -42,7 +42,7 @@ export default function Form() {
           onChange={setCity}
         />
       </div>
-      <div className="w-full flex flex-col">
+      <div className="xl:w-full md:w-1/2 w-full flex flex-col">
         <label className="mb-2">Une envie de jeu particulière ?</label>
         <InputSearchGlobal
           label="Un jeu, un thème..."

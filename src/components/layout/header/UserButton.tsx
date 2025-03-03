@@ -10,7 +10,7 @@ import { theme } from "@/theme/theme";
 function UserButton() {
   const { status, data: session } = useSession();
   return (
-    <div className="order-3">
+    <div className="order-3 flex items-center">
       {status === "authenticated" ? (
         <>
           <ProfilButton user={session.user}></ProfilButton>

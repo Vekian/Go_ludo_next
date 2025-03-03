@@ -26,7 +26,7 @@ export default function RootLayout({
             <SidemenuProvider>
               <Header />
 
-              <div className="pt-16 h-screen flex">
+              <div className="pt-16 h-screen lg:flex">
                 <Sidemenu />
                 <div className=" w-full">{children}</div>
               </div>
