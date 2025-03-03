@@ -38,7 +38,7 @@ export default function MapContent({
   useEffect(() => {
     if (position) {
       console.log(position);
-      map.setView([position[1], position[0]]);
+      map.setView([position[1], position[0]], 13);
       setMarker([position[1], position[0]]);
     }
   }, [position]);

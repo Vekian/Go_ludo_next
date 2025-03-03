@@ -1,8 +1,14 @@
 import React from "react";
 import FormInfosParty from "./FormInfosParty";
 import FormLocalisationParty from "./FormLocalisationParty";
+import FormGame from "./FormGame";
+import { GameCategory } from "@/interfaces";
+import { getCategories } from "@/lib/api/server/category";
 
-export default function page() {
+export default async function page() {
+  const categories: GameCategory[] = await getCategories("category");
+  const modes: GameCategory[] = await getCategories("mode");
+  const themes: GameCategory[] = await getCategories("theme");
   return (
     <div className="h-full w-full p-4 flex flex-col items-center gap-y-5">
       <div className="bg-white rounded-lg  px-12 py-6 text-center flex flex-col items-center gap-y-4">
@@ -20,6 +26,7 @@ export default function page() {
       </div>
       <FormInfosParty />
       <FormLocalisationParty />
+      <FormGame categories={categories} themes={themes} modes={modes} />
     </div>
   );
 }

@@ -27,12 +27,6 @@ export default function InputAutoComplete({
     value: option.id.toString(),
   }));
 
-  const partsColor: [string, string] = color?.split("-") as [string, string];
-  const tailwindColor =
-    theme.colors[partsColor[0] as keyof typeof theme.colors]?.[
-      partsColor[1] as unknown as keyof (typeof theme.colors)["neutral"]
-    ];
-
   const white = theme.colors.white;
 
   const styleLabel = {
@@ -64,7 +58,7 @@ export default function InputAutoComplete({
           style={{ color: white }} // Couleur personnalisable
         />
       }
-      disablePortal
+      disablePortal={false}
       options={optionsSelect}
       value={value} // Liaison avec la valeur sélectionnée
       onChange={handleSelect}
@@ -94,13 +88,13 @@ export default function InputAutoComplete({
           color: white, // Change la couleur de la valeur sélectionnée
         },
         ".MuiAutocomplete-listbox": {
-          backgroundColor: tailwindColor, // Appliquer la couleur de fond personnalisée pour la liste des options
+          backgroundColor: color, // Appliquer la couleur de fond personnalisée pour la liste des options
         },
         ".MuiOutlinedInput-root": {
           borderRadius: "50px",
           fontFamily: "nunito",
           fontWeight: 700,
-          backgroundColor: tailwindColor,
+          backgroundColor: color,
           // Applique un border-radius au champ de texte à l'intérieur de l'Autocomplete
         },
       }}

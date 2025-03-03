@@ -1,6 +1,7 @@
 import ButtonSelect from "@/components/ui/input/ButtonSelect";
 import { GameCategory } from "@/interfaces";
 import { getCategories } from "@/lib/api/server/category";
+import { theme } from "@/theme/theme";
 import React from "react";
 
 async function Filters() {
@@ -16,28 +17,28 @@ async function Filters() {
           { id: 2, name: "test1", icon: "" },
           { id: 3, name: "test2", icon: "" },
         ]}
-        color="primary-900"
+        color={theme.colors.primary[900]}
         width={150}
         name="sort"
       />
       <ButtonSelect
         label="Catégorie"
         options={categories}
-        color="primary-500"
+        color={theme.colors.primary[500]}
         width={150}
         name="category"
       />
       <ButtonSelect
         label="Thème"
         options={themes}
-        color="neutral-500"
+        color={theme.colors.neutral[500]}
         width={150}
         name="theme"
       />
       <ButtonSelect
         label="Mode de jeu"
         options={modes}
-        color="secondary-600"
+        color={theme.colors.secondary[600]}
         width={180}
         name="mode"
       />
@@ -47,7 +48,7 @@ async function Filters() {
           { id: 2, name: "test1", icon: "" },
           { id: 3, name: "test2", icon: "" },
         ]}
-        color="primary-500"
+        color={theme.colors.primary[500]}
         width={150}
         name="duration"
       />

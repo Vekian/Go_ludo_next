@@ -2,6 +2,7 @@ import { Option } from "@/interfaces";
 import {
   Box,
   FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -14,17 +15,41 @@ function SelectClassic({
   options,
   onChange,
   color,
+  label,
 }: {
   value: string;
   options: Option[];
   color: string;
   onChange: (event: SelectChangeEvent<string>, child?: React.ReactNode) => void;
+  label?: string;
 }) {
   return (
     <div>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
+          {label && (
+            <InputLabel
+              sx={{
+                border: "none",
+                color: value ? theme.colors.black : theme.colors.white,
+                fontFamily: "Nunito",
+                fontWeight: 700,
+                fontSize: value ? "0.8rem" : "16px", // Change la taille si value existe
+                transform: value
+                  ? "translate(30%,-100%)"
+                  : "translate(30%,30%)", // Applique la transformation si value existe
+                transition: "all 0.3s ease", // Animation fluide lors du changement
+                "&.Mui-focused": {
+                  color: value ? theme.colors.black : theme.colors.white,
+                },
+              }}
+              id={`selectLabel${value}`}
+            >
+              {label}
+            </InputLabel>
+          )}
           <Select
+            labelId={`selectLabel${value}`}
             value={value}
             onChange={onChange}
             sx={{

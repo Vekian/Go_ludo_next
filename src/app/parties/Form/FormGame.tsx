@@ -64,7 +64,7 @@ export default function FormGame({
           <div className="flex-1">
             <InputAutoComplete
               label="Catégorie"
-              color="primary-600"
+              color={theme.colors.primary[600]}
               name="category"
               value={categoryValue}
               options={categories}
@@ -74,7 +74,7 @@ export default function FormGame({
           <div className="flex-1">
             <InputAutoComplete
               label="Mode de jeu"
-              color="secondary-600"
+              color={theme.colors.secondary[600]}
               name="mode"
               value={modeValue}
               options={modes}
@@ -84,7 +84,7 @@ export default function FormGame({
           <div className="flex-1">
             <InputAutoComplete
               label="Theme"
-              color="neutral-600"
+              color={theme.colors.neutral[600]}
               name="category"
               value={themeValue}
               options={themes}
