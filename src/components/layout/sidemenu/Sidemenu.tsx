@@ -1,26 +1,11 @@
 "use client";
 import { useSidemenu } from "@/components/provider/SidemenuProvider";
-import {
-  faBaseball,
-  faCircleQuestion,
-  faDice,
-  faUsers,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  CSSObject,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  styled,
-  Theme,
-} from "@mui/material";
+import { CSSObject, Divider, IconButton, styled, Theme } from "@mui/material";
 import React from "react";
 import MuiDrawer from "@mui/material/Drawer";
+import ListCollection from "./ListCollection";
+import ListParties from "./ListParties";
+import ListAssistance from "./ListAssistance";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
@@ -30,7 +15,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   ...theme.mixins.toolbar,
 }));
 const openedMixin = (theme: Theme): CSSObject => ({
-  width: 240,
+  width: 280,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -52,7 +37,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme }) => ({
-  width: 240,
+  width: 280,
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
@@ -82,61 +67,11 @@ export default function Sidemenu() {
         <IconButton onClick={toggleSidemenu}></IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
-        {["Collection", "Parties", "Assistance"].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={[
-                {
-                  minHeight: 48,
-                  px: 2.5,
-                },
-                isMenuOpen
-                  ? {
-                      justifyContent: "initial",
-                    }
-                  : {
-                      justifyContent: "center",
-                    },
-              ]}
-            >
-              <ListItemIcon
-                sx={[
-                  {
-                    minWidth: 20,
-                    fontSize: 25,
-                    width: 40,
-                  },
-                  isMenuOpen
-                    ? {
-                        mr: 3,
-                      }
-                    : {
-                        mr: "auto",
-                      },
-                ]}
-              >
-                {index === 0 && <FontAwesomeIcon icon={faDice} />}
-                {index === 1 && <FontAwesomeIcon icon={faUsers} />}
-                {index === 2 && <FontAwesomeIcon icon={faCircleQuestion} />}
-              </ListItemIcon>
-              <ListItemText
-                primary={text}
-                sx={[
-                  isMenuOpen
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <ListCollection isMenuOpen={isMenuOpen} />
       <Divider />
+      <ListParties isMenuOpen={isMenuOpen} />
+      <Divider />
+      <ListAssistance isMenuOpen={isMenuOpen} />
     </Drawer>
   );
 }
