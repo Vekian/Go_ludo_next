@@ -1,5 +1,5 @@
 import MainContent from "./MainContent";
-import Filters from "./Filters";
+import Filters from "../components/ui/filter/gameFilter/Filters";
 import GamesList from "./GamesList";
 import { Suspense } from "react";
 
@@ -17,7 +17,9 @@ export default async function Home({
       <div className="bg-white ">
         <div className="container pt-10 pb-5 ">
           <MainContent />
-          <Filters />
+          <Suspense fallback={<p>Chargement ...</p>}>
+            <Filters />
+          </Suspense>
         </div>
       </div>
       <div>

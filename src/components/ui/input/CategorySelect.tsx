@@ -1,5 +1,5 @@
 "use client";
-// ButtonSelect.tsx
+// CategorySelect.tsx
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -7,7 +7,6 @@ import dynamic from "next/dynamic";
 import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import { Paper } from "@mui/material";
 import { GameCategory } from "@/interfaces";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
@@ -17,7 +16,7 @@ interface Option {
   value: string;
 }
 
-const ButtonSelect = ({
+const CategorySelect = ({
   label,
   options,
   color,
@@ -85,11 +84,11 @@ const ButtonSelect = ({
       options={optionsSelect}
       value={selectedValue} // Liaison avec la valeur sélectionnée
       onChange={handleSelect}
-      PaperComponent={({ children }) => (
-        <Paper style={{ fontFamily: "nunito", fontWeight: 700 }}>
-          {children}
-        </Paper>
-      )}
+      slotProps={{
+        paper: {
+          sx: { fontFamily: "nunito", fontWeight: 700 },
+        },
+      }}
       sx={{
         width: width,
         textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)",
@@ -130,4 +129,4 @@ const ButtonSelect = ({
 };
 
 // Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(ButtonSelect), { ssr: false });
+export default dynamic(() => Promise.resolve(CategorySelect), { ssr: false });

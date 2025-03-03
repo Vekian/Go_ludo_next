@@ -111,7 +111,7 @@ export default function FormGame({
                 <MenuItem value={"collection"}>Dans ma collection</MenuItem>
               </Select>
             </FormControl>
-            <div className="flex items-center">
+            <div className="flex items-center gap-x-6">
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputMuiText
                   type="text"
