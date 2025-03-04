@@ -1,3 +1,4 @@
+import { useSidemenu } from "@/components/provider/SidemenuProvider";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,11 +12,12 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ListParties({ isMenuOpen }: { isMenuOpen: boolean }) {
+export default function ListParties() {
+  const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Parties"} disablePadding sx={{ display: "block" }}>
-        <Link href={"/parties"}>
+        <Link href={"/parties"} onClick={toggleSidemenu}>
           <ListItemButton
             sx={[
               {

@@ -1,3 +1,4 @@
+import { useSidemenu } from "@/components/provider/SidemenuProvider";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,15 +12,12 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ListAssistance({
-  isMenuOpen,
-}: {
-  isMenuOpen: boolean;
-}) {
+export default function ListAssistance() {
+  const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Assistance"} disablePadding sx={{ display: "block" }}>
-        <Link href={"/"}>
+        <Link href={"/"} onClick={toggleSidemenu}>
           <ListItemButton
             sx={[
               {

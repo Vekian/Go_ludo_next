@@ -80,7 +80,7 @@ const CategorySelect = ({
           style={{ color: white }} // Couleur personnalisable
         />
       }
-      disablePortal
+      disablePortal={false}
       options={optionsSelect}
       value={selectedValue} // Liaison avec la valeur sélectionnée
       onChange={handleSelect}

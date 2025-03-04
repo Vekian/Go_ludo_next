@@ -1,3 +1,4 @@
+import { useSidemenu } from "@/components/provider/SidemenuProvider";
 import { faDice } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,15 +12,12 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ListCollection({
-  isMenuOpen,
-}: {
-  isMenuOpen: boolean;
-}) {
+export default function ListCollection() {
+  const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Collection"} disablePadding sx={{ display: "block" }}>
-        <Link href={"/users/profil"}>
+        <Link href={"/users/profil"} onClick={toggleSidemenu}>
           <ListItemButton
             sx={[
               {

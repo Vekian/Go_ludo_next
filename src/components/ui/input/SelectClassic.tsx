@@ -26,7 +26,7 @@ function SelectClassic({
   return (
     <div>
       <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
+        <FormControl>
           {label && (
             <InputLabel
               sx={{

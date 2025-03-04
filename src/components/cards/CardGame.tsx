@@ -7,7 +7,7 @@ import CardGameButtons from "./CardGameButtons";
 
 function CardGame({ game }: { game: GameListItem }) {
   return (
-    <div className="drop-shadow-lg min-w-44">
+    <div className="drop-shadow-lg min-w-36">
       <CardGameButtons game={game} />
 
       <Link
@@ -15,7 +15,7 @@ function CardGame({ game }: { game: GameListItem }) {
         href={`/${game.type === "base" ? "game" : game.type}s/${game.id}`}
       >
         <div className="flex flex-col items-center justify-center hover:bg-primary-50 bg-white rounded-md p-2 ">
-          <div className="h-36 relative w-full max-w-36 ">
+          <div className="min-h-28 xs:h-36 h-28 relative w-full max-w-36 ">
             <Image
               alt={game.name}
               src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${game.cover}`}

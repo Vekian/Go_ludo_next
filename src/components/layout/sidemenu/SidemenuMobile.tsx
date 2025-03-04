@@ -13,11 +13,11 @@ export default function SidemenuMobile({
     <Drawer open={isMenuOpen} sx={{}} className="block md:hidden">
       <div className="mt-14"></div>
       <Divider />
-      <ListCollection isMenuOpen={isMenuOpen} />
+      <ListCollection />
       <Divider />
-      <ListParties isMenuOpen={isMenuOpen} />
+      <ListParties />
       <Divider />
-      <ListAssistance isMenuOpen={isMenuOpen} />
+      <ListAssistance />
     </Drawer>
   );
 }

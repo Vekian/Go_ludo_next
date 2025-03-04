@@ -7,6 +7,7 @@ import UserButton from "./UserButton";
 import SidemenuButton from "./SidemenuButton";
 import { AppBar } from "@mui/material";
 import { theme } from "@/theme/theme";
+import SearchBarMobil from "./SearchBarMobil";
 
 export default function Header() {
   return (
@@ -30,6 +31,9 @@ export default function Header() {
                 height={50}
               />
             </Link>
+            <div className="md:hidden block">
+              <SearchBarMobil />
+            </div>
           </div>
           <SearchBar />
           <UserButton />

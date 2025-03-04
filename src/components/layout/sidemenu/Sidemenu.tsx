@@ -74,11 +74,11 @@ export default function Sidemenu() {
           <IconButton onClick={toggleSidemenu}></IconButton>
         </DrawerHeader>
         <Divider />
-        <ListCollection isMenuOpen={isMenuOpen} />
+        <ListCollection />
         <Divider />
-        <ListParties isMenuOpen={isMenuOpen} />
+        <ListParties />
         <Divider />
-        <ListAssistance isMenuOpen={isMenuOpen} />
+        <ListAssistance />
       </Drawer>
       <SidemenuMobile isMenuOpen={isMenuOpen} />
     </>

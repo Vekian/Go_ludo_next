@@ -1,32 +1,57 @@
-import CategorySelect from "../../input/CategorySelect";
-import { theme } from "@/theme/theme";
-import React from "react";
-import CategoryFilters from "./CategoryFilters";
+"use client";
+import { Tabs } from "@mui/material";
+import React, { useState } from "react";
 
-export default function Filters() {
+const CustomTab = ({ label }: { label: React.ReactNode }) => {
   return (
-    <div className="flex justify-around flex-wrap mt-5">
-      <CategorySelect
-        label="Trier par"
-        options={[
-          { id: 2, name: "test1", icon: "" },
-          { id: 3, name: "test2", icon: "" },
-        ]}
-        color={theme.colors.primary[900]}
-        width={150}
-        name="sort"
-      />
-      <CategoryFilters />
-      <CategorySelect
-        label="Durée"
-        options={[
-          { id: 2, name: "test1", icon: "" },
-          { id: 3, name: "test2", icon: "" },
-        ]}
-        color={theme.colors.primary[500]}
-        width={150}
-        name="duration"
-      />
+    <div
+      className="pt-6"
+      style={{
+        cursor: "pointer",
+        userSelect: "none",
+      }}
+    >
+      {label}
     </div>
+  );
+};
+export default function Filters({ children }: { children: React.ReactNode[] }) {
+  const [value, setValue] = useState(0);
+
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Tabs
+      value={value}
+      onChange={handleChange}
+      variant="scrollable"
+      scrollButtons={false} // Active le scroll si nécessaire
+      allowScrollButtonsMobile
+      aria-label="Filtres"
+      sx={{
+        "& .MuiTabs-scroller": {
+          overflowX: "auto",
+          scrollbarWidth: "none", // Masquer la scrollbar sur Firefox
+          "& .MuiTabs-flexContainer": {
+            justifyContent: "flex-start", // Aligner les tabs à gauche pour éviter l'effet de centrage forcé
+            gap: "16px",
+            width: "100%",
+            "@media (min-width: 768px)": {
+              justifyContent: "space-around",
+            },
+          },
+          "&::-webkit-scrollbar": {
+            display: "none", // Masquer la scrollbar sur Chrome/Safari
+          },
+        },
+        "& .MuiTabs-indicator": { display: "none" },
+      }}
+    >
+      {children.map((child, index) => (
+        <CustomTab key={index} label={child} />
+      ))}
+    </Tabs>
   );
 }
