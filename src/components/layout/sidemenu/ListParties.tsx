@@ -12,12 +12,19 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ListParties() {
+export default function ListParties({
+  isMobile = false,
+}: {
+  isMobile?: boolean;
+}) {
   const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Parties"} disablePadding sx={{ display: "block" }}>
-        <Link href={"/parties"} onClick={toggleSidemenu}>
+        <Link
+          href={"/parties"}
+          onClick={() => isMobile && isMenuOpen && toggleSidemenu()}
+        >
           <ListItemButton
             sx={[
               {

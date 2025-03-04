@@ -38,7 +38,7 @@ export default function Filters({ children }: { children: React.ReactNode[] }) {
             justifyContent: "flex-start", // Aligner les tabs à gauche pour éviter l'effet de centrage forcé
             gap: "16px",
             width: "100%",
-            "@media (min-width: 768px)": {
+            "@media (min-width: 640px)": {
               justifyContent: "space-around",
             },
           },

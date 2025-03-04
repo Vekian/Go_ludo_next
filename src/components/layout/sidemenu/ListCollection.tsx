@@ -12,12 +12,19 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ListCollection() {
+export default function ListCollection({
+  isMobile = false,
+}: {
+  isMobile?: boolean;
+}) {
   const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Collection"} disablePadding sx={{ display: "block" }}>
-        <Link href={"/users/profil"} onClick={toggleSidemenu}>
+        <Link
+          href={"/users/profil"}
+          onClick={() => isMobile && isMenuOpen && toggleSidemenu()}
+        >
           <ListItemButton
             sx={[
               {

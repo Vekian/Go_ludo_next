@@ -12,12 +12,19 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function ListAssistance() {
+export default function ListAssistance({
+  isMobile = false,
+}: {
+  isMobile?: boolean;
+}) {
   const { isMenuOpen, toggleSidemenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Assistance"} disablePadding sx={{ display: "block" }}>
-        <Link href={"/"} onClick={toggleSidemenu}>
+        <Link
+          href={"/"}
+          onClick={() => isMobile && isMenuOpen && toggleSidemenu()}
+        >
           <ListItemButton
             sx={[
               {
