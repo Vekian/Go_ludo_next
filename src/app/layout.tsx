@@ -28,7 +28,7 @@ export default function RootLayout({
 
               <div className="pt-16 h-screen lg:flex">
                 <Sidemenu />
-                <div className=" w-full">{children}</div>
+                <div className=" w-full overflow-y-auto">{children}</div>
               </div>
             </SidemenuProvider>
           </AuthProvider>

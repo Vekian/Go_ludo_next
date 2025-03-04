@@ -21,7 +21,7 @@ export const useSidemenu = () => {
 const SidemenuProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   // Fonction pour ouvrir et fermer le menu
   const toggleSidemenu = () => {

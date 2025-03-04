@@ -132,9 +132,11 @@ const InputSearchGlobal = ({
             {...rest}
             className="flex items-center justify-between px-5 py-2 hover:bg-neutral-100 cursor-pointer"
           >
-            <div>{option.name}</div>
-            <div className="text-neutral-400">
-              {option.type === "base" ? "jeu" : option.type}
+            <div>
+              <div className="text-lg">{option.name}</div>
+              <div className="text-neutral-400 text-md">
+                {option.type === "base" ? "jeu" : option.type}
+              </div>
             </div>
           </li>
         );

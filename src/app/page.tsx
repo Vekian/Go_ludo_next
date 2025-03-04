@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import CategoryFilter from "@/components/ui/filter/gameFilter/CategoryFilter";
 import ThemeFilter from "@/components/ui/filter/gameFilter/ThemeFilter";
 import ModeFilter from "@/components/ui/filter/gameFilter/ModeFilter";
+import SortFilter from "@/components/ui/filter/gameFilter/SortFilter";
+import TimeFilter from "@/components/ui/filter/gameFilter/TimeFilter";
 
 export default async function Home({
   searchParams,
@@ -22,9 +24,11 @@ export default async function Home({
           <MainContent />
           <Suspense fallback={<p>Chargement ...</p>}>
             <Filters>
+              <SortFilter />
               <CategoryFilter />
               <ThemeFilter />
               <ModeFilter />
+              <TimeFilter />
             </Filters>
           </Suspense>
         </div>

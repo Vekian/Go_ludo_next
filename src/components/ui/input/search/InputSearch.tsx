@@ -6,7 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import dynamic from "next/dynamic";
 import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faE, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { GameListItem, Param } from "@/interfaces";
 import { InputAdornment } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -134,10 +134,13 @@ const InputSearch = ({ label }: { label: string }) => {
                   className="object-contain"
                 />
               </div>
-              {option.name}
+              <div>
+                <div className="text-lg">{option.name}</div>
+                <div className="text-neutral-400 text-md">
+                  {option.type === "base" ? "jeu" : option.type}
+                </div>
+              </div>
             </div>
-
-            {option.type === "extension" && <FontAwesomeIcon icon={faE} />}
           </li>
         );
       }}
