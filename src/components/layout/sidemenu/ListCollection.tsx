@@ -17,13 +17,13 @@ export default function ListCollection({
 }: {
   isMobile?: boolean;
 }) {
-  const { isMenuOpen, toggleSidemenu } = useSidemenu();
+  const { isMenuOpen, isMobileMenuOpen, toggleMobileMenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Collection"} disablePadding sx={{ display: "block" }}>
         <Link
           href={"/users/profil"}
-          onClick={() => isMobile && isMenuOpen && toggleSidemenu()}
+          onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
         >
           <ListItemButton
             sx={[
@@ -31,7 +31,7 @@ export default function ListCollection({
                 px: 2.5,
                 py: 0,
               },
-              isMenuOpen
+              (isMobile && isMobileMenuOpen) || isMenuOpen
                 ? { justifyContent: "initial" }
                 : {
                     justifyContent: "center",
@@ -48,7 +48,7 @@ export default function ListCollection({
                   width: 40,
                   justifyContent: "center",
                 },
-                isMenuOpen
+                (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
                       mr: 3,
                     }
@@ -62,7 +62,7 @@ export default function ListCollection({
             <ListItemText
               primary="Collection"
               sx={[
-                isMenuOpen
+                (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
                       opacity: 1,
                     }
@@ -73,7 +73,11 @@ export default function ListCollection({
             />
           </ListItemButton>
         </Link>
-        <Collapse in={isMenuOpen} timeout={0} unmountOnExit>
+        <Collapse
+          in={(isMobile && isMobileMenuOpen) || isMenuOpen}
+          timeout={0}
+          unmountOnExit
+        >
           <List
             component="ul"
             disablePadding

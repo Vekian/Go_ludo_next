@@ -80,7 +80,7 @@ export default function Sidemenu() {
         <Divider />
         <ListAssistance />
       </Drawer>
-      <SidemenuMobile isMenuOpen={isMenuOpen} />
+      <SidemenuMobile />
     </>
   );
 }

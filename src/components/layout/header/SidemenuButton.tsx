@@ -6,9 +6,10 @@ import { IconButton } from "@mui/material";
 import React from "react";
 
 export default function SidemenuButton() {
-  const { toggleSidemenu } = useSidemenu();
+  const { toggleSidemenu, toggleMobileMenu } = useSidemenu();
   const handleDrawerOpen = () => {
     toggleSidemenu();
+    toggleMobileMenu();
   };
   return (
     <div>

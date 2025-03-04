@@ -3,14 +3,12 @@ import React from "react";
 import ListCollection from "./ListCollection";
 import ListParties from "./ListParties";
 import ListAssistance from "./ListAssistance";
+import { useSidemenu } from "@/components/provider/SidemenuProvider";
 
-export default function SidemenuMobile({
-  isMenuOpen,
-}: {
-  isMenuOpen: boolean;
-}) {
+export default function SidemenuMobile() {
+  const { isMobileMenuOpen } = useSidemenu();
   return (
-    <Drawer open={isMenuOpen} sx={{}} className="block md:hidden">
+    <Drawer open={isMobileMenuOpen} sx={{}} className="block md:hidden">
       <div className="mt-14"></div>
       <Divider />
       <ListCollection isMobile={true} />

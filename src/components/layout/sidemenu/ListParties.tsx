@@ -17,13 +17,13 @@ export default function ListParties({
 }: {
   isMobile?: boolean;
 }) {
-  const { isMenuOpen, toggleSidemenu } = useSidemenu();
+  const { isMenuOpen, isMobileMenuOpen, toggleMobileMenu } = useSidemenu();
   return (
     <List>
       <ListItem key={"Parties"} disablePadding sx={{ display: "block" }}>
         <Link
           href={"/parties"}
-          onClick={() => isMobile && isMenuOpen && toggleSidemenu()}
+          onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
         >
           <ListItemButton
             sx={[
@@ -32,7 +32,7 @@ export default function ListParties({
                 px: 2.5,
                 py: 0,
               },
-              isMenuOpen
+              (isMobile && isMobileMenuOpen) || isMenuOpen
                 ? { justifyContent: "initial" }
                 : {
                     justifyContent: "center",
@@ -49,7 +49,7 @@ export default function ListParties({
                   width: 40,
                   justifyContent: "center",
                 },
-                isMenuOpen
+                (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
                       mr: 3,
                     }
@@ -63,7 +63,7 @@ export default function ListParties({
             <ListItemText
               primary="Parties"
               sx={[
-                isMenuOpen
+                (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
                       opacity: 1,
                     }
@@ -74,7 +74,11 @@ export default function ListParties({
             />
           </ListItemButton>
         </Link>
-        <Collapse in={isMenuOpen} timeout={0} unmountOnExit>
+        <Collapse
+          in={(isMobile && isMobileMenuOpen) || isMenuOpen}
+          timeout={0}
+          unmountOnExit
+        >
           <List
             component="ul"
             disablePadding

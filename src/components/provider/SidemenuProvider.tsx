@@ -4,6 +4,8 @@ import React, { createContext, useContext, useState } from "react";
 interface SidemenuContextType {
   isMenuOpen: boolean;
   toggleSidemenu: () => void;
+  isMobileMenuOpen: boolean;
+  toggleMobileMenu: () => void;
 }
 
 const SidemenuContext = createContext<SidemenuContextType | undefined>(
@@ -22,14 +24,21 @@ const SidemenuProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Fonction pour ouvrir et fermer le menu
   const toggleSidemenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen((prev) => !prev);
+  };
+
   return (
-    <SidemenuContext.Provider value={{ isMenuOpen, toggleSidemenu }}>
+    <SidemenuContext.Provider
+      value={{ isMenuOpen, toggleSidemenu, isMobileMenuOpen, toggleMobileMenu }}
+    >
       {children}
     </SidemenuContext.Provider>
   );
