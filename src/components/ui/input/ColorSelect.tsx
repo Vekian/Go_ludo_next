@@ -1,14 +1,10 @@
+import { Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Autocomplete, TextField } from "@mui/material";
 import dynamic from "next/dynamic";
 import React from "react";
-
-interface Option {
-  label: string;
-  value: string;
-}
 
 function ColorSelect({
   label,

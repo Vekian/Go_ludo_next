@@ -2,15 +2,9 @@
 // CategorySelect.tsx
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import { GameCategory } from "@/interfaces";
+import { GameCategory, Option } from "@/interfaces";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import ColorSelect from "./ColorSelect";
-
-interface Option {
-  name?: string;
-  label: string;
-  value: string;
-}
 
 const CategorySelect = ({
   label,

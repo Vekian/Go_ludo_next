@@ -15,7 +15,11 @@ const CustomTab = ({ label }: { label: React.ReactNode }) => {
     </div>
   );
 };
-export default function Filters({ children }: { children: React.ReactNode[] }) {
+export default function TabsCustom({
+  children,
+}: {
+  children: React.ReactNode[];
+}) {
   const [value, setValue] = useState(0);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {

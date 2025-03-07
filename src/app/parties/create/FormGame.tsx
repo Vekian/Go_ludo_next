@@ -6,7 +6,7 @@ import InputMuiText from "@/components/ui/input/InputMuiText";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
-import { GameCategory, GameListItem, Option } from "@/interfaces";
+import { GameCategory, Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -32,7 +32,6 @@ export default function FormGame({
   themes: GameCategory[];
   modes: GameCategory[];
 }) {
-  const [games, setGames] = useState<GameListItem[]>();
   const [open, setOpen] = React.useState(false);
   const [typeSearch, setTypeSearch] = useState<string>("global");
   const [sort, setSort] = useState("");
