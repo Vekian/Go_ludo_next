@@ -11,7 +11,6 @@ export default async function CategoryFilter() {
       label="Catégorie"
       options={categories}
       color={theme.colors.primary[500]}
-      width={180}
       name="category"
     />
   );

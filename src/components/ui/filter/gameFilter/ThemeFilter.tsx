@@ -11,7 +11,6 @@ export default async function ThemeFilter() {
       label="Thème"
       options={themes}
       color={theme.colors.neutral[500]}
-      width={180}
       name="theme"
     />
   );

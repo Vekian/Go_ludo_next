@@ -1,37 +1,31 @@
-"use client";
-import { GameCategory, Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Autocomplete, Paper, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
+import dynamic from "next/dynamic";
 import React from "react";
 
-export default function InputAutoComplete({
+interface Option {
+  label: string;
+  value: string;
+}
+
+function ColorSelect({
   label,
   options,
   color,
-  name,
   value,
-  setValue,
+  onChange,
 }: {
   label: string;
-  options: GameCategory[];
+  options: Option[];
   color: string | null;
-  name: string;
   value: Option | null;
-  setValue: (value: Option | null) => void;
+  onChange: (event: React.SyntheticEvent, value: Option | null) => void;
 }) {
-  const optionsSelect = options.map((option) => ({
-    name: name,
-    label: option.name,
-    value: option.id.toString(),
-  }));
-
-  const white = theme.colors.white;
-
   const styleLabel = {
     border: "none",
-    color: value ? theme.colors.black : white,
+    color: value ? theme.colors.black : theme.colors.white,
     transform: "",
     fontFamily: "nunito",
     fontWeight: 700,
@@ -42,31 +36,23 @@ export default function InputAutoComplete({
     styleLabel.transform = "translate(30%,-100%)";
     styleLabel.fontSize = "0.8rem";
   }
-
-  const handleSelect = (
-    event: React.ChangeEvent<unknown>,
-    value: Option | null
-  ) => {
-    setValue(value);
-  };
-
   return (
     <Autocomplete
       popupIcon={
         <FontAwesomeIcon
           icon={faAngleDown}
-          style={{ color: white }} // Couleur personnalisable
+          style={{ color: theme.colors.white }} // Couleur personnalisable
         />
       }
       disablePortal={false}
-      options={optionsSelect}
+      options={options}
       value={value} // Liaison avec la valeur sélectionnée
-      onChange={handleSelect}
-      PaperComponent={({ children }) => (
-        <Paper style={{ fontFamily: "nunito", fontWeight: 700 }}>
-          {children}
-        </Paper>
-      )}
+      onChange={onChange}
+      slotProps={{
+        paper: {
+          sx: { fontFamily: "nunito", fontWeight: 700 },
+        },
+      }}
       sx={{
         textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)",
         ".MuiInputLabel-root": styleLabel,
@@ -80,12 +66,12 @@ export default function InputAutoComplete({
           textShadow: "0px 0px 0px rgba(0, 0, 0, 0.3)", // Change la couleur du label lorsqu'il est focalisé
         },
         ".MuiAutocomplete-clearIndicator": {
-          color: white, // Modifier la couleur de la croix via la classe
+          color: theme.colors.white, // Modifier la couleur de la croix via la classe
         },
         ".MuiAutocomplete-input": {
           marginLeft: "10px",
           marginRight: "10px",
-          color: white, // Change la couleur de la valeur sélectionnée
+          color: theme.colors.white, // Change la couleur de la valeur sélectionnée
         },
         ".MuiAutocomplete-listbox": {
           backgroundColor: color, // Appliquer la couleur de fond personnalisée pour la liste des options
@@ -104,3 +90,5 @@ export default function InputAutoComplete({
     />
   );
 }
+// Dynamic import with SSR disabled
+export default dynamic(() => Promise.resolve(ColorSelect), { ssr: false });

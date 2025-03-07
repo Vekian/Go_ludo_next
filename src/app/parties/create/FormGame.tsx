@@ -1,9 +1,11 @@
 "use client";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
-import InputAutoComplete from "@/components/ui/input/InputAutoComplete";
+import ColorSelect from "@/components/ui/input/ColorSelect";
 import InputMuiText from "@/components/ui/input/InputMuiText";
+import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import SelectClassic from "@/components/ui/input/SelectClassic";
+import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import { GameCategory, GameListItem, Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -14,7 +16,6 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
-  Input,
   InputLabel,
   MenuItem,
   Select,
@@ -36,8 +37,11 @@ export default function FormGame({
   const [typeSearch, setTypeSearch] = useState<string>("global");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState<Option | null>(null);
-  const [mode, setMode] = useState();
-  const [themeCategory, setThemeCategory] = useState();
+  const [mode, setMode] = useState<Option | null>(null);
+  const [themeCategory, setThemeCategory] = useState<Option | null>(null);
+  const [players, setPlayers] = useState([2, 30]);
+  const [age, setAge] = useState([18, 100]);
+  const [durationValue, setDurationValue] = useState<string>("0");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,6 +62,38 @@ export default function FormGame({
   const handleChangeSort = (event: SelectChangeEvent) => {
     setSort(event.target.value);
   };
+
+  const handleCategory = (
+    event: React.ChangeEvent<unknown>,
+    value: Option | null
+  ) => {
+    setCategory(value);
+  };
+
+  const handleMode = (
+    event: React.ChangeEvent<unknown>,
+    value: Option | null
+  ) => {
+    setMode(value);
+  };
+  const handleTheme = (
+    event: React.ChangeEvent<unknown>,
+    value: Option | null
+  ) => {
+    setThemeCategory(value);
+  };
+
+  const handlePlayers = (event: Event, newRangeValue: number | number[]) => {
+    if (Array.isArray(newRangeValue)) {
+      setPlayers(newRangeValue as number[]);
+    }
+  };
+
+  const handleAge = (event: Event, newRangeValue: number | number[]) => {
+    if (Array.isArray(newRangeValue)) {
+      setAge(newRangeValue as number[]);
+    }
+  };
   return (
     <div className="w-full flex flex-col gap-y-10">
       <div className="bg-white rounded-lg px-36 py-6 w-full flex gap-x-10 items-center">
@@ -73,8 +109,8 @@ export default function FormGame({
           maxWidth={"xl"}
         >
           <DialogTitle className="font-farro">Ajouter un jeu</DialogTitle>
-          <DialogContent>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <DialogContent className="flex flex-col gap-y-6 p-16">
+            <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 300 }}>
               <InputLabel
                 id="typeSearchLabel"
                 sx={{
@@ -111,7 +147,7 @@ export default function FormGame({
                 <MenuItem value={"collection"}>Dans ma collection</MenuItem>
               </Select>
             </FormControl>
-            <div className="flex items-center gap-x-6">
+            <div className="flex items-center gap-x-6 justify-between">
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputMuiText
                   type="text"
@@ -124,6 +160,7 @@ export default function FormGame({
                 value={sort}
                 color={theme.colors.primary[900]}
                 options={[
+                  { label: "Aucun", value: "none" },
                   { label: "Nom", value: "name" },
                   { label: "Plus récent", value: "date" },
                 ]}
@@ -131,18 +168,115 @@ export default function FormGame({
                 label="Trier par"
               />
               <div className="w-36">
-                <InputAutoComplete
+                <ColorSelect
                   color={theme.colors.primary[600]}
                   label="Categorie"
-                  options={categories}
-                  name="category"
-                  setValue={setCategory}
+                  options={categories.map((category) => ({
+                    name: "category",
+                    label: category.name,
+                    value: category.id.toString(),
+                  }))}
+                  onChange={handleCategory}
                   value={category}
+                />
+              </div>
+              <div className="w-40">
+                <ColorSelect
+                  color={theme.colors.secondary[600]}
+                  label="Mode de jeu"
+                  options={modes.map((mode) => ({
+                    name: "mode",
+                    label: mode.name,
+                    value: mode.id.toString(),
+                  }))}
+                  onChange={handleMode}
+                  value={mode}
+                />
+              </div>
+              <div className="w-44">
+                <ColorSelect
+                  color={theme.colors.neutral[600]}
+                  label="Thème de jeu"
+                  options={themes.map((theme) => ({
+                    name: "theme",
+                    label: theme.name,
+                    value: theme.id.toString(),
+                  }))}
+                  onChange={handleTheme}
+                  value={themeCategory}
+                />
+              </div>
+            </div>
+            <div className="flex  items-end gap-x-6 justify-between">
+              <div className="w-1/4">
+                <label
+                  htmlFor="players"
+                  className="text-primary-950 font-semibold"
+                >
+                  Nombre de joueurs:
+                </label>
+                <DoubleSlider
+                  max={30}
+                  min={2}
+                  defaultValue={[5, 10]}
+                  valueLabelDisplay="auto"
+                  value={players}
+                  onChange={handlePlayers}
+                  slots={{
+                    thumb: RangeThumb,
+                  }}
+                />
+              </div>{" "}
+              <div className="w-1/4">
+                <label
+                  htmlFor="players"
+                  className="text-primary-950 font-semibold"
+                >
+                  Age:
+                </label>
+                <DoubleSlider
+                  max={100}
+                  min={18}
+                  defaultValue={[18, 100]}
+                  valueLabelDisplay="auto"
+                  value={age}
+                  onChange={handleAge}
+                  slots={{
+                    thumb: RangeThumb,
+                  }}
+                  sx={{
+                    "& .MuiSlider-thumb": {
+                      backgroundColor: theme.colors.primary[600],
+                    },
+                    "& .MuiSlider-valueLabel": {
+                      backgroundColor: theme.colors.primary[600],
+                    },
+                    color: theme.colors.primary[600],
+                  }}
+                />
+              </div>
+              <div>
+                <SelectClassic
+                  color={theme.colors.primary[700]}
+                  options={[
+                    { label: "Aucune", value: "0" },
+                    { label: "30 minutes", value: "30" },
+                    { label: "1 heure", value: "60" },
+                    { label: "1 heure 30", value: "90" },
+                    { label: "2 heures", value: "120" },
+                    { label: "3 heures", value: "180" },
+                    { label: "4 heures", value: "240" },
+                  ]}
+                  onChange={(event: SelectChangeEvent<string>) => {
+                    setDurationValue(event.target.value);
+                  }}
+                  value={durationValue}
+                  label="Durée"
                 />
               </div>
             </div>
           </DialogContent>
-          <DialogActions>
+          <DialogActions className="flex justify-center">
             <ButtonSecondary
               onClick={handleClose}
               label="Annuler"
@@ -155,7 +289,7 @@ export default function FormGame({
                 textTransform: "none",
               }}
             >
-              Ajouter
+              Rechercher
             </Button>
           </DialogActions>
         </Dialog>

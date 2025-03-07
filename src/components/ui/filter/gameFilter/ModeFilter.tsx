@@ -11,7 +11,6 @@ export default async function ModeFilter() {
       label="Mode de jeu"
       options={modes}
       color={theme.colors.secondary[600]}
-      width={180}
       name="mode"
     />
   );

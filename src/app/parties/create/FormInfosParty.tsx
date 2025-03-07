@@ -40,9 +40,6 @@ export default function FormInfosParty() {
               Nombre de joueurs:
             </label>
             <DoubleSlider
-              getAriaLabel={(index) =>
-                index === 0 ? "Minimum price" : "Maximum price"
-              }
               max={30}
               min={2}
               defaultValue={[5, 10]}
@@ -59,9 +56,6 @@ export default function FormInfosParty() {
               Age:
             </label>
             <DoubleSlider
-              getAriaLabel={(index) =>
-                index === 0 ? "Minimum price" : "Maximum price"
-              }
               max={100}
               min={18}
               defaultValue={[5, 10]}

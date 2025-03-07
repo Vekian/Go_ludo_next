@@ -1,5 +1,5 @@
 "use client";
-import InputAutoComplete from "@/components/ui/input/InputAutoComplete";
+import ColorSelect from "@/components/ui/input/ColorSelect";
 import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import Rating from "@/components/ui/rating/Rating";
@@ -30,17 +30,26 @@ export default function FormGame({
     handleChange("game", newGameValue);
   }
 
-  function handleCategoryValue(newCategoryValue: Option | null) {
+  function handleCategoryValue(
+    event: React.ChangeEvent<unknown>,
+    newCategoryValue: Option | null
+  ) {
     setCategoryValue(newCategoryValue);
     handleChange("category", newCategoryValue ? newCategoryValue.value : null);
   }
 
-  function handleThemeValue(newThemeValue: Option | null) {
+  function handleThemeValue(
+    event: React.ChangeEvent<unknown>,
+    newThemeValue: Option | null
+  ) {
     setThemeValue(newThemeValue);
     handleChange("theme", newThemeValue ? newThemeValue.value : null);
   }
 
-  function handleModeValue(newModeValue: Option | null) {
+  function handleModeValue(
+    event: React.ChangeEvent<unknown>,
+    newModeValue: Option | null
+  ) {
     setModeValue(newModeValue);
     handleChange("mode", newModeValue ? newModeValue.value : null);
   }
@@ -62,33 +71,42 @@ export default function FormGame({
         <h5 className="font-semibold">Ou un type de jeu particulier ?</h5>
         <div className="mt-5 gap-x-5 flex">
           <div className="flex-1">
-            <InputAutoComplete
+            <ColorSelect
               label="Catégorie"
               color={theme.colors.primary[600]}
-              name="category"
               value={categoryValue}
-              options={categories}
-              setValue={handleCategoryValue}
+              options={categories.map((category) => ({
+                name: "category",
+                label: category.name,
+                value: category.id.toString(),
+              }))}
+              onChange={handleCategoryValue}
             />
           </div>
           <div className="flex-1">
-            <InputAutoComplete
+            <ColorSelect
               label="Mode de jeu"
               color={theme.colors.secondary[600]}
-              name="mode"
               value={modeValue}
-              options={modes}
-              setValue={handleModeValue}
+              options={modes.map((mode) => ({
+                name: "mode",
+                label: mode.name,
+                value: mode.id.toString(),
+              }))}
+              onChange={handleModeValue}
             />
           </div>
           <div className="flex-1">
-            <InputAutoComplete
+            <ColorSelect
               label="Theme"
               color={theme.colors.neutral[600]}
-              name="category"
               value={themeValue}
-              options={themes}
-              setValue={handleThemeValue}
+              options={themes.map((theme) => ({
+                name: "theme",
+                label: theme.name,
+                value: theme.id.toString(),
+              }))}
+              onChange={handleThemeValue}
             />
           </div>
         </div>
