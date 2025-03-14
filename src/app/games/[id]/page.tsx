@@ -17,9 +17,9 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
   const game = gameData.game;
 
   return (
-    <div className="p-4 pt-10">
-      <div className="flex bg-white rounded-lg">
-        <div className="w-1/3 pt-5">
+    <div className="lg:p-4 pt-10">
+      <div className="flex bg-white rounded-lg flex-wrap">
+        <div className="xl:w-1/3 w-full pt-5 flex justify-center overflow-x-hidden">
           <Carousel
             autoPlay={false}
             imgs={game.images}
@@ -28,7 +28,7 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
             width={200}
           />
         </div>
-        <div className=" w-2/3 p-5">
+        <div className=" xl:w-2/3 w-full lg:p-5 ">
           <div className="flex justify-between items-start p-5">
             <h2>{game.name}</h2>
             <Rating value={game.rating} />

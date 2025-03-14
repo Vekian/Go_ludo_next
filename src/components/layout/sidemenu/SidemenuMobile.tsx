@@ -8,7 +8,7 @@ import { useSidemenu } from "@/components/provider/SidemenuProvider";
 export default function SidemenuMobile() {
   const { isMobileMenuOpen } = useSidemenu();
   return (
-    <Drawer open={isMobileMenuOpen} sx={{}} className="block md:hidden">
+    <Drawer open={isMobileMenuOpen} sx={{}} className="block lg:hidden">
       <div className="mt-14"></div>
       <Divider />
       <ListCollection isMobile={true} />

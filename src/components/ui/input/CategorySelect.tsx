@@ -1,12 +1,11 @@
 "use client";
 // CategorySelect.tsx
 import React, { useState } from "react";
-import dynamic from "next/dynamic";
 import { GameCategory, Option } from "@/interfaces";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import ColorSelect from "./ColorSelect";
 
-const CategorySelect = ({
+export default function CategorySelect({
   label,
   options,
   color,
@@ -16,7 +15,7 @@ const CategorySelect = ({
   options: GameCategory[];
   color: string | null;
   name: string;
-}) => {
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -52,7 +51,4 @@ const CategorySelect = ({
       color={color}
     />
   );
-};
-
-// Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(CategorySelect), { ssr: false });
+}

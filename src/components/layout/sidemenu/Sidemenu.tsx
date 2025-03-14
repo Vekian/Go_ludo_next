@@ -68,7 +68,7 @@ export default function Sidemenu() {
         variant="permanent"
         open={isMenuOpen}
         sx={{}}
-        className="hidden md:block"
+        className="hidden lg:block"
       >
         <DrawerHeader>
           <IconButton onClick={toggleSidemenu}></IconButton>

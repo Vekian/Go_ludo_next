@@ -137,14 +137,17 @@ function ReviewModal({
           </Button>
         </DialogActions>
       </Dialog>
-      <div className="flex items-center">
-        <ButtonPrimary
-          label={review ? "Éditer" : "Ajouter un avis"}
-          color={theme.colors.primary[500]}
-          onClick={handleClickOpen}
-          icon={faPenToSquare}
-        />
-        <div className="ml-20">
+      <div className="flex items-center flex-wrap justify-center gap-y-3">
+        <div className="w-full sm:w-auto flex justify-center">
+          <ButtonPrimary
+            label={review ? "Éditer" : "Ajouter un avis"}
+            color={theme.colors.primary[500]}
+            onClick={handleClickOpen}
+            icon={faPenToSquare}
+          />
+        </div>
+
+        <div className="sm:ml-20 sm:order-last order-first">
           <Rating onChange={handleChange} readOnly={false} value={rating} />
         </div>
       </div>

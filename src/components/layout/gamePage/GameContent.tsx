@@ -1,5 +1,7 @@
 "use client";
 import Onglet from "@/components/cards/Onglet";
+import TabsCustom from "@/components/ui/tab/TabsCustom";
+import { theme } from "@/theme/theme";
 import React, { useState } from "react";
 
 function GameContent({ children }: { children: React.ReactNode }) {
@@ -22,12 +24,12 @@ function GameContent({ children }: { children: React.ReactNode }) {
     }
   };
   return (
-    <div className="p-5 ">
-      <div className="flex justify-between">
+    <div className="p-5">
+      <TabsCustom>
         <div className="flex-1" onClick={() => handleClick(1)}>
           <Onglet
             label="Infos de jeu"
-            color="primary-500"
+            color={theme.colors.primary[500]}
             angle={0}
             active={onglet === 1 ? true : false}
           />
@@ -35,7 +37,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
         <div className="flex-1" onClick={() => handleClick(2)}>
           <Onglet
             label="Infos techniques"
-            color="secondary-500"
+            color={theme.colors.secondary[500]}
             angle={1}
             active={onglet === 2 ? true : false}
           />
@@ -43,7 +45,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
         <div className="flex-1" onClick={() => handleClick(3)}>
           <Onglet
             label="Statistiques"
-            color="primary-800"
+            color={theme.colors.primary[800]}
             angle={0}
             active={onglet === 3 ? true : false}
           />
@@ -51,12 +53,12 @@ function GameContent({ children }: { children: React.ReactNode }) {
         <div className="flex-1" onClick={() => handleClick(4)}>
           <Onglet
             label="À propos"
-            color="neutral-500"
+            color={theme.colors.neutral[500]}
             angle={1}
             active={onglet === 4 ? true : false}
           />
         </div>
-      </div>
+      </TabsCustom>
       <div className=" bg-neutral-50 border-white border-2 overflow-x-hidden shadow-card h-80 rounded-b-xxl text-primary-950 font-semibold p-8 z-40 relative ">
         {children}
       </div>

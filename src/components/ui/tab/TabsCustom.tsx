@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const CustomTab = ({ label }: { label: React.ReactNode }) => {
   return (
     <div
-      className="pt-6"
+      className="pt-6 w-full flex justify-center"
       style={{
         cursor: "pointer",
         userSelect: "none",
@@ -33,7 +33,6 @@ export default function TabsCustom({
       variant="scrollable"
       scrollButtons={false} // Active le scroll si nécessaire
       allowScrollButtonsMobile
-      aria-label="Filtres"
       sx={{
         "& .MuiTabs-scroller": {
           overflowX: "auto",

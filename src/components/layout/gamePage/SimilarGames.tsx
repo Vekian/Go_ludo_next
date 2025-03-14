@@ -8,7 +8,7 @@ export default async function SimilarGames({ gameData }: { gameData: Game }) {
   const gamesList: ListPaginated<GameListItem> = await getGames();
 
   return (
-    <div className="mt-4 pl-10 pr-10">
+    <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
       {gameData.extensions && (
         <div>
           <h2>Extensions</h2>

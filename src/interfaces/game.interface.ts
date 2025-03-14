@@ -33,6 +33,12 @@ export interface Game {
   ageMax: number;
   barCode: string;
   publishedAt: string;
+  language: string;
+  weight: number;
+  height: number;
+  length: number;
+  width: number;
+  edition: number;
   images: string[];
   categories: GameCategories;
   creators: GameCreators;
@@ -61,6 +67,7 @@ export interface GameCreators {
   authors?: GameCreator[];
   editors?: GameCreator[];
   illustrators?: GameCreator[];
+  distributors?: GameCreator[];
 }
 
 export interface GameCreator {
@@ -72,7 +79,7 @@ export interface GameCreator {
 export interface GameAward {
   id: number;
   name: string;
-  logo: string;
+  image: string;
 }
 
 export interface UserGame {

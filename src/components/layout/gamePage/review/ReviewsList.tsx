@@ -11,8 +11,8 @@ async function ReviewsList({ game }: { game: Game }) {
 
   return (
     <div className="mt-4 pl-10 pr-10">
-      <div className="flex items-center justify-center relative mb-5 mt-10">
-        <div className="flex absolute left-0">
+      <div className="flex items-center justify-center relative mb-5 mt-10 flex-wrap">
+        <div className="flex lg:absolute lg:left-0 sm:flex-1 lg:w-auto w-full justify-center">
           <h3>{reviewList.totalResults} avis</h3>
         </div>
         {!reviewList.accountReview && (
