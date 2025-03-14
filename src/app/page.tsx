@@ -7,6 +7,8 @@ import ModeFilter from "@/components/ui/filter/gameFilter/ModeFilter";
 import SortFilter from "@/components/ui/filter/gameFilter/SortFilter";
 import TimeFilter from "@/components/ui/filter/gameFilter/TimeFilter";
 import TabsCustom from "../components/ui/tab/TabsCustom";
+import CustomLinearProgress from "@/components/ui/loader/CustomLoader";
+import { CircularProgress } from "@mui/material";
 
 export default async function Home({
   searchParams,
@@ -15,6 +17,8 @@ export default async function Home({
     category: string | string[];
     theme: string | string[];
     mode: string | string[];
+    sort: string;
+    time: string;
   }>;
 }) {
   return (
@@ -22,26 +26,31 @@ export default async function Home({
       <div className="bg-white ">
         <div className="container pt-10 pb-5 ">
           <MainContent />
-          <Suspense fallback={<p>Chargement ...</p>}>
-            <TabsCustom>
-              <SortFilter />
+
+          <TabsCustom>
+            <SortFilter />
+            <Suspense fallback={<CircularProgress />}>
               <div className="w-36">
                 <CategoryFilter />
               </div>
+            </Suspense>
+            <Suspense fallback={<CircularProgress />}>
               <div className="w-40">
                 <ThemeFilter />
               </div>
+            </Suspense>
+            <Suspense fallback={<CircularProgress />}>
               <div className="w-44">
                 <ModeFilter />
               </div>
+            </Suspense>
 
-              <TimeFilter />
-            </TabsCustom>
-          </Suspense>
+            <TimeFilter />
+          </TabsCustom>
         </div>
       </div>
       <div>
-        <Suspense fallback={<p>Chargement ...</p>}>
+        <Suspense fallback={<CustomLinearProgress />}>
           <GamesList searchParams={searchParams} />
         </Suspense>
       </div>

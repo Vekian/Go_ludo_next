@@ -34,3 +34,15 @@ export function getRelativeTime(date: string, uppercase: boolean = true) {
   }
   return relativeTime;
 }
+
+export const formatGameDuration = (minutes: number): string => {
+  if (minutes < 60) {
+    return `${minutes} min`;
+  } else {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0
+      ? `${hours}h ${remainingMinutes} min`
+      : `${hours}h`;
+  }
+};

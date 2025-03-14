@@ -11,6 +11,8 @@ async function GamesList({
     category: string | string[];
     theme: string | string[];
     mode: string | string[];
+    sort: string;
+    time: string;
   }>;
 }) {
   const params = await searchParams;
@@ -27,6 +29,14 @@ async function GamesList({
     {
       key: "category[]",
       value: categoryParams,
+    },
+    {
+      key: "sort",
+      value: params.sort,
+    },
+    {
+      key: "time",
+      value: params.time,
     },
   ]);
   return <ListGames games={gamesList.items} />;

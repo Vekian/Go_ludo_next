@@ -3,12 +3,25 @@ import React, { useState } from "react";
 import SelectClassic from "../../input/SelectClassic";
 import { theme } from "@/theme/theme";
 import { SelectChangeEvent } from "@mui/material";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function TimeFilter() {
   const [time, setTime] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setTime(event.target.value);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+
+    if (event.target.value) {
+      newSearchParams.set("time", event.target.value);
+    } else {
+      newSearchParams.delete("time");
+    }
+
+    router.replace(`${pathname}?${newSearchParams.toString()}`);
   };
   return (
     <div className="w-32">

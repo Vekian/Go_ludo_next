@@ -1,7 +1,7 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import SimpleSlider from "@/components/ui/slider/SimpleSlider";
 import { Game } from "@/interfaces";
-import { getDurationFromTimestamp } from "@/lib/date";
+import { formatGameDuration } from "@/lib/date";
 import { theme } from "@/theme/theme";
 import {
   faCakeCandles,
@@ -28,8 +28,8 @@ function GameInfos({ game }: { game: Game }) {
         </h5>
         <h5 className="xl:flex-1 w-full">
           <FontAwesomeIcon icon={faClock} className="pr-3  text-xl" />
-          Entre {getDurationFromTimestamp(game.playtimeMin)} et{" "}
-          {getDurationFromTimestamp(game.playtimeMax)}
+          Entre {formatGameDuration(Number(game.playtimeMin))} et{" "}
+          {formatGameDuration(Number(game.playtimeMax))}
         </h5>
       </div>
       <div className="flex flex-wrap justify-center">
