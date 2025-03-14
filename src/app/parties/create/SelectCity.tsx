@@ -1,5 +1,4 @@
 "use client";
-import InputText from "@/components/ui/input/InputText";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import { CityDetails } from "@/interfaces/localisation.interface";
 import { getCity } from "@/lib/api/server/city";

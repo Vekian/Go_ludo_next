@@ -70,7 +70,7 @@ const InputSearchGlobal = ({
     fontFamily: "nunito",
     fontWeight: 700,
     fontSize: "17px",
-    marginLeft: "50px",
+    marginLeft: "30px",
   };
 
   return (
@@ -121,6 +121,9 @@ const InputSearchGlobal = ({
           fontFamily: "nunito",
           fontWeight: 700,
           // Applique un border-radius au champ de texte à l'intérieur de l'Autocomplete
+        },
+        ".MuiTextField-root": {
+          overflow: "hidden",
         },
       }}
       renderOption={(props, option) => {

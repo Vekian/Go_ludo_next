@@ -54,11 +54,11 @@ export default function FormGame({
     handleChange("mode", newModeValue ? newModeValue.value : null);
   }
   return (
-    <div className="bg-white gap-y-5 flex flex-col flex-1 p-10 rounded-lg">
+    <div className="bg-white gap-y-5 flex flex-col xl:flex-1 w-full flex-wrap p-10 rounded-lg">
       <h2>À quoi veux-tu jouer ?</h2>
       <div>
         <h5 className="font-semibold mb-2">Un jeu particulier ?</h5>
-        <div className="w-2/3">
+        <div className="2xl:w-2/3 w-full ">
           <InputSearchGlobal
             label="Un jeu, une extension..."
             icon={faDice}
@@ -69,8 +69,8 @@ export default function FormGame({
       </div>
       <div>
         <h5 className="font-semibold">Ou un type de jeu particulier ?</h5>
-        <div className="mt-5 gap-x-5 flex">
-          <div className="flex-1">
+        <div className="mt-5 gap-x-5 flex flex-wrap gap-y-3">
+          <div className="md:flex-1 w-full">
             <ColorSelect
               label="Catégorie"
               color={theme.colors.primary[600]}
@@ -83,7 +83,7 @@ export default function FormGame({
               onChange={handleCategoryValue}
             />
           </div>
-          <div className="flex-1">
+          <div className="md:flex-1 w-full">
             <ColorSelect
               label="Mode de jeu"
               color={theme.colors.secondary[600]}
@@ -96,7 +96,7 @@ export default function FormGame({
               onChange={handleModeValue}
             />
           </div>
-          <div className="flex-1">
+          <div className="md:flex-1 w-full">
             <ColorSelect
               label="Theme"
               color={theme.colors.neutral[600]}
@@ -111,8 +111,8 @@ export default function FormGame({
           </div>
         </div>
       </div>
-      <div className="flex items-end gap-x-10">
-        <div className="flex-1">
+      <div className="flex flex-wrap items-end gap-x-10 gap-y-3">
+        <div className="md:flex-1">
           <h5 className="font-semibold">Durée max</h5>
           <SelectClassic
             color={theme.colors.primary[700]}
@@ -132,7 +132,7 @@ export default function FormGame({
             value={durationValue}
           />
         </div>
-        <div className="flex-1">
+        <div className="md:flex-1">
           <h5 className="font-semibold">Notes min du jeu</h5>
           <Rating
             value={ratingValue}

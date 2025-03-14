@@ -49,7 +49,7 @@ export default function Form({
   };
   return (
     <div>
-      <div className="flex gap-x-10 p-10">
+      <div className="flex gap-x-10 p-10 flex-wrap gap-y-3">
         <FormLocalisation handleChange={handleChange} errors={errors} />
         <FormGame
           categories={categories}
@@ -58,8 +58,8 @@ export default function Form({
           handleChange={handleChange}
         />
       </div>
-      <div className="flex justify-center px--10 gap-x-10">
-        <div className="flex-1 flex justify-end">
+      <div className="flex justify-center sm:px--10 gap-x-10">
+        <div className="sm:flex-1 flex justify-end">
           <Link href="/parties/create">
             <ButtonPrimary
               color={theme.colors.primary[600]}
@@ -68,7 +68,7 @@ export default function Form({
             />
           </Link>
         </div>
-        <div className="flex-1 justify-start">
+        <div className="sm:flex-1 justify-start">
           <ButtonPrimary
             color={theme.colors.primary[900]}
             label="Rechercher"

@@ -62,12 +62,12 @@ export default function FormLocalisation({
     handleChange("city", newCityValue);
   };
   return (
-    <div className="bg-white flex-1 p-10 rounded-lg">
+    <div className="bg-white xl:flex-1 w-full flex-wrap p-10 rounded-lg">
       <h2 className="mb-5">Avec qui veux-tu jouer ?</h2>
-      <div className="flex  gap-x-10">
-        <div className="flex-1">
+      <div className="flex flex-wrap gap-x-10 gap-y-3">
+        <div className="md:flex-1 w-full">
           <InputSearchCity
-            label="Où ? (ville, code postal...)"
+            label="Où ? (ville, code postal)"
             icon={faLocationDot}
             onChange={(id) => handleCityChange(id ?? 0)}
           />
@@ -75,8 +75,8 @@ export default function FormLocalisation({
             <p className="text-red-500 text-sm">{errors.city}</p>
           )}
         </div>
-        <div className="flex-1">
-          <div className="w-2/3">
+        <div className="md:flex-1">
+          <div className="lg:w-2/3">
             {" "}
             <SelectClassic
               value={ageValue}
@@ -97,8 +97,8 @@ export default function FormLocalisation({
           </div>
         </div>
       </div>
-      <div className="mt-5 flex gap-x-10">
-        <div className="flex-1">
+      <div className="mt-5 flex-wrap flex gap-x-10 gap-y-3">
+        <div className="md:flex-1 w-full">
           <div className="flex justify-between">
             <h5 className="font-semibold">Dans un rayon de</h5>
             <h5 className="font-semibold">{slideValue} km</h5>
@@ -114,7 +114,7 @@ export default function FormLocalisation({
             <p>100 km</p>
           </div>
         </div>
-        <div className="flex-1">
+        <div className="md:flex-1 w-full">
           <div className="flex justify-between">
             <h5 className="font-semibold">Nombre de joueurs</h5>
             <h5 className="font-semibold">
@@ -154,7 +154,7 @@ export default function FormLocalisation({
                   handleChange("date", newDate.format("YYYY-MM-DD"));
                 }
               }}
-              className="w-1/2"
+              className="md:w-1/2"
               slotProps={{
                 textField: {
                   fullWidth: true,

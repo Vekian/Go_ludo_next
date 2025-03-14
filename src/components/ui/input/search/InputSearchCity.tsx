@@ -61,7 +61,7 @@ const InputSearchCity = ({
     fontFamily: "nunito",
     fontWeight: 700,
     fontSize: "17px",
-    marginLeft: "50px",
+    marginLeft: "30px",
   };
 
   return (
@@ -104,6 +104,9 @@ const InputSearchCity = ({
         ".MuiAutocomplete-input": {
           marginLeft: "10px",
           marginRight: "10px", // Change la couleur de la valeur sélectionnée
+        },
+        ".MuiTextField-root": {
+          overflow: "hidden",
         },
         ".MuiOutlinedInput-root": {
           borderRadius: "50px",
