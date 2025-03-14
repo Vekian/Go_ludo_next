@@ -5,9 +5,8 @@ import React, { useState } from "react";
 const CustomTab = ({ label }: { label: React.ReactNode }) => {
   return (
     <div
-      className="pt-6 w-full flex justify-center"
+      className="pt-8 w-full flex justify-center"
       style={{
-        cursor: "pointer",
         userSelect: "none",
       }}
     >

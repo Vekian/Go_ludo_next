@@ -9,8 +9,8 @@ function UserParams({ user }: { user: UserProfil }) {
       id="onglet2"
       className="ongletContent  opacity-0 translate-x-full  transform absolute flex flex-col justify-between w-full"
     >
-      <div className="flex">
-        <div className="flex-1">
+      <div className="flex gap-3 flex-wrap">
+        <div className="md:flex-1">
           <label
             htmlFor="changeMail"
             className="text-primary-950 font-semibold"
@@ -25,7 +25,7 @@ function UserParams({ user }: { user: UserProfil }) {
             className="bg-neutral-200 rounded-full px-3 py-1 ml-3"
           />
         </div>
-        <div className="flex-1">
+        <div className="md:flex-1">
           <label
             htmlFor="changePass"
             className="text-primary-950 font-semibold"
@@ -41,8 +41,8 @@ function UserParams({ user }: { user: UserProfil }) {
           />
         </div>
       </div>
-      <div className="flex">
-        <div className="mt-6 flex flex-col flex-1">
+      <div className="flex gap-3 flex-wrap">
+        <div className="mt-6 flex flex-col md:flex-1">
           <label className="text-primary-950 font-semibold">
             Mot de passe oublié:
           </label>
@@ -53,14 +53,14 @@ function UserParams({ user }: { user: UserProfil }) {
             />
           </div>
         </div>
-        <div className="mt-6 flex flex-col flex-1">
+        <div className="mt-6 flex  flex-col md:flex-1">
           <label
             htmlFor="delAccount"
             className="text-primary-950 font-semibold"
           >
             Suppression de compte:
           </label>
-          <div className="flex items-center">
+          <div className="flex flex-wrap gap-3 items-center">
             <input
               type="text"
               id="delAccount"
@@ -68,7 +68,10 @@ function UserParams({ user }: { user: UserProfil }) {
               defaultValue={""}
               className="bg-neutral-200 rounded-full px-3 py-1 ml-3"
             />
-            <ButtonPrimary label="Supprimer le compte" color="primary-700" />
+            <ButtonPrimary
+              label="Supprimer le compte"
+              color={theme.colors.primary[700]}
+            />
           </div>
         </div>
       </div>

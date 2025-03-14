@@ -22,8 +22,11 @@ function ButtonInput({
       onClick={() => onClick()}
       style={{ backgroundColor: color }}
     >
-      <FontAwesomeIcon icon={icon ?? faEdit} className={`${label && "mr-2"}`} />
-      {label}
+      <FontAwesomeIcon
+        icon={icon ?? faEdit}
+        className={`${label && "lg:mr-2"}`}
+      />
+      <span className="lg:inline hidden">{label}</span>
     </button>
   );
 }

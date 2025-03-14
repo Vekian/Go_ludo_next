@@ -27,7 +27,7 @@ function GameAbout({ game }: { game: Game }) {
             />
           )}
 
-        {game.awards && (
+        {game.awards && game.awards.length > 0 && (
           <div className="flex flex-col flex-1">
             <h4>Récompenses</h4>
             <div className="flex mt-2">
