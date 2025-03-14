@@ -105,9 +105,6 @@ const InputSearchCity = ({
           marginLeft: "10px",
           marginRight: "10px", // Change la couleur de la valeur sélectionnée
         },
-        ".MuiTextField-root": {
-          overflow: "hidden",
-        },
         ".MuiOutlinedInput-root": {
           borderRadius: "50px",
           fontFamily: "nunito",

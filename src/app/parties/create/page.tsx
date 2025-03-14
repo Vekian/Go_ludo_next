@@ -1,9 +1,7 @@
 import React from "react";
-import FormInfosParty from "./FormInfosParty";
-import FormLocalisationParty from "./FormLocalisationParty";
-import FormGame from "./FormGame";
 import { GameCategory } from "@/interfaces";
 import { getCategories } from "@/lib/api/server/category";
+import Form from "./Form";
 
 export default async function page() {
   const categories: GameCategory[] = await getCategories("category");
@@ -24,9 +22,7 @@ export default async function page() {
           </p>
         </div>
       </div>
-      <FormInfosParty />
-      <FormLocalisationParty />
-      <FormGame categories={categories} themes={themes} modes={modes} />
+      <Form categories={categories} themes={themes} modes={modes} />
     </div>
   );
 }

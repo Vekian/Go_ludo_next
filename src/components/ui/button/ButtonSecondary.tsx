@@ -1,13 +1,17 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 function ButtonSecondary({
   label,
   color,
   onClick,
+  icon,
 }: {
   label: string;
   color: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  icon?: IconProp;
 }) {
   return (
     <button
@@ -15,6 +19,7 @@ function ButtonSecondary({
       style={{ border: `2px solid ${color}` }}
       onClick={onClick}
     >
+      {icon && <FontAwesomeIcon icon={icon} className={`${label && "me-2"}`} />}
       {label}
     </button>
   );

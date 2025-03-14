@@ -1,4 +1,6 @@
 "use client";
+import ListGames from "@/components/list/ListGames";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import ColorSelect from "@/components/ui/input/ColorSelect";
@@ -6,7 +8,9 @@ import InputMuiText from "@/components/ui/input/InputMuiText";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
-import { GameCategory, Option } from "@/interfaces";
+import { GameCategory, GameListItem, Option } from "@/interfaces";
+import { ListPaginated } from "@/interfaces/paginator.interface";
+import { getGames } from "@/lib/api/server/game";
 import { theme } from "@/theme/theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -27,11 +31,18 @@ export default function FormGame({
   categories,
   themes,
   modes,
+  addGame,
+  removeGame,
+  gamesAdd,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
+  addGame: (game: GameListItem) => void;
+  removeGame: (game: GameListItem) => void;
+  gamesAdd: GameListItem[] | null;
 }) {
+  const { showSnackbar } = useSnackbarContext();
   const [open, setOpen] = React.useState(false);
   const [typeSearch, setTypeSearch] = useState<string>("global");
   const [sort, setSort] = useState("");
@@ -41,6 +52,7 @@ export default function FormGame({
   const [players, setPlayers] = useState([2, 30]);
   const [age, setAge] = useState([18, 100]);
   const [durationValue, setDurationValue] = useState<string>("0");
+  const [games, setGames] = useState<GameListItem[] | null>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,9 +61,49 @@ export default function FormGame({
     event.preventDefault();
     setOpen(false);
   };
-
+  const handleAddGame = (game: GameListItem) => {
+    if (
+      !gamesAdd ||
+      (gamesAdd && !gamesAdd.some((gameAdd) => gameAdd.id === game.id))
+    ) {
+      addGame(game);
+      showSnackbar("Jeu ajouté", "success");
+    }
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+
+    const params = [];
+    if (name) {
+      params.push({
+        key: "search",
+        value: name,
+      });
+    }
+    if (category) {
+      params.push({
+        key: "category[]",
+        value: category.value,
+      });
+    }
+    if (themeCategory) {
+      params.push({
+        key: "theme[]",
+        value: themeCategory.value,
+      });
+    }
+    if (mode) {
+      params.push({
+        key: "mode[]",
+        value: mode.value,
+      });
+    }
+    const data: ListPaginated<GameListItem> = await getGames(params);
+    if (data) {
+      setGames(data.items);
+    }
   };
 
   const handleChangeTypeSearch = (event: SelectChangeEvent) => {
@@ -94,12 +146,13 @@ export default function FormGame({
     }
   };
   return (
-    <div className="w-full flex flex-col gap-y-10">
+    <div className="w-full flex flex-col gap-y-3">
       <div className="bg-white rounded-lg px-36 py-6 w-full flex gap-x-10 items-center">
         <h3>Choisir un ou plusieurs jeux</h3>
         <Dialog
           open={open}
           fullWidth
+          keepMounted
           onClose={handleClose}
           PaperProps={{
             component: "form",
@@ -151,6 +204,7 @@ export default function FormGame({
                 <InputMuiText
                   type="text"
                   variant="filled"
+                  name="name"
                   size="small"
                   placeholder="Nom du jeu"
                 />
@@ -217,7 +271,6 @@ export default function FormGame({
                 <DoubleSlider
                   max={30}
                   min={2}
-                  defaultValue={[5, 10]}
                   valueLabelDisplay="auto"
                   value={players}
                   onChange={handlePlayers}
@@ -274,22 +327,37 @@ export default function FormGame({
                 />
               </div>
             </div>
+            <div className="flex justify-center">
+              <ButtonSecondary
+                onClick={handleClose}
+                label="Annuler"
+                color={theme.colors.primary[800]}
+              />
+              <Button
+                className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
+                type="submit"
+                sx={{
+                  textTransform: "none",
+                }}
+              >
+                Rechercher
+              </Button>
+            </div>
+            {games && games.length > 0 && (
+              <div>
+                <ListGames games={games} addGame={handleAddGame} />
+              </div>
+            )}
+            {games && games.length === 0 && (
+              <p>Aucun jeu ne correspond à votre recherche</p>
+            )}
           </DialogContent>
-          <DialogActions className="flex justify-center">
-            <ButtonSecondary
+          <DialogActions className="flex justify-center pb-6">
+            <ButtonPrimary
               onClick={handleClose}
-              label="Annuler"
-              color={theme.colors.primary[800]}
+              label="Fermer"
+              color={theme.colors.primary[500]}
             />
-            <Button
-              className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
-              type="submit"
-              sx={{
-                textTransform: "none",
-              }}
-            >
-              Rechercher
-            </Button>
           </DialogActions>
         </Dialog>
         <ButtonPrimary
@@ -297,6 +365,17 @@ export default function FormGame({
           color={theme.colors.primary[600]}
           onClick={handleClickOpen}
           icon={faPlus}
+        />
+      </div>
+      <div>
+        {gamesAdd && gamesAdd.length > 0 && (
+          <ListGames games={gamesAdd} removeGame={removeGame} />
+        )}
+      </div>
+      <div className="flex justify-center mb-32 mt-6">
+        <ButtonPrimary
+          color={theme.colors.primary[500]}
+          label="Créer la partie"
         />
       </div>
     </div>
