@@ -1,15 +1,24 @@
 "use client";
 import InputText from "@/components/ui/input/InputText";
+import PartyDatePicker from "@/components/ui/input/PartyDatePicker";
+import PartyTimePicker from "@/components/ui/input/PartyTimePicker";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import { theme } from "@/theme/theme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { useState } from "react";
+
+dayjs.locale("fr");
 
 export default function FormInfosParty() {
   const [rangeValue, setRangeValue] = useState([2, 30]);
   const [ageValue, setAgeValue] = useState([2, 30]);
   const [description, setDescription] = useState("");
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
+  const [timeValue, setTimeValue] = React.useState<Dayjs | null>(null);
 
   const handleRangeChange = (
     event: Event,
@@ -44,6 +53,7 @@ export default function FormInfosParty() {
               min={2}
               defaultValue={[5, 10]}
               valueLabelDisplay="auto"
+              name="players"
               value={rangeValue}
               onChange={handleRangeChange}
               slots={{
@@ -60,6 +70,7 @@ export default function FormInfosParty() {
               min={18}
               defaultValue={[5, 10]}
               valueLabelDisplay="auto"
+              name="age"
               value={ageValue}
               onChange={handleAgeChange}
               slots={{
@@ -78,11 +89,61 @@ export default function FormInfosParty() {
           </div>
         </div>
       </div>
+      <div>
+        <div className="flex gap-x-10 mt-5">
+          <LocalizationProvider
+            dateAdapter={AdapterDayjs}
+            localeText={{
+              cancelButtonLabel: "Annuler", // Personnaliser le bouton Cancel
+              okButtonLabel: "Valider", // Personnaliser le bouton OK
+            }}
+          >
+            <div className="flex-1">
+              <h5 className="font-semibold">Disponibilités</h5>
+              <PartyDatePicker
+                value={selectedDate}
+                format="YYYY-MM-DD"
+                name="meetingDate"
+                onChange={(newDate) => {
+                  if (newDate) {
+                    setSelectedDate(newDate);
+                  }
+                }}
+                className="md:w-1/2"
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: "small",
+                    inputProps: { placeholder: " Sélectionnez une date" },
+                  },
+                }}
+              />
+            </div>
+            <div className="flex-1 flex gap-x-5">
+              <div className="max-w-44">
+                <h5 className="font-semibold">À</h5>
+                <PartyTimePicker
+                  ampm={false}
+                  value={timeValue}
+                  name="meetingTime"
+                  onChange={(timeStart) => {
+                    if (timeStart) {
+                      setTimeValue(timeStart);
+                    }
+                  }}
+                  slotProps={{ textField: { fullWidth: true, size: "small" } }}
+                />
+              </div>
+            </div>
+          </LocalizationProvider>
+        </div>
+      </div>
       <div className="flex flex-col">
         <label htmlFor="description">Description</label>
         <TextAreaAutosize
           minRows={3}
           value={description}
+          name="description"
           onChange={(e) => setDescription(e.currentTarget.value)}
           sx={{
             backgroundColor: theme.colors.primary[50],

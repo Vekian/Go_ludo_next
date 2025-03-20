@@ -46,3 +46,14 @@ export const formatGameDuration = (minutes: number): string => {
       : `${hours}h`;
   }
 };
+
+export function joinDateTime(date: string, time: string) {
+  const [day, month, year] = date.split("/").map(Number);
+
+  // Séparer l'heure et les minutes
+  const [hours, minutes] = time.split(":").map(Number);
+
+  // Créer un objet Date au format ISO
+  const dateTime = new Date(year, month - 1, day, hours, minutes);
+  return dateTime.toISOString();
+}

@@ -33,6 +33,7 @@ export default function SelectCity({
         icon={faCity}
         onChange={handleCityChange}
       />
+      {city && <input type="hidden" name="city" value={city} />}
     </div>
   );
 }

@@ -15,7 +15,7 @@ function ButtonSecondary({
 }) {
   return (
     <button
-      className={`hover:opacity-75 bg-white text-neutral-950 rounded-md font-semibold  px-3 py-1 m-2.5`}
+      className={`hover:opacity-75 bg-white text-neutral-950 rounded-md font-semibold  px-3 py-1.5 `}
       style={{ border: `2px solid ${color}` }}
       onClick={onClick}
     >

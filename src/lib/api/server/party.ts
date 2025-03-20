@@ -3,7 +3,7 @@
 import { handleAuth } from "../authServer";
 import { z } from "zod";
 
-const formSchema = z.object({
+const searchPartySchema = z.object({
   age: z.coerce.number().optional(),
   city: z.coerce.number().optional(),
   zone: z.coerce.number().optional(),
@@ -18,6 +18,28 @@ const formSchema = z.object({
   mode: z.coerce.number().optional(),
   duration: z.coerce.number().optional(),
   rating: z.coerce.number().optional(),
+});
+
+const createPartySchema = z.object({
+  ageMin: z.coerce.number(),
+  ageMax: z.coerce.number(),
+  city: z.coerce.number(),
+  playersMin: z.coerce.number(),
+  playersMax: z.coerce.number(),
+  games: z.array(z.number().min(1, "Le jeu ne peut pas être vide")),
+  meetingDate: z.coerce.date().optional(),
+  meetingTime: z
+    .string()
+    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Format invalide (HH:MM)")
+    .optional(),
+  title: z
+    .string()
+    .min(4, "4 cractères minimum")
+    .max(300, "300 caractères maximum"),
+  description: z
+    .string()
+    .min(4, "4 cractères minimum")
+    .max(500, "500 caractères maximum"),
 });
 
 export async function getParty(id: number) {
@@ -35,7 +57,7 @@ export async function getParty(id: number) {
 }
 
 export async function searchParties(formData: FormData) {
-  const validatedFields = formSchema.safeParse(
+  const validatedFields = searchPartySchema.safeParse(
     Object.fromEntries(formData.entries())
   );
 
@@ -94,5 +116,47 @@ export async function leaveParty(idParty: number, idParticipant: number) {
   return {
     ok: true,
     message: "Vous avez quitté la partie avec succès",
+  };
+}
+
+export async function createParty(
+  formData: FormData,
+  gamesId: number[] | undefined
+) {
+  const dataFormat = Object.fromEntries(formData.entries());
+
+  const validatedFields = createPartySchema.safeParse({
+    games: gamesId,
+    ...dataFormat,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Impossible de créer la partie",
+      ok: false,
+    };
+  }
+
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`);
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "POST",
+    body: JSON.stringify(validatedFields.data),
+  });
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      message:
+        "Impossible de créeer la partie, veuillez vérifier vos informations",
+    };
+  }
+  const data = await response.json();
+  return {
+    ok: true,
+    message: "Partie créée avec succès",
+    data: data,
   };
 }

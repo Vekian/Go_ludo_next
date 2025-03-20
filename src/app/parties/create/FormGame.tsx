@@ -1,5 +1,5 @@
 "use client";
-import ListGames from "@/components/list/ListGames";
+import ListPartyGames from "@/components/list/ListPartyGames";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
@@ -54,7 +54,8 @@ export default function FormGame({
   const [durationValue, setDurationValue] = useState<string>("0");
   const [games, setGames] = useState<GameListItem[] | null>(null);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setOpen(true);
   };
   const handleClose = (event: React.SyntheticEvent<Element, Event>) => {
@@ -62,13 +63,13 @@ export default function FormGame({
     setOpen(false);
   };
   const handleAddGame = (game: GameListItem) => {
-    if (
-      !gamesAdd ||
-      (gamesAdd && !gamesAdd.some((gameAdd) => gameAdd.id === game.id))
-    ) {
-      addGame(game);
-      showSnackbar("Jeu ajouté", "success");
-    }
+    addGame(game);
+    showSnackbar("Jeu ajouté", "success");
+  };
+
+  const handleRemoveGame = (game: GameListItem) => {
+    removeGame(game);
+    showSnackbar("Jeu retiré", "success");
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -327,7 +328,7 @@ export default function FormGame({
                 />
               </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex items-center justify-center">
               <ButtonSecondary
                 onClick={handleClose}
                 label="Annuler"
@@ -345,7 +346,12 @@ export default function FormGame({
             </div>
             {games && games.length > 0 && (
               <div>
-                <ListGames games={games} addGame={handleAddGame} />
+                <ListPartyGames
+                  games={games}
+                  addGame={handleAddGame}
+                  removeGame={handleRemoveGame}
+                  gamesAdd={gamesAdd}
+                />
               </div>
             )}
             {games && games.length === 0 && (
@@ -369,14 +375,13 @@ export default function FormGame({
       </div>
       <div>
         {gamesAdd && gamesAdd.length > 0 && (
-          <ListGames games={gamesAdd} removeGame={removeGame} />
+          <ListPartyGames
+            games={gamesAdd}
+            removeGame={handleRemoveGame}
+            addGame={handleAddGame}
+            gamesAdd={games}
+          />
         )}
-      </div>
-      <div className="flex justify-center mb-32 mt-6">
-        <ButtonPrimary
-          color={theme.colors.primary[500]}
-          label="Créer la partie"
-        />
       </div>
     </div>
   );

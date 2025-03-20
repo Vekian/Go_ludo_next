@@ -1,6 +1,5 @@
 import { Party } from "@/interfaces/party.interface";
 import React from "react";
-import { formatDate } from "@/lib/date";
 import {
   faCalendarCheck,
   faCity,
@@ -23,7 +22,7 @@ export default function Infos({ party }: { party: Party }) {
             </div>
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faCalendarCheck} />
-              <p>{formatDate(party.closedAt)}</p>
+              <p></p>
             </div>
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faUserGroup} />
