@@ -23,23 +23,29 @@ const searchPartySchema = z.object({
 const createPartySchema = z.object({
   ageMin: z.coerce.number(),
   ageMax: z.coerce.number(),
-  city: z.coerce.number(),
+  city: z.coerce.number().min(1, "Veuillez choisir une ville").default(0),
   playersMin: z.coerce.number(),
   playersMax: z.coerce.number(),
-  games: z.array(z.number().min(1, "Le jeu ne peut pas être vide")),
-  meetingDate: z.coerce.date().optional(),
+  games: z
+    .array(z.number().min(1, "Veuillez choisir au moins un jeu"))
+    .default([0]),
+  meetingDate: z.union([z.coerce.date(), z.null()]).optional(),
   meetingTime: z
     .string()
     .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Format invalide (HH:MM)")
-    .optional(),
+    .optional()
+    .nullable(),
   title: z
     .string()
-    .min(4, "4 cractères minimum")
-    .max(300, "300 caractères maximum"),
+    .min(4, "4 caractères minimum")
+    .max(300, "300 caractères maximum")
+    .default(""),
+
   description: z
     .string()
-    .min(4, "4 cractères minimum")
-    .max(500, "500 caractères maximum"),
+    .min(4, "4 caractères minimum")
+    .max(500, "500 caractères maximum")
+    .default(""),
 });
 
 export async function getParty(id: number) {
@@ -123,11 +129,16 @@ export async function createParty(
   formData: FormData,
   gamesId: number[] | undefined
 ) {
-  const dataFormat = Object.fromEntries(formData.entries());
+  const rawData = Object.fromEntries(formData.entries());
+  const filteredData = Object.fromEntries(
+    Object.entries(rawData).filter(
+      ([, value]) => value !== "" && value !== null && value !== undefined
+    )
+  );
 
   const validatedFields = createPartySchema.safeParse({
     games: gamesId,
-    ...dataFormat,
+    ...filteredData,
   });
 
   if (!validatedFields.success) {

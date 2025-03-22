@@ -13,7 +13,7 @@ import Link from "next/link";
 export default function CardParty({ party }: { party: PartyCard }) {
   return (
     <Link href={`/parties/${party.id}`}>
-      <div className="flex bg-white rounded-lg p-3 w-full">
+      <div className="flex bg-white rounded-lg p-3 w-full gap-x-6">
         <div className="h-28 relative w-full max-w-36 ">
           {party.games[0] && (
             <Image

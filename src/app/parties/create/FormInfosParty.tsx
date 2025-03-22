@@ -13,7 +13,11 @@ import React, { useState } from "react";
 
 dayjs.locale("fr");
 
-export default function FormInfosParty() {
+export default function FormInfosParty({
+  errors,
+}: {
+  errors: Record<string, string[]> | null;
+}) {
   const [rangeValue, setRangeValue] = useState([2, 30]);
   const [ageValue, setAgeValue] = useState([2, 30]);
   const [description, setDescription] = useState("");
@@ -42,6 +46,7 @@ export default function FormInfosParty() {
             Nom du groupe
           </label>
           <InputText value="" id="title" />
+          {errors?.title && <p className="text-red-500">{errors.title[0]}</p>}
         </div>
         <div className="flex w-3/4 gap-x-12">
           <div className="flex-1">
@@ -60,6 +65,12 @@ export default function FormInfosParty() {
                 thumb: RangeThumb,
               }}
             />
+            {errors?.playersMin && (
+              <p className="text-red-500">{errors.playersMin[0]}</p>
+            )}
+            {errors?.playersMax && (
+              <p className="text-red-500">{errors.playersMax[0]}</p>
+            )}
           </div>
           <div className="flex-1">
             <label htmlFor="players" className="text-primary-950 font-semibold">
@@ -86,6 +97,12 @@ export default function FormInfosParty() {
                 color: theme.colors.primary[600],
               }}
             />
+            {errors?.ageMin && (
+              <p className="text-red-500">{errors.ageMin[0]}</p>
+            )}
+            {errors?.ageMax && (
+              <p className="text-red-500">{errors.ageMax[0]}</p>
+            )}
           </div>
         </div>
       </div>
@@ -118,6 +135,9 @@ export default function FormInfosParty() {
                   },
                 }}
               />
+              {errors?.meetingDate && (
+                <p className="text-red-500">{errors.meetingDate[0]}</p>
+              )}
             </div>
             <div className="flex-1 flex gap-x-5">
               <div className="max-w-44">
@@ -133,6 +153,9 @@ export default function FormInfosParty() {
                   }}
                   slotProps={{ textField: { fullWidth: true, size: "small" } }}
                 />
+                {errors?.meetingTime && (
+                  <p className="text-red-500">{errors.meetingTime[0]}</p>
+                )}
               </div>
             </div>
           </LocalizationProvider>
@@ -159,6 +182,9 @@ export default function FormInfosParty() {
             },
           }}
         />
+        {errors?.description && (
+          <p className="text-red-500">{errors.description[0]}</p>
+        )}
       </div>
     </div>
   );

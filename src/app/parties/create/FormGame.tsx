@@ -34,6 +34,7 @@ export default function FormGame({
   addGame,
   removeGame,
   gamesAdd,
+  errors,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
@@ -41,6 +42,7 @@ export default function FormGame({
   addGame: (game: GameListItem) => void;
   removeGame: (game: GameListItem) => void;
   gamesAdd: GameListItem[] | null;
+  errors: Record<string, string[]> | null;
 }) {
   const { showSnackbar } = useSnackbarContext();
   const [open, setOpen] = React.useState(false);
@@ -372,6 +374,7 @@ export default function FormGame({
           onClick={handleClickOpen}
           icon={faPlus}
         />
+        {errors?.games && <p className="text-red-500">{errors.games[0]}</p>}
       </div>
       <div>
         {gamesAdd && gamesAdd.length > 0 && (
