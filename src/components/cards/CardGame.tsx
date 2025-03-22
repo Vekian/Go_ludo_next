@@ -5,11 +5,10 @@ import { GameListItem } from "@/interfaces";
 import Link from "next/link";
 import CardGameButtons from "./CardGameButtons";
 
-function CardGame({ game }: { game: GameListItem }) {
+function CardGame({ game, logged }: { game: GameListItem; logged: boolean }) {
   return (
     <div className="drop-shadow-lg min-w-36">
-      <CardGameButtons game={game} />
-
+      {logged && <CardGameButtons game={game} />}
       <Link
         key={`${game.id}list`}
         href={`/${game.type === "base" ? "game" : game.type}s/${game.id}`}

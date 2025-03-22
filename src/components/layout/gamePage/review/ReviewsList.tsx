@@ -5,9 +5,12 @@ import { Game, GameReview, ReviewList } from "@/interfaces";
 import ReviewModal from "./ReviewModal";
 import { getReviews } from "@/lib/api/server/review";
 import { theme } from "@/theme/theme";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 async function ReviewsList({ game }: { game: Game }) {
   const reviewList: ReviewList = await getReviews(game.id);
+  const session = await getServerSession(authOptions);
 
   return (
     <div className="mt-4 pl-10 pr-10">
@@ -15,7 +18,7 @@ async function ReviewsList({ game }: { game: Game }) {
         <div className="flex lg:absolute lg:left-0 sm:flex-1 lg:w-auto w-full justify-center">
           <h3>{reviewList.totalResults} avis</h3>
         </div>
-        {!reviewList.accountReview && (
+        {!reviewList.accountReview && session && (
           <ReviewModal gameId={game.id} review={reviewList.accountReview} />
         )}
       </div>

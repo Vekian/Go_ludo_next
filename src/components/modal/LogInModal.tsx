@@ -1,8 +1,6 @@
 "use client";
 
-import React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import React, { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,9 +8,15 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { signIn } from "next-auth/react";
 import { theme } from "@/theme/theme";
+import { useRouter } from "next/navigation";
+import ButtonSecondary from "../ui/button/ButtonSecondary";
+import CustomInput from "../ui/input/InputMuiText";
+import { CircularProgress } from "@mui/material";
 
 function LogInModal() {
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,10 +36,13 @@ function LogInModal() {
       <Dialog
         open={open}
         onClose={handleClose}
+        maxWidth="md"
+        fullWidth
         PaperProps={{
           component: "form",
           onSubmit: async (e: React.FormEvent) => {
             e.preventDefault();
+            setLoading(true);
             const form = e.currentTarget as HTMLFormElement;
 
             const formData = new FormData(form);
@@ -50,39 +57,58 @@ function LogInModal() {
             if (result?.error) {
             } else {
               handleClose();
+              setLoading(false);
+              router.refresh();
             }
           },
         }}
       >
         <DialogTitle>Se connecter</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="email"
-            name="email"
-            label="Adresse email"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="password"
-            name="password"
-            label="Mot de passe"
-            type="password"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Annuler</Button>
-          <Button type="submit">Se connecter</Button>
-        </DialogActions>
+        {loading ? (
+          <div className="flex w-full justify-center items-center min-h-52">
+            <CircularProgress />
+          </div>
+        ) : (
+          <DialogContent>
+            <CustomInput
+              className="mt-3"
+              autoFocus
+              required
+              id="email"
+              name="email"
+              label="Adresse email"
+              type="email"
+              fullWidth
+            />
+            <CustomInput
+              autoFocus
+              required
+              margin="dense"
+              id="password"
+              name="password"
+              label="Mot de passe"
+              type="password"
+              fullWidth
+            />
+          </DialogContent>
+        )}
+
+        {!loading && (
+          <DialogActions>
+            <ButtonSecondary
+              label="Annuler"
+              color={theme.colors.primary[900]}
+              onClick={(e) => {
+                e.preventDefault();
+                handleClose();
+              }}
+            />
+            <ButtonPrimary
+              label="Se connecter"
+              color={theme.colors.primary[500]}
+            />
+          </DialogActions>
+        )}
       </Dialog>
     </React.Fragment>
   );

@@ -1,4 +1,5 @@
 import ListGames from "@/components/list/ListGames";
+import ArrowPaginator from "@/components/list/pagination/ArrowPaginator";
 import { GameListItem } from "@/interfaces";
 import { ListPaginated } from "@/interfaces/paginator.interface";
 import { getGames } from "@/lib/api/server/game";
@@ -44,7 +45,13 @@ async function GamesList({
       value: params.page,
     },
   ]);
-  return <ListGames gameList={gamesList} />;
+  return (
+    <div className="relative flex">
+      {gamesList.page > 1 && <ArrowPaginator type="prev" />}
+      <ListGames games={gamesList.items} />{" "}
+      {gamesList.page < gamesList.totalPages && <ArrowPaginator type="next" />}
+    </div>
+  );
 }
 
 export default GamesList;

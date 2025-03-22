@@ -16,10 +16,10 @@ function UserButton() {
           <ProfilButton user={session.user}></ProfilButton>
         </>
       ) : (
-        <>
+        <div className="flex gap-x-3">
           <LogInModal />
           <ButtonPrimary label="S'inscrire" color={theme.colors.primary[900]} />
-        </>
+        </div>
       )}
     </div>
   );
