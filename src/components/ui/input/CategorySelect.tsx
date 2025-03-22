@@ -31,6 +31,7 @@ export default function CategorySelect({
 
     if (value && value.name) {
       newSearchParams.set(value.name, value.value);
+      newSearchParams.delete("page");
     } else {
       newSearchParams.delete(name);
     }

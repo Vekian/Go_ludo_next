@@ -19,6 +19,7 @@ export default async function Home({
     mode: string | string[];
     sort: string;
     time: string;
+    page: string;
   }>;
 }) {
   return (

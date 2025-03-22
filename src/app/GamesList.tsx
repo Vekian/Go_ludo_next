@@ -13,6 +13,7 @@ async function GamesList({
     mode: string | string[];
     sort: string;
     time: string;
+    page: string;
   }>;
 }) {
   const params = await searchParams;
@@ -38,8 +39,12 @@ async function GamesList({
       key: "time",
       value: params.time,
     },
+    {
+      key: "page",
+      value: params.page,
+    },
   ]);
-  return <ListGames games={gamesList.items} />;
+  return <ListGames gameList={gamesList} />;
 }
 
 export default GamesList;

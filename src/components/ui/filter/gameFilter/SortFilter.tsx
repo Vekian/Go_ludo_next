@@ -17,6 +17,7 @@ export default function SortFilter() {
 
     if (event.target.value) {
       newSearchParams.set("sort", event.target.value);
+      newSearchParams.delete("page");
     } else {
       newSearchParams.delete("sort");
     }

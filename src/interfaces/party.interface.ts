@@ -5,14 +5,14 @@ export interface PartyCard {
   id: number;
   title: string;
   playersMax: number;
-  playersCount: number;
   cover: string;
   games: Partial<GameListItem>[];
   city: City;
   date: string;
   author: UserProfil;
-  capacity: number;
   participants: number;
+  ageMax: number;
+  ageMin: number;
 }
 
 export interface Party {
@@ -32,6 +32,8 @@ export interface Party {
   joined?: boolean;
   messages?: Message[] | [];
   createdAt: string;
+  ageMax: number;
+  ageMin: number;
 }
 
 export interface Message {

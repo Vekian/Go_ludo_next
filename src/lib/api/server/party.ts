@@ -5,6 +5,7 @@ import { z } from "zod";
 
 const searchPartySchema = z.object({
   age: z.coerce.number().optional(),
+  page: z.coerce.number().optional(),
   city: z.coerce.number().optional(),
   zone: z.coerce.number().optional(),
   playersMin: z.coerce.number().optional(),
@@ -74,14 +75,16 @@ export async function searchParties(formData: FormData) {
       ok: false,
     };
   }
-  const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/search`
-  );
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`);
+
+  const validatedData = Object.entries(validatedFields.data);
+  validatedData.forEach((param) => {
+    url.searchParams.append(param[0], String(param[1]));
+  });
   const headers = await handleAuth();
   const response = await fetch(url, {
     headers: headers,
-    method: "POST",
-    body: JSON.stringify(validatedFields.data),
+    method: "GET",
   });
 
   if (!response.ok) {

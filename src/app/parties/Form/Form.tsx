@@ -8,6 +8,7 @@ import { PartyCard } from "@/interfaces/party.interface";
 import { theme } from "@/theme/theme";
 import { searchParties } from "@/lib/api/server/party";
 import Link from "next/link";
+import { ListPaginated } from "@/interfaces/paginator.interface";
 
 export default function Form({
   categories,
@@ -18,7 +19,7 @@ export default function Form({
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
-  setParties: (parties: PartyCard[] | null) => void;
+  setParties: (parties: ListPaginated<PartyCard> | null) => void;
 }) {
   const [formData, setFormData] = useState<FormData>(new FormData());
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);

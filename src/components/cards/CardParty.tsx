@@ -35,7 +35,7 @@ export default function CardParty({ party }: { party: PartyCard }) {
           <div className="flex gap-x-16">
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faUserGroup} />
-              {party.participants}/{party.capacity}
+              {party.participants + 1}/{party.playersMax}
             </div>
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faCity} />

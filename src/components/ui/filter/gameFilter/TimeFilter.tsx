@@ -17,6 +17,7 @@ export default function TimeFilter() {
 
     if (event.target.value) {
       newSearchParams.set("time", event.target.value);
+      newSearchParams.delete("page");
     } else {
       newSearchParams.delete("time");
     }
