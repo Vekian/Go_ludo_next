@@ -3,13 +3,13 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Divider, Menu, MenuItem } from "@mui/material";
+import { Avatar, Button, Divider, Menu, MenuItem } from "@mui/material";
 import { signOut } from "next-auth/react";
-import Image from "next/image";
 import React from "react";
 import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
 import { User } from "next-auth";
+import { getImg } from "@/lib/utils";
 
 function ProfilButton({ user }: { user: User }) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -42,16 +42,13 @@ function ProfilButton({ user }: { user: User }) {
         sx={{ textTransform: "none" }}
         className="md:rounded-md rounded-full md:min-w-32 md:w-auto min-w-0 w-0 bg-primary-600   hover:brightness-90 h-10 font-semibold"
       >
-        {user.avatar && (
-          <div className="w-14 h-14 absolute">
-            <Image
-              alt="avatar"
-              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${user.avatar}`}
-              className="md:-ml-16 mr-3 rounded-full"
-              fill
-            />
-          </div>
-        )}
+        <div className="md:-ml-12">
+          <Avatar
+            alt={user.name}
+            src={getImg(user.avatar)}
+            sx={{ width: 56, height: 56 }}
+          />
+        </div>
         <span className="hidden md:block md:ml-6">{user.name}</span>
       </Button>
       <Menu
