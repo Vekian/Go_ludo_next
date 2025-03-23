@@ -13,7 +13,7 @@ export default withAuth(
   },
   {
     pages: {
-      signIn: "/",
+      signIn: "/signup",
     },
     callbacks: {
       authorized: async ({ token }) => {
@@ -26,4 +26,6 @@ export default withAuth(
   }
 );
 
-export const config = { matcher: ["/api/:path*", "/user/:path*"] };
+export const config = {
+  matcher: ["/user/:path*", "/parties/:path*"],
+};

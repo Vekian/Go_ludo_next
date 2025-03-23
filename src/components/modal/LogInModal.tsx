@@ -11,11 +11,12 @@ import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
 import ButtonSecondary from "../ui/button/ButtonSecondary";
 import CustomInput from "../ui/input/InputMuiText";
-import { CircularProgress } from "@mui/material";
+import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
 
 function LogInModal() {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleClickOpen = () => {
@@ -55,6 +56,8 @@ function LogInModal() {
             });
 
             if (result?.error) {
+              setLoading(false);
+              setError("Les identifiants sont invalides");
             } else {
               handleClose();
               setLoading(false);
@@ -66,7 +69,7 @@ function LogInModal() {
         <DialogTitle>Se connecter</DialogTitle>
         {loading ? (
           <div className="flex w-full justify-center items-center min-h-52">
-            <CircularProgress />
+            <CustomCircularLoader />
           </div>
         ) : (
           <DialogContent>
@@ -90,11 +93,16 @@ function LogInModal() {
               type="password"
               fullWidth
             />
+            {error && (
+              <div className="mt-3 text-red-500 text-xs w-full flex justify-center">
+                <span className="text-xl">{error}</span>
+              </div>
+            )}
           </DialogContent>
         )}
 
         {!loading && (
-          <DialogActions>
+          <DialogActions className="p-6">
             <ButtonSecondary
               label="Annuler"
               color={theme.colors.primary[900]}

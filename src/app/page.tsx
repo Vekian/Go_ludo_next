@@ -8,7 +8,7 @@ import SortFilter from "@/components/ui/filter/gameFilter/SortFilter";
 import TimeFilter from "@/components/ui/filter/gameFilter/TimeFilter";
 import TabsCustom from "../components/ui/tab/TabsCustom";
 import CustomLinearProgress from "@/components/ui/loader/CustomLoader";
-import { CircularProgress } from "@mui/material";
+import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 
 export default async function Home({
   searchParams,
@@ -30,17 +30,17 @@ export default async function Home({
 
           <TabsCustom>
             <SortFilter />
-            <Suspense fallback={<CircularProgress />}>
+            <Suspense fallback={<CustomCircularLoader />}>
               <div className="w-36">
                 <CategoryFilter />
               </div>
             </Suspense>
-            <Suspense fallback={<CircularProgress />}>
+            <Suspense fallback={<CustomCircularLoader />}>
               <div className="w-40">
                 <ThemeFilter />
               </div>
             </Suspense>
-            <Suspense fallback={<CircularProgress />}>
+            <Suspense fallback={<CustomCircularLoader />}>
               <div className="w-44">
                 <ModeFilter />
               </div>

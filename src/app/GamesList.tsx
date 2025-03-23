@@ -47,9 +47,19 @@ async function GamesList({
   ]);
   return (
     <div className="relative flex">
-      {gamesList.page > 1 && <ArrowPaginator type="prev" />}
-      <ListGames games={gamesList.items} />{" "}
-      {gamesList.page < gamesList.totalPages && <ArrowPaginator type="next" />}
+      {gamesList.items.length > 0 ? (
+        <>
+          {gamesList.page > 1 && <ArrowPaginator type="prev" />}
+          <ListGames games={gamesList.items} />
+          {gamesList.page < gamesList.totalPages && (
+            <ArrowPaginator type="next" />
+          )}
+        </>
+      ) : (
+        <div className="w-full flex justify-center items-center h-36">
+          <h2>Aucun jeu trouvé.</h2>
+        </div>
+      )}
     </div>
   );
 }
