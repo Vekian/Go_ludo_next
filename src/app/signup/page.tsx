@@ -3,7 +3,7 @@ import Signup from "./Signup";
 
 export default function page() {
   return (
-    <div>
+    <div className="w-full flex p-6">
       <Signup />
     </div>
   );

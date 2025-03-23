@@ -4,7 +4,7 @@ import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import ColorSelect from "@/components/ui/input/ColorSelect";
-import InputMuiText from "@/components/ui/input/InputMuiText";
+import InputText from "@/components/ui/input/InputText";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
@@ -204,13 +204,7 @@ export default function FormGame({
             </FormControl>
             <div className="flex items-center gap-x-6 justify-between">
               <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputMuiText
-                  type="text"
-                  variant="filled"
-                  name="name"
-                  size="small"
-                  placeholder="Nom du jeu"
-                />
+                <InputText type="text" id="name" />
               </FormControl>
               <SelectClassic
                 value={sort}

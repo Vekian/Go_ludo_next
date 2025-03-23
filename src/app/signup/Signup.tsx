@@ -2,9 +2,15 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import InputText from "@/components/ui/input/InputText";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import { theme } from "@/theme/theme";
+import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
+import FormError from "@/components/ui/error/FormError";
 export default function Signup() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -12,9 +18,13 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+  const handleChange = (field: string, value: string | null) => {
+    setUserData((prev) => ({
+      ...prev,
+      [field]: value ?? "",
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,7 +41,12 @@ export default function Signup() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.message || "Erreur lors de l'inscription");
+        if (data.errors) {
+          setErrors(data.errors);
+          return;
+        } else {
+          throw new Error(data.message || "Erreur lors de l'inscription");
+        }
       }
 
       // Connexion automatique après inscription
@@ -45,7 +60,9 @@ export default function Signup() {
         throw new Error(result.error);
       }
 
-      router.push("/dashboard");
+      const routeToGo = searchParams.get("callbackUrl");
+      setErrors(null);
+      router.push(routeToGo ?? "/");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -58,43 +75,56 @@ export default function Signup() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
-      <h1 className="text-2xl font-bold mb-4">Créer un compte</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
+    <div className="w-full mt-10 p-6 bg-white rounded-lg flex flex-col items-center">
+      <h1 className="text-2xl text-center font-bold mb-4">Créer un compte</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-4 px-6 w-1/2">
+        <div className="flex flex-col">
           <label>Nom utilisateur</label>
-          <input
-            type="text"
-            name="username"
+          <InputText
+            id="username"
             value={userData.username}
-            onChange={handleChange}
-            required
+            onChange={(value) => handleChange("username", value)}
           />
+          {errors?.username && (
+            <FormError errors={errors.username} name="username" />
+          )}
         </div>
-        <div>
+        <div className="flex flex-col">
+          <label>Email</label>
+          <InputText
+            id="email"
+            type="email"
+            value={userData.email}
+            onChange={(value) => handleChange("email", value)}
+          />
+          {errors?.email && <FormError errors={errors.email} name="email" />}
+        </div>
+        <div className="flex flex-col">
           <label>Mot de passe</label>
-          <input
+          <InputText
+            id="password"
             type="password"
-            name="password"
             value={userData.password}
-            onChange={handleChange}
-            required
+            onChange={(value) => handleChange("password", value)}
           />
+          {errors?.password && (
+            <FormError errors={errors.password} name="password" />
+          )}
         </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Inscription..." : "S'inscrire"}
-        </button>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="flex w-full justify-center">
+          {loading ? (
+            <div className="text-center mt-6">
+              <CustomCircularLoader />
+            </div>
+          ) : (
+            <ButtonPrimary
+              label="S'inscrire"
+              color={theme.colors.primary[600]}
+            />
+          )}
+        </div>
       </form>
     </div>
   );

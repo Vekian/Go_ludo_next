@@ -1,14 +1,37 @@
 import { handleAuth } from "@/lib/api/authServer";
 import { NextResponse } from "next/server";
+import { z } from "zod";
+
+const registerSchema = z.object({
+  email: z.string().email("Email invalide"),
+  username: z
+    .string()
+    .min(3, "3 caractères minimum")
+    .max(15, "15 caractères maximum"),
+  password: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .regex(/[A-Z]/, "Le mot de passe doit contenir une majuscule")
+    .regex(/[a-z]/, "Le mot de passe doit contenir une minuscule")
+    .regex(/[0-9]/, "Le mot de passe doit contenir un chiffre")
+    .regex(
+      /[@$!%*?&]/,
+      "Le mot de passe doit contenir un caractère spécial (@$!%*?&)"
+    ),
+});
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // Vérifier que les champs sont bien remplis
-    if (!body.email || !body.password || !body.username) {
+    const validatedFields = registerSchema.safeParse(body);
+
+    if (!validatedFields.success) {
       return NextResponse.json(
-        { message: "Champs manquants" },
+        {
+          message: "Impossible de créer la partie",
+          errors: validatedFields.error.flatten().fieldErrors,
+        },
         { status: 400 }
       );
     }

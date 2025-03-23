@@ -10,8 +10,8 @@ import { signIn } from "next-auth/react";
 import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
 import ButtonSecondary from "../ui/button/ButtonSecondary";
-import CustomInput from "../ui/input/InputMuiText";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
+import InputText from "../ui/input/InputText";
 
 function LogInModal() {
   const [open, setOpen] = React.useState(false);
@@ -37,7 +37,7 @@ function LogInModal() {
       <Dialog
         open={open}
         onClose={handleClose}
-        maxWidth="md"
+        maxWidth="sm"
         fullWidth
         PaperProps={{
           component: "form",
@@ -72,27 +72,19 @@ function LogInModal() {
             <CustomCircularLoader />
           </div>
         ) : (
-          <DialogContent>
-            <CustomInput
-              className="mt-3"
-              autoFocus
-              required
-              id="email"
-              name="email"
-              label="Adresse email"
-              type="email"
-              fullWidth
-            />
-            <CustomInput
-              autoFocus
-              required
-              margin="dense"
-              id="password"
-              name="password"
-              label="Mot de passe"
-              type="password"
-              fullWidth
-            />
+          <DialogContent className="px-16">
+            <div className="flex flex-col">
+              <label htmlFor="email" className="text-primary-950 font-bold">
+                Email:
+              </label>
+              <InputText id="email" type="email" />
+            </div>
+            <div className="flex flex-col">
+              <label htmlFor="password" className="text-primary-950 font-bold">
+                Mot de passe:
+              </label>
+              <InputText id="password" type="password" />
+            </div>
             {error && (
               <div className="mt-3 text-red-500 text-xs w-full flex justify-center">
                 <span className="text-xl">{error}</span>
