@@ -8,15 +8,18 @@ function ButtonPrimary({
   onClick,
   icon,
   addClass,
+  type,
 }: {
   label: string;
   color: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   icon?: IconProp;
   addClass?: string;
+  type?: "button" | "submit" | "reset" | undefined;
 }) {
   return (
     <button
+      type={type ? type : "button"}
       className={` hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 ${
         addClass ?? ""
       } `}

@@ -8,6 +8,8 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
 import { createParty } from "@/lib/api/server/party";
 import { useRouter } from "next/navigation";
+import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 export default function Form({
   categories,
   themes,
@@ -18,7 +20,9 @@ export default function Form({
   modes: GameCategory[];
 }) {
   const [games, setGames] = useState<GameListItem[] | null>(null);
+  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
 
   const addGame = (game: GameListItem) => {
@@ -37,6 +41,8 @@ export default function Form({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
+    showSnackbar("Création de partie en cours", "info");
     const formData = new FormData(event.currentTarget);
 
     const ages = formData.getAll("age");
@@ -53,10 +59,12 @@ export default function Form({
     const response = await createParty(formData, gamesId);
     if (response.errors) {
       setErrors(response.errors);
+      showSnackbar("Erreur lors de la création de partie", "error");
     } else {
       setErrors(null);
       const id = response.data.id;
       router.push(`/parties/${id}`);
+      showSnackbar("Partie créée avec succès", "success");
     }
   };
   return (
@@ -74,10 +82,15 @@ export default function Form({
         />
         <FormLocalisationParty errors={errors} />
         <div className="flex justify-center mb-32 mt-6">
-          <ButtonPrimary
-            color={theme.colors.primary[500]}
-            label="Créer la partie"
-          />
+          {loading ? (
+            <CustomCircularLoader />
+          ) : (
+            <ButtonPrimary
+              type="submit"
+              color={theme.colors.primary[500]}
+              label="Créer la partie"
+            />
+          )}
         </div>
       </div>
     </form>

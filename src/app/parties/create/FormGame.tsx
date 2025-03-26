@@ -14,7 +14,6 @@ import { getGames } from "@/lib/api/server/game";
 import { theme } from "@/theme/theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -53,6 +52,7 @@ export default function FormGame({
   const [themeCategory, setThemeCategory] = useState<Option | null>(null);
   const [players, setPlayers] = useState([2, 30]);
   const [age, setAge] = useState([18, 100]);
+  const [name, setName] = useState("");
   const [durationValue, setDurationValue] = useState<string>("0");
   const [games, setGames] = useState<GameListItem[] | null>(null);
 
@@ -73,11 +73,7 @@ export default function FormGame({
     removeGame(game);
     showSnackbar("Jeu retiré", "success");
   };
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") as string;
-
+  const handleSubmit = async () => {
     const params = [];
     if (name) {
       params.push({
@@ -204,7 +200,11 @@ export default function FormGame({
             </FormControl>
             <div className="flex items-center gap-x-6 justify-between">
               <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputText type="text" id="name" />
+                <InputText
+                  type="text"
+                  id="name"
+                  onChange={(value) => value && setName(value)}
+                />
               </FormControl>
               <SelectClassic
                 value={sort}
@@ -324,21 +324,17 @@ export default function FormGame({
                 />
               </div>
             </div>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center gap-x-3">
               <ButtonSecondary
                 onClick={handleClose}
                 label="Annuler"
                 color={theme.colors.primary[800]}
               />
-              <Button
-                className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
-                type="submit"
-                sx={{
-                  textTransform: "none",
-                }}
-              >
-                Rechercher
-              </Button>
+              <ButtonPrimary
+                label="Rechercher"
+                color={theme.colors.primary[600]}
+                onClick={handleSubmit}
+              />
             </div>
             {games && games.length > 0 && (
               <div>

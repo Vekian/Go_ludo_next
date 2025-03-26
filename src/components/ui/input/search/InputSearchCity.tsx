@@ -13,10 +13,12 @@ const InputSearchCity = ({
   label,
   icon,
   onChange,
+  city,
 }: {
   label: string;
   icon: IconDefinition;
-  onChange?: (newCityValue: number | null) => void;
+  onChange?: (newCityValue: GameLocalisation | null) => void;
+  city?: GameLocalisation | null;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameLocalisation[]>([]);
@@ -73,6 +75,7 @@ const InputSearchCity = ({
         />
       }
       open={open}
+      value={city}
       onOpen={handleOpen}
       onClose={handleClose}
       onInputChange={(event, newInputValue) => {
@@ -80,7 +83,7 @@ const InputSearchCity = ({
       }}
       onChange={(event, newValue) => {
         if (onChange) {
-          onChange(newValue ? newValue.id : null);
+          onChange(newValue ? newValue : null);
         }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}

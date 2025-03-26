@@ -15,3 +15,7 @@ export interface GeoPoint {
   coordinates: [number, number];
   srid: number;
 }
+
+export interface TypeSelectionLocalisation {
+  type: "city" | "gps";
+}

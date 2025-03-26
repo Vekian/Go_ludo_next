@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { getCityByGps } from "@/lib/api/server/city";
+import { GameLocalisation } from "@/interfaces";
 
 const customIcon = new L.Icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
@@ -15,8 +17,12 @@ const customIcon = new L.Icon({
 
 export default function MapContent({
   position,
+  setCity,
+  setPosition,
 }: {
   position: [number, number] | null;
+  setCity: (newCity: GameLocalisation | null) => void;
+  setPosition: (geopoint: [number, number] | null) => void;
 }) {
   const [marker, setMarker] = useState<[number, number]>([48.8566, 2.3522]); // Initialiser avec la prop position
   const map = useMap(); // S'assurer que ce hook est appelé dans un composant descendant de MapContainer
@@ -34,14 +40,22 @@ export default function MapContent({
   };
   const addMarker = (latlng: L.LatLng) => {
     setMarker([latlng.lat, latlng.lng]); // Mettre à jour le marqueur
+    fetchCity([latlng.lat, latlng.lng]);
+    setPosition([latlng.lng, latlng.lat]);
   };
   useEffect(() => {
-    if (position) {
-      console.log(position);
+    if (position && position[0] != marker[1] && position[1] != marker[0]) {
       map.setView([position[1], position[0]], 13);
       setMarker([position[1], position[0]]);
     }
   }, [position]);
+
+  const fetchCity = async (position: [number, number]) => {
+    const response: GameLocalisation = await getCityByGps(position);
+    if (response.id) {
+      setCity(response);
+    }
+  };
 
   return (
     <>

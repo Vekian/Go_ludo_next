@@ -25,6 +25,14 @@ const createPartySchema = z.object({
   ageMin: z.coerce.number(),
   ageMax: z.coerce.number(),
   city: z.coerce.number().min(1, "Veuillez choisir une ville").default(0),
+  latitude: z.coerce
+    .number()
+    .min(-90, "Mauvaise coordonnée")
+    .max(90, "Mauvaise coordonnées"),
+  longitude: z.coerce
+    .number()
+    .min(-180, "Mauvaise coordonnée")
+    .max(180, "Mauvaise coordonnées"),
   playersMin: z.coerce.number(),
   playersMax: z.coerce.number(),
   games: z
