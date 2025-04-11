@@ -12,7 +12,7 @@ export default function CategorySelect({
   name,
 }: {
   label: string;
-  options: GameCategory[];
+  options: GameCategory[] | null;
   color: string | null;
   name: string;
 }) {
@@ -42,11 +42,14 @@ export default function CategorySelect({
   return (
     <ColorSelect
       label={label}
-      options={options.map((option) => ({
-        name: name,
-        label: option.name,
-        value: option.id.toString(),
-      }))}
+      options={
+        options &&
+        options.map((option) => ({
+          name: name,
+          label: option.name,
+          value: option.id.toString(),
+        }))
+      }
       onChange={handleSelect}
       value={selectedValue}
       color={color}

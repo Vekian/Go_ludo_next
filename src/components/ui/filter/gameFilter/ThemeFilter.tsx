@@ -1,11 +1,20 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import CategorySelect from "../../input/CategorySelect";
 import { theme } from "@/theme/theme";
 import { GameCategory } from "@/interfaces";
 import { getCategories } from "@/lib/api/server/category";
 
-export default async function ThemeFilter() {
-  const themes: GameCategory[] = await getCategories("theme");
+export default function ThemeFilter() {
+  const [themes, setThemes] = useState<GameCategory[] | null>(null);
+  useEffect(() => {
+    fetchThemes();
+  }, []);
+
+  const fetchThemes = async () => {
+    const themesData: GameCategory[] = await getCategories("theme");
+    setThemes(themesData);
+  };
   return (
     <CategorySelect
       label="Thème"

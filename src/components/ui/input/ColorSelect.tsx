@@ -3,10 +3,9 @@ import { theme } from "@/theme/theme";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Autocomplete, TextField } from "@mui/material";
-import dynamic from "next/dynamic";
 import React from "react";
 
-function ColorSelect({
+export default function ColorSelect({
   label,
   options,
   color,
@@ -14,7 +13,7 @@ function ColorSelect({
   onChange,
 }: {
   label: string;
-  options: Option[];
+  options: Option[] | null;
   color: string | null;
   value: Option | null;
   onChange: (event: React.SyntheticEvent, value: Option | null) => void;
@@ -41,7 +40,7 @@ function ColorSelect({
         />
       }
       disablePortal={false}
-      options={options}
+      options={options ?? []}
       value={value} // Liaison avec la valeur sélectionnée
       onChange={onChange}
       slotProps={{
@@ -86,5 +85,3 @@ function ColorSelect({
     />
   );
 }
-// Dynamic import with SSR disabled
-export default dynamic(() => Promise.resolve(ColorSelect), { ssr: false });
