@@ -2,7 +2,7 @@ import ListGames from "@/components/list/ListGames";
 import ArrowPaginator from "@/components/list/pagination/ArrowPaginator";
 import { GameListItem } from "@/interfaces";
 import { ListPaginated } from "@/interfaces/paginator.interface";
-import { getGames } from "@/lib/api/server/game";
+import { getGames, getGamesRec } from "@/lib/api/server/game";
 import React from "react";
 
 async function GamesList({
@@ -27,24 +27,47 @@ async function GamesList({
     ...toArray(params.theme),
     ...toArray(params.mode),
   ];
-  const gamesList: ListPaginated<GameListItem> = await getGames([
-    {
-      key: "category[]",
-      value: categoryParams,
-    },
-    {
-      key: "sort",
-      value: params.sort,
-    },
-    {
-      key: "time",
-      value: params.time,
-    },
-    {
-      key: "page",
-      value: params.page,
-    },
-  ]);
+  const gamesList: ListPaginated<GameListItem> = await fetchGames();
+
+  async function fetchGames() {
+    const allEmpty =
+      !params.category &&
+      !params.theme &&
+      !params.mode &&
+      !params.sort &&
+      !params.time &&
+      !params.page;
+    if (!allEmpty) {
+      console.log(params);
+      const games = await getGames([
+        {
+          key: "category[]",
+          value: categoryParams,
+        },
+        {
+          key: "sort",
+          value: params.sort,
+        },
+        {
+          key: "time",
+          value: params.time,
+        },
+        {
+          key: "page",
+          value: params.page,
+        },
+      ]);
+      return games;
+    } else {
+      const games = await getGamesRec();
+      const listGames = {
+        items: games,
+        page: 1,
+        totalPages: 1,
+      };
+      return listGames;
+    }
+  }
   return (
     <div className="relative flex">
       {gamesList.items.length > 0 ? (

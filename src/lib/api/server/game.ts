@@ -28,6 +28,21 @@ export async function getGames(params: Param[] = []) {
   return data;
 }
 
+export async function getGamesRec() {
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/recommendations`
+  );
+
+  const response = await fetch(url, { headers });
+
+  if (!response.ok) {
+    throw new Error("Impossible de charger les jeux");
+  }
+  const data = await response.json();
+  return data;
+}
+
 export async function getGame(id: number, type: string) {
   const headers = await handleAuth();
   const url = new URL(

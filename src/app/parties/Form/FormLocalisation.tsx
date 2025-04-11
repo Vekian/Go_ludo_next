@@ -14,6 +14,7 @@ import "dayjs/locale/fr";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
+import { GameLocalisation } from "@/interfaces";
 
 dayjs.locale("fr");
 
@@ -58,8 +59,10 @@ export default function FormLocalisation({
     }
   };
 
-  const handleCityChange = (newCityValue: number | null) => {
-    handleChange("city", newCityValue);
+  const handleCityChange = (newCityValue: GameLocalisation | null) => {
+    if (newCityValue) {
+      handleChange("city", newCityValue.id);
+    }
   };
   return (
     <div className="bg-white xl:flex-1 w-full flex-wrap p-10 rounded-lg">
@@ -69,7 +72,7 @@ export default function FormLocalisation({
           <InputSearchCity
             label="Où ? (ville, code postal)"
             icon={faLocationDot}
-            onChange={(id) => handleCityChange(id ?? 0)}
+            onChange={(value) => handleCityChange(value)}
           />
           {errors?.city && (
             <p className="text-red-500 text-sm">{errors.city}</p>

@@ -2,6 +2,7 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
+import { GameLocalisation } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
@@ -29,6 +30,12 @@ export default function Form() {
     setGlobal(value);
     setGlobalType(type);
   }
+
+  function handleCityChange(city: GameLocalisation | null) {
+    if (city) {
+      setCity(city.id);
+    }
+  }
   return (
     <div className="xl:w-1/3 w-full flex sm:px-16 px-3  flex-col items-center justify-center xl:mt-0 mt-6">
       <h1 className="text-primary-950 text-center mb-2">
@@ -39,7 +46,7 @@ export default function Form() {
         <InputSearchCity
           label="Où ? (ville, code postal...)"
           icon={faLocationDot}
-          onChange={setCity}
+          onChange={handleCityChange}
         />
       </div>
       <div className="xl:w-full md:w-1/2 w-full flex flex-col">
