@@ -9,53 +9,63 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { PartyCard } from "@/interfaces/party.interface";
 import Link from "next/link";
+import { Avatar } from "@mui/material";
+import { getImg } from "@/lib/utils";
 
 export default function CardParty({ party }: { party: PartyCard }) {
   return (
     <Link href={`/parties/${party.id}`}>
-      <div className="flex bg-white rounded-lg p-3 w-full gap-x-6">
-        <div className="h-28 relative w-full max-w-36 ">
-          {party.games[0] && (
-            <Image
-              alt="test"
-              src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${party.games[0].cover}`}
-              fill
-              className="object-contain"
-            />
-          )}
-        </div>
-        <div className="flex  justify-around flex-col">
-          <h2>{party.title}</h2>
-          <div className="flex gap-x-3 ">
-            {party.games &&
-              party.games.map((game) => (
-                <GameTag game={game} key={`${party.id}tag${game.id}`} />
-              ))}
-          </div>
-          <div className="flex gap-x-16">
-            <div className="flex gap-x-2 items-center">
-              <FontAwesomeIcon icon={faUserGroup} />
-              {party.participants + 1}/{party.playersMax}
-            </div>
-            <div className="flex gap-x-2 items-center">
-              <FontAwesomeIcon icon={faCity} />
-              {party.city.name}
-            </div>
-
-            <div className="flex gap-x-2 items-center">
-              <FontAwesomeIcon icon={faCalendarCheck} />
-              21/08/2024
-            </div>
-          </div>
-        </div>
-        <div className=" w-full flex justify-end items-center">
-          <div className=" me-10">
-            <div className="h-12 relative w-full max-w-36  ">
+      <div className="flex justify-between px-6 bg-white rounded-lg p-3 w-full gap-x-6">
+        <div className="flex items-center h-full gap-x-6">
+          <div className="h-28 relative  w-32 ">
+            {party.games[0] && (
               <Image
                 alt="test"
-                src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/images/users/4/pngwing-com-679f870e30a42280699838.png`}
+                src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${party.games[0].cover}`}
                 fill
                 className="object-contain"
+              />
+            )}
+          </div>
+          <div className="flex justify-around flex-col gap-y-2.5">
+            <h2>{party.title}</h2>
+            <div className="flex flex-wrap gap-y-2 gap-x-3 ">
+              {party.games &&
+                party.games.map((game) => (
+                  <GameTag game={game} key={`${party.id}tag${game.id}`} />
+                ))}
+            </div>
+            <div className="w-full flex flex-wrap gap-x-16">
+              <div className="flex gap-x-2 items-center">
+                <FontAwesomeIcon
+                  icon={faUserGroup}
+                  className="text-primary-950"
+                />
+                {party.participants + 1}/{party.playersMax}
+              </div>
+              <div className="flex gap-x-2 items-center">
+                <FontAwesomeIcon icon={faCity} className="text-primary-950" />
+                {party.city.name}
+              </div>
+
+              <div className="flex gap-x-2 items-center">
+                <FontAwesomeIcon
+                  icon={faCalendarCheck}
+                  className="text-primary-950"
+                />
+                21/08/2024
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end items-center">
+          <div className="flex flex-col items-center gap-y-2 xl:me-10 min-w-44">
+            <div className="h-12  w-full flex justify-center  ">
+              <Avatar
+                alt={party.author.username}
+                src={getImg(party.author.avatar)}
+                sx={{ width: 56, height: 56 }}
               />
             </div>
             <p>{party.author.username}</p>

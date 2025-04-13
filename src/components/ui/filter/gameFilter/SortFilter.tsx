@@ -32,7 +32,6 @@ export default function SortFilter() {
           { value: "recent", label: "Plus récent" },
           { value: "old", label: "Plus vieux" },
           { value: "rating", label: "Note" },
-          { value: "price", label: "Prix" },
         ]}
         color={theme.colors.primary[900]}
         label="Trier par"

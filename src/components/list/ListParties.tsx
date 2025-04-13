@@ -13,7 +13,7 @@ function ListParties({
   handlePagination: (page: number) => void;
 }) {
   return (
-    <div className="p-10 flex-col gap-y-3 flex">
+    <div className="lg:p-10 p-3 flex-col gap-y-3 flex">
       <h3>
         {parties.totalResults > 1
           ? `${parties.totalResults} parties trouvées`
