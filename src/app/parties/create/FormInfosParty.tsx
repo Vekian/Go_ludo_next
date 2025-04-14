@@ -1,4 +1,5 @@
 "use client";
+import FormError from "@/components/ui/error/FormError";
 import InputText from "@/components/ui/input/InputText";
 import PartyDatePicker from "@/components/ui/input/PartyDatePicker";
 import PartyTimePicker from "@/components/ui/input/PartyTimePicker";
@@ -46,7 +47,7 @@ export default function FormInfosParty({
             Nom du groupe
           </label>
           <InputText value="" id="title" />
-          {errors?.title && <p className="text-red-500">{errors.title[0]}</p>}
+          {errors?.title && <FormError name="title" errors={errors.title} />}
         </div>
         <div className="flex flex-wrap w-full lg:w-3/5 gap-x-12">
           <div className="sm:flex-1 w-full">
@@ -65,11 +66,12 @@ export default function FormInfosParty({
                 thumb: RangeThumb,
               }}
             />
+
             {errors?.playersMin && (
-              <p className="text-red-500">{errors.playersMin[0]}</p>
+              <FormError name="playersMin" errors={errors.playersMin} />
             )}
             {errors?.playersMax && (
-              <p className="text-red-500">{errors.playersMax[0]}</p>
+              <FormError name="playersMax" errors={errors.playersMax} />
             )}
           </div>
           <div className="sm:flex-1 w-full">
@@ -98,10 +100,10 @@ export default function FormInfosParty({
               }}
             />
             {errors?.ageMin && (
-              <p className="text-red-500">{errors.ageMin[0]}</p>
+              <FormError name="ageMin" errors={errors.ageMin} />
             )}
             {errors?.ageMax && (
-              <p className="text-red-500">{errors.ageMax[0]}</p>
+              <FormError name="ageMax" errors={errors.ageMax} />
             )}
           </div>
         </div>
@@ -136,7 +138,7 @@ export default function FormInfosParty({
                 }}
               />
               {errors?.meetingDate && (
-                <p className="text-red-500">{errors.meetingDate[0]}</p>
+                <FormError name="meetingDate" errors={errors.meetingDate} />
               )}
             </div>
             <div className="flex-1 flex gap-x-5">
@@ -154,7 +156,7 @@ export default function FormInfosParty({
                   slotProps={{ textField: { fullWidth: true, size: "small" } }}
                 />
                 {errors?.meetingTime && (
-                  <p className="text-red-500">{errors.meetingTime[0]}</p>
+                  <FormError name="meetingTime" errors={errors.meetingTime} />
                 )}
               </div>
             </div>
@@ -183,7 +185,7 @@ export default function FormInfosParty({
           }}
         />
         {errors?.description && (
-          <p className="text-red-500">{errors.description[0]}</p>
+          <FormError name="description" errors={errors.description} />
         )}
       </div>
     </div>

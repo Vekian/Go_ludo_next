@@ -9,6 +9,7 @@ import {
 } from "@/interfaces/localisation.interface";
 import { getCity } from "@/lib/api/server/city";
 import { GameLocalisation } from "@/interfaces";
+import FormError from "@/components/ui/error/FormError";
 
 const DynamicMap = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
@@ -58,7 +59,7 @@ export default function FormLocalisationParty({
             <SelectCity city={city} setCity={handleCityChange} />
           </div>
 
-          {errors?.city && <p className="text-red-500">{errors.city[0]}</p>}
+          {errors?.city && <FormError name="city" errors={errors.city} />}
         </div>
         <div className="flex flex-wrap justify-center xl:mt-0 mt-3 sm:justify-around items-end w-full xl:w-3/5 2xl:w-1/2 gap-y-2">
           {city && (

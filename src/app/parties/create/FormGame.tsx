@@ -3,6 +3,7 @@ import ListPartyGames from "@/components/list/ListPartyGames";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
+import FormError from "@/components/ui/error/FormError";
 import ColorSelect from "@/components/ui/input/ColorSelect";
 import InputText from "@/components/ui/input/InputText";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
@@ -275,7 +276,7 @@ export default function FormGame({
                     thumb: RangeThumb,
                   }}
                 />
-              </div>{" "}
+              </div>
               <div className="w-1/4">
                 <label
                   htmlFor="players"
@@ -367,7 +368,7 @@ export default function FormGame({
             addClass="min-w-44"
           />
         </div>
-        {errors?.games && <p className="text-red-500">{errors.games[0]}</p>}
+        {errors?.games && <FormError name="games" errors={errors.games} />}
       </div>
       <div>
         {gamesAdd && gamesAdd.length > 0 && (

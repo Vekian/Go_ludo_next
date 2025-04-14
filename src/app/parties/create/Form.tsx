@@ -60,6 +60,7 @@ export default function Form({
     if (response.errors) {
       setErrors(response.errors);
       showSnackbar("Erreur lors de la création de partie", "error");
+      setLoading(false);
     } else {
       setErrors(null);
       const id = response.data.id;
