@@ -146,7 +146,7 @@ export default function FormGame({
   };
   return (
     <div className="w-full flex flex-col gap-y-3">
-      <div className="bg-white rounded-lg px-36 py-6 w-full flex gap-x-10 items-center">
+      <div className="bg-white  flex-wrap rounded-lg px-6 lg:px-12 xl:px-36 py-6 w-full flex gap-x-10 gap-y-3 items-center">
         <h3>Choisir un ou plusieurs jeux</h3>
         <Dialog
           open={open}
@@ -358,12 +358,15 @@ export default function FormGame({
             />
           </DialogActions>
         </Dialog>
-        <ButtonPrimary
-          label="Ajouter un jeu"
-          color={theme.colors.primary[600]}
-          onClick={handleClickOpen}
-          icon={faPlus}
-        />
+        <div className="sm:w-auto w-full text-center">
+          <ButtonPrimary
+            label="Ajouter un jeu"
+            color={theme.colors.primary[600]}
+            onClick={handleClickOpen}
+            icon={faPlus}
+            addClass="min-w-44"
+          />
+        </div>
         {errors?.games && <p className="text-red-500">{errors.games[0]}</p>}
       </div>
       <div>

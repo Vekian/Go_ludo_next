@@ -50,20 +50,31 @@ export default function FormLocalisationParty({
   };
 
   return (
-    <div className="bg-white rounded-lg px-36 py-6 w-full flex flex-col gap-y-6">
-      <div className="flex w-full">
-        <div className="flex flex-col w-1/2">
+    <div className="bg-white rounded-lg px-6 lg:px-12 xl:px-24 2xl:px-36 py-6 w-full flex flex-col gap-y-6">
+      <div className="flex flex-wrap w-full">
+        <div className="flex flex-col w-full lg:w-4/5 xl:w-2/5 2xl:w-1/2 gap-y-3">
           <h3>Choisis un lieu de rencontre </h3>
-          <SelectCity city={city} setCity={handleCityChange} />
+          <div className=" w-full ">
+            <SelectCity city={city} setCity={handleCityChange} />
+          </div>
+
           {errors?.city && <p className="text-red-500">{errors.city[0]}</p>}
         </div>
-        <div className="flex justify-around items-end w-1/2">
-          {city && <p className="font-bold">Ville: {city?.name}</p>}
+        <div className="flex flex-wrap justify-center xl:mt-0 mt-3 sm:justify-around items-end w-full xl:w-3/5 2xl:w-1/2 gap-y-2">
+          {city && (
+            <p className="font-bold sm:w-1/3 w-full text-center">
+              Ville: {city?.name}
+            </p>
+          )}
 
           {position && (
             <>
-              <p className="font-bold">Lat: {position[0]}</p>
-              <p className="font-bold">Lon: {position[1]}</p>
+              <p className="font-bold sm:w-1/3 w-full text-center">
+                Lat: {position[0]}
+              </p>
+              <p className="font-bold sm:w-1/3 w-full text-center">
+                Lon: {position[1]}
+              </p>
             </>
           )}
         </div>

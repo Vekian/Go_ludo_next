@@ -19,13 +19,13 @@ export default function SelectCity({
     setCity(city, { type: "city" });
   };
   return (
-    <div className="w-1/2">
+    <>
       <InputSearchCity
         label="Une ville (code postal, ville..)"
         icon={faCity}
         onChange={handleCityChange}
       />
       {city && <input type="hidden" name="city" value={city.id} />}
-    </div>
+    </>
   );
 }

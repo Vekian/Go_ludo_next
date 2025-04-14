@@ -39,17 +39,17 @@ export default function FormInfosParty({
     }
   };
   return (
-    <div className="bg-white rounded-lg px-36 py-6 w-full flex flex-col gap-y-3">
-      <div className="flex gap-x-24">
-        <div className="flex flex-col w-1/4">
+    <div className="bg-white rounded-lg px-6 lg:px-12 xl:px-36 py-6 w-full flex flex-col gap-y-3">
+      <div className="flex flex-wrap gap-x-24 gap-y-3">
+        <div className="flex flex-col w-full lg:w-1/4">
           <label htmlFor="title" className="text-primary-950 font-semibold">
             Nom du groupe
           </label>
           <InputText value="" id="title" />
           {errors?.title && <p className="text-red-500">{errors.title[0]}</p>}
         </div>
-        <div className="flex w-3/4 gap-x-12">
-          <div className="flex-1">
+        <div className="flex flex-wrap w-full lg:w-3/5 gap-x-12">
+          <div className="sm:flex-1 w-full">
             <label htmlFor="players" className="text-primary-950 font-semibold">
               Nombre de joueurs:
             </label>
@@ -72,7 +72,7 @@ export default function FormInfosParty({
               <p className="text-red-500">{errors.playersMax[0]}</p>
             )}
           </div>
-          <div className="flex-1">
+          <div className="sm:flex-1 w-full">
             <label htmlFor="players" className="text-primary-950 font-semibold">
               Age:
             </label>
