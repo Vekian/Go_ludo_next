@@ -5,7 +5,7 @@ import React from "react";
 
 export default function UserInfos({ user }: { user: UserProfil }) {
   return (
-    <div className="h-full w-1/6 flex flex-col items-center me-10 ">
+    <div className="h-full  flex flex-col items-center me-10 ">
       <div className="w-full max">
         <Avatar
           alt={user.username}

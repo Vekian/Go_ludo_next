@@ -19,7 +19,7 @@ function Onglet({
         angle === 1 ? "rotate-2" : "-rotate-2"
       } xl:hover:-translate-y-6 hover:-translate-y-5 ${
         active ? "xl:-translate-y-6 -translate-y-5" : "-translate-y-0"
-      }  transition border-white border-4 h-24  z-10 -mb-8 text-center xl:ml-3 xl:mr-3`}
+      }  transition border-white border-4 h-24  z-10 -mb-12 text-center xl:ml-3 xl:mr-3`}
       style={{
         backgroundColor: color,
       }}

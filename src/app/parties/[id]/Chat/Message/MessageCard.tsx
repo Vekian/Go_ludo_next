@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import { Message } from "@/interfaces/party.interface";
-import Image from "next/image";
 import { getRelativeTime } from "@/lib/date";
 import MessageCardActions from "./MessageCardActions";
+import { Avatar } from "@mui/material";
+import { getImg } from "@/lib/utils";
 
 export default function MessageCard({
   message,
@@ -22,12 +23,11 @@ export default function MessageCard({
       } gap-x-6 rounded-lg py-3`}
     >
       <div className="w-2/12 flex flex-col items-center -mt-8">
-        <div className="w-[65px] h-[65px] overflow-hidden rounded-full relative">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${message.author.avatar}`}
-            alt="Description de l'image"
-            layout="fill"
-            objectFit="cover"
+        <div className=" overflow-hidden rounded-full ">
+          <Avatar
+            alt={message.author.username}
+            src={getImg(message.author.avatar)}
+            sx={{ width: 65, height: 65 }}
           />
         </div>
 
@@ -43,7 +43,7 @@ export default function MessageCard({
             !author && "flex-row-reverse"
           }`}
         >
-          <p>{getRelativeTime(message.createdAt)}</p>
+          <small>{getRelativeTime(message.createdAt)}</small>
           <MessageCardActions
             message={message}
             setContent={setContent}

@@ -9,7 +9,7 @@ export default async function page({ params }: { params: { id: number } }) {
   const party: Party = await getParty(id);
 
   return (
-    <div className="p-10 pb-4 h-full">
+    <div className="p-2 pt-5 lg:p-10 pb-4 h-full">
       {party.joined ? (
         <PendingParty party={party} />
       ) : (

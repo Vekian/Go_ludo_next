@@ -24,7 +24,7 @@ export default async function Home({
   return (
     <main>
       <div className="bg-white ">
-        <div className="container pt-10 pb-5 ">
+        <div className="container pt-10 pb-2 ">
           <MainContent />
 
           <TabsCustom>

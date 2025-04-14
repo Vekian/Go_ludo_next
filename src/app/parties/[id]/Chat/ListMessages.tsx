@@ -13,7 +13,7 @@ export default function ListMessages({
   const { data } = useSession();
 
   return (
-    <div className=" flex flex-col gap-y-6 p-10">
+    <div className=" flex flex-col gap-y-6 px-3 py-7 lg:p-10">
       {messages &&
         messages.map((message) => (
           <div
@@ -25,7 +25,7 @@ export default function ListMessages({
             }`}
           >
             <div
-              className={`w-10/12 ${
+              className={`w-11/12 lg:w-10/12 ${
                 Number(data?.user.id) === message.author.id ? "" : ""
               }`}
             >

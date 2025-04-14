@@ -25,12 +25,12 @@ export default function Chat({ party }: { party: Party }) {
     }
   };
   return (
-    <div className="flex flex-col w-2/3 gap-y-6">
-      <div className="bg-white rounded-lg h-4/5 overflow-y-scroll">
+    <div className="flex flex-col w-full h-full gap-y-3 sm:gap-y-6">
+      <div className="bg-white rounded-lg  h-4/5 overflow-y-scroll">
         <ListMessages messages={messages} />
         <div ref={chatEndRef} />
       </div>
-      <div className="bg-white rounded-lg h-1/5">
+      <div className="bg-white rounded-lg h-1/5 mb-1">
         <InputChat party={party} addMessage={addMessage} />
       </div>
     </div>

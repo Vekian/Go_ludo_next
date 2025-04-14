@@ -49,6 +49,7 @@ export default function TabsCustom({
           "& .MuiTabs-flexContainer": {
             justifyContent: "flex-start", // Aligner les tabs à gauche pour éviter l'effet de centrage forcé
             gap: "16px",
+            paddingBottom: 2,
             width: "100%",
             "@media (min-width: 640px)": {
               justifyContent: "space-around",
