@@ -2,10 +2,16 @@
 import { Tabs } from "@mui/material";
 import React, { useState } from "react";
 
-const CustomTab = ({ label }: { label: React.ReactNode }) => {
+const CustomTab = ({
+  label,
+  classChild,
+}: {
+  label: React.ReactNode;
+  classChild: string;
+}) => {
   return (
     <div
-      className="pt-8 w-full flex justify-center"
+      className={`${classChild} w-full flex justify-center`}
       style={{
         userSelect: "none",
       }}
@@ -16,8 +22,12 @@ const CustomTab = ({ label }: { label: React.ReactNode }) => {
 };
 export default function TabsCustom({
   children,
+  scrollable = true,
+  classChild = "pt-8",
 }: {
   children: React.ReactNode[];
+  scrollable?: "auto" | boolean;
+  classChild?: string;
 }) {
   const [value, setValue] = useState(0);
 
@@ -30,7 +40,7 @@ export default function TabsCustom({
       value={value}
       onChange={handleChange}
       variant="scrollable"
-      scrollButtons={false} // Active le scroll si nécessaire
+      scrollButtons={scrollable} // Active le scroll si nécessaire
       allowScrollButtonsMobile
       sx={{
         "& .MuiTabs-scroller": {
@@ -52,7 +62,7 @@ export default function TabsCustom({
       }}
     >
       {children.map((child, index) => (
-        <CustomTab key={index} label={child} />
+        <CustomTab key={index} label={child} classChild={classChild} />
       ))}
     </Tabs>
   );

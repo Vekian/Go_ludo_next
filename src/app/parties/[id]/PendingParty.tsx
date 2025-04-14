@@ -3,12 +3,13 @@ import React from "react";
 import Infos from "./CardInfos/Infos";
 import UserInfos from "./CardInfos/UserInfos";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
-import ListParticipants from "@/components/list/ListParticipants";
 import CardGame from "@/components/cards/CardGame";
 import { GameListItem } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import Chat from "./Chat/Chat";
 import ButtonLeave from "./CardInfos/ButtonLeave";
+import TabsCustom from "@/components/ui/tab/TabsCustom";
+import CardParticipant from "@/components/cards/CardParticipant";
 
 export default function PendingParty({ party }: { party: Party }) {
   return (
@@ -29,15 +30,28 @@ export default function PendingParty({ party }: { party: Party }) {
         </div>
         <div>
           <h3>Participants :</h3>
-          <ListParticipants participants={party.participants} />
+          <TabsCustom scrollable="auto" classChild="pt-2">
+            <CardParticipant
+              participant={party.author}
+              key={`participant${party.author.id}`}
+            />
+            {party.participants.map((participant) => (
+              <CardParticipant
+                participant={participant}
+                key={`participant${participant.id}`}
+              />
+            ))}
+          </TabsCustom>
         </div>
         <div className=" w-full">
           <h3>Jeux proposés :</h3>
-          <div className="flex  gap-5 mt-5">
+          <TabsCustom scrollable="auto" classChild="pt-2">
             {party.games.map((game: GameListItem) => (
-              <CardGame game={game} key={`${game.id}list`} />
+              <div key={`${game.id}list`} className="w-48">
+                <CardGame game={game} logged={true} />
+              </div>
             ))}
-          </div>
+          </TabsCustom>
         </div>
       </div>
       <Chat party={party} />

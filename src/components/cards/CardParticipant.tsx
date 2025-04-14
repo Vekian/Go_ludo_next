@@ -1,6 +1,7 @@
 import { UserProfil } from "@/interfaces";
 import { getImg } from "@/lib/utils";
-import Image from "next/image";
+import { Avatar } from "@mui/material";
+import Link from "next/link";
 import React from "react";
 
 export default function CardParticipant({
@@ -9,16 +10,17 @@ export default function CardParticipant({
   participant: UserProfil;
 }) {
   return (
-    <div className="bg-white rounded-lg p-3 flex flex-col items-center">
-      <div className="h-28 relative w-28 max-w-36 ">
-        <Image
-          alt="test"
-          src={getImg(`${participant.avatar}`)}
-          fill
-          className="object-contain"
-        />
+    <Link href={`/users/${participant.id}`}>
+      <div className="bg-white rounded-lg p-6 flex flex-col items-center gap-y-3 drop-shadow-lg hover:bg-primary-50">
+        <div className="h-20 relative w-20 max-w-36 ">
+          <Avatar
+            alt={participant.username}
+            src={getImg(participant.avatar)}
+            sx={{ width: "auto", height: "auto" }}
+          />
+        </div>
+        <p>{participant.username}</p>
       </div>
-      <p>{participant.username}</p>
-    </div>
+    </Link>
   );
 }

@@ -8,7 +8,8 @@ export interface PartyCard {
   cover: string;
   games: Partial<GameListItem>[];
   city: City;
-  date: string;
+  meetingDate: string;
+  meetingTime: string;
   author: UserProfil;
   participants: number;
   ageMax: number;
@@ -20,13 +21,14 @@ export interface Party {
   title: string;
   description: string;
   playersMax: number;
+  playersMin: number;
   playersCount: number;
   cover: string;
   games: GameListItem[];
   city: City;
-  date: string;
+  meetingDate: string;
+  meetingTime: string;
   author: UserProfil;
-  capacity: number;
   participants: UserProfil[];
   closedAt: string;
   joined?: boolean;

@@ -1,16 +1,16 @@
 import { UserProfil } from "@/interfaces";
-import Image from "next/image";
+import { getImg } from "@/lib/utils";
+import { Avatar } from "@mui/material";
 import React from "react";
 
 export default function UserInfos({ user }: { user: UserProfil }) {
   return (
     <div className="h-full w-1/6 flex flex-col items-center me-10 ">
-      <div className="h-36 relative w-full max-w-36  ">
-        <Image
-          alt="test"
-          src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/images/users/4/pngwing-com-679f870e30a42280699838.png`}
-          fill
-          className="object-contain"
+      <div className="w-full max">
+        <Avatar
+          alt={user.username}
+          src={getImg(user.avatar)}
+          sx={{ width: 100, height: 100 }}
         />
       </div>
       <p>{user.username}</p>

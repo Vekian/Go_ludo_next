@@ -11,6 +11,7 @@ import { PartyCard } from "@/interfaces/party.interface";
 import Link from "next/link";
 import { Avatar } from "@mui/material";
 import { getImg } from "@/lib/utils";
+import { formatDate } from "@/lib/date";
 
 export default function CardParty({ party }: { party: PartyCard }) {
   return (
@@ -53,7 +54,7 @@ export default function CardParty({ party }: { party: PartyCard }) {
                   icon={faCalendarCheck}
                   className="text-primary-950"
                 />
-                21/08/2024
+                {formatDate(party.meetingDate)}
               </div>
             </div>
           </div>
