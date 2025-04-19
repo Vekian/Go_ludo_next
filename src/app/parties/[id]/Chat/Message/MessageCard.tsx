@@ -43,7 +43,9 @@ export default function MessageCard({
             !author && "flex-row-reverse"
           }`}
         >
-          <small>{getRelativeTime(message.createdAt)}</small>
+          <p className="text-xs lg:text-sm">
+            {getRelativeTime(message.createdAt)}
+          </p>
           <MessageCardActions
             message={message}
             setContent={setContent}

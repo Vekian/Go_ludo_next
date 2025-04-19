@@ -136,6 +136,28 @@ export async function leaveParty(idParty: number, idParticipant: number) {
   };
 }
 
+export async function joinParty(idParty: number) {
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/join/${idParty}`
+  );
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers,
+    method: "PUT",
+  });
+
+  if (!response.ok) {
+    return {
+      ok: false,
+      message: "Impossible de rejoindre la partie",
+    };
+  }
+  return {
+    ok: true,
+    message: "Vous avez rejoint la partie avec succès",
+  };
+}
+
 export async function createParty(
   formData: FormData,
   gamesId: number[] | undefined

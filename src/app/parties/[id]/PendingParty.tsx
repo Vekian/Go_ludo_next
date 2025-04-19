@@ -22,6 +22,8 @@ export default function PendingParty({ party }: { party: Party }) {
   const [mobileChat, setMobileChat] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
+  const participants = [party.author, ...party.participants];
+
   useEffect(() => {
     // Fonction pour vérifier la largeur de l'écran
     const handleResize = () => {
@@ -91,11 +93,7 @@ export default function PendingParty({ party }: { party: Party }) {
                 scrollable={isMobile ? false : "auto"}
                 classChild="pt-2"
               >
-                <CardParticipant
-                  participant={party.author}
-                  key={`participant${party.author.id}`}
-                />
-                {party.participants.map((participant) => (
+                {participants.map((participant) => (
                   <CardParticipant
                     participant={participant}
                     key={`participant${participant.id}`}

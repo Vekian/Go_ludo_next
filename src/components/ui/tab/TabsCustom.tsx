@@ -22,7 +22,7 @@ const CustomTab = ({
 };
 export default function TabsCustom({
   children,
-  scrollable = true,
+  scrollable = false,
   classChild = "pt-8",
 }: {
   children: React.ReactNode[];

@@ -1,14 +1,13 @@
 import ListGames from "@/components/list/ListGames";
 import ListParticipants from "@/components/list/ListParticipants";
 
-import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { Party } from "@/interfaces/party.interface";
 
 import React from "react";
 import Cover from "./CardInfos/Cover";
 import Infos from "./CardInfos/Infos";
 import UserInfos from "./CardInfos/UserInfos";
-import { theme } from "@/theme/theme";
+import ButtonJoin from "./CardInfos/ButtonJoin";
 
 export default function UnjoinedParty({ party }: { party: Party }) {
   return (
@@ -18,12 +17,7 @@ export default function UnjoinedParty({ party }: { party: Party }) {
         <Infos party={party} />
         <UserInfos user={party.author} />
       </div>
-      <div className="flex justify-center pt-5">
-        <ButtonPrimary
-          color={theme.colors.primary[500]}
-          label="Rejoindre la partie"
-        />
-      </div>
+      <ButtonJoin party={party} />
       <div className="py-3">
         <h2>
           {party.participants.length > 0
@@ -31,7 +25,8 @@ export default function UnjoinedParty({ party }: { party: Party }) {
             : `${party.participants.length + 1} participant`}
         </h2>
         <ListParticipants
-          participants={[party.author, ...party.participants]}
+          participants={party.participants}
+          author={party.author}
         />
       </div>
       <div>
