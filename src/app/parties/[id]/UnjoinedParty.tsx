@@ -12,7 +12,7 @@ import ButtonJoin from "./CardInfos/ButtonJoin";
 export default function UnjoinedParty({ party }: { party: Party }) {
   return (
     <div>
-      <div className="bg-white rounded-lg flex  gap-x-14 px-10 py-8">
+      <div className="bg-white rounded-lg flex flex-wrap px-5 sm:px-10 py-8 gap-y-3">
         <Cover party={party} />
         <Infos party={party} />
         <UserInfos user={party.author} />

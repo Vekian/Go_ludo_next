@@ -12,26 +12,24 @@ import { formatDate } from "@/lib/date";
 
 export default function Infos({ party }: { party: Party }) {
   return (
-    <div className="flex justify-between w-5/6">
+    <div className="flex justify-between w-4/6">
       <div className="flex flex-col justify-between gap-y-3">
         <div className="flex flex-col gap-y-3">
           <h1>{party.title}</h1>
-          <div className="flex gap-x-16">
+          <div className="flex flex-wrap gap-x-8 gap-y-2 xl:gap-x-16">
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faCity} />
               <p>{party.city.name}</p>
+            </div>
+            <div className="flex gap-x-2 items-center">
+              <FontAwesomeIcon icon={faCalendarCheck} />
+              <p>{formatDate(party.meetingDate)}</p>
             </div>
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faUserGroup} />
               <p>
                 {party.participants.length + 1}/{party.playersMax}
               </p>
-            </div>
-          </div>
-          <div className="flex gap-x-16">
-            <div className="flex gap-x-2 items-center">
-              <FontAwesomeIcon icon={faCalendarCheck} />
-              <p>{formatDate(party.meetingDate)}</p>
             </div>
           </div>
           <div>{party.description}</div>

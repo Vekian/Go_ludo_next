@@ -4,8 +4,8 @@ import React from "react";
 
 export default function Cover({ party }: { party: Party }) {
   return (
-    <div className="flex justify-center w-1/6">
-      <div className="h-56 relative w-full max-w-36 ">
+    <div className="flex justify-center w-full sm:w-1/6 pe-3 h-36">
+      <div className=" relative w-full ">
         {party.games[0] && (
           <Image
             alt="test"
