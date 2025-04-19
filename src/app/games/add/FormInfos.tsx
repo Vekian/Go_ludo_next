@@ -10,10 +10,17 @@ import React, { useState } from "react";
 import CategoryGameSelect from "./CategoryGameSelect";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { addGame } from "@/lib/api/server/game";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
+import { useRouter } from "next/navigation";
+import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 
 export default function FormInfos() {
   const [language, setLanguage] = useState<string>("french");
   const [type, setType] = useState<"base" | "extension">("base");
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const { showSnackbar } = useSnackbarContext();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const createGame = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,6 +28,7 @@ export default function FormInfos() {
     const durations = formData.getAll("duration");
     const ages = formData.getAll("age");
     const players = formData.getAll("players");
+    formData.set("language", language);
     formData.set("playtimeMin", durations[0]);
     formData.set("playtimeMax", durations[1]);
     formData.set("playersMin", players[0]);
@@ -30,11 +38,18 @@ export default function FormInfos() {
     formData.delete("durations");
     formData.delete("players");
     formData.delete("age");
-    const response = await addGame(formData);
+    setLoading(true);
+    const response = await addGame(formData, type);
 
-    if (response.errors) {
-      console.log(response.errors);
+    if (!response.ok) {
+      setErrors(response.errors);
+      showSnackbar("Erreur lors de la création de fiche de jeu", "error");
+      setLoading(false);
     } else {
+      setErrors(null);
+      const id = response.data.id;
+      router.push(`/${type === "base" ? "game" : type}s/${id}`);
+      showSnackbar(response.message, "success");
     }
   };
   return (
@@ -185,11 +200,15 @@ export default function FormInfos() {
           </div>
         </div>
         <div className="text-center">
-          <ButtonPrimary
-            label="Créer une fiche de jeu"
-            color={theme.colors.primary[500]}
-            type="submit"
-          />
+          {loading ? (
+            <CustomCircularLoader />
+          ) : (
+            <ButtonPrimary
+              label="Créer une fiche de jeu"
+              color={theme.colors.primary[500]}
+              type="submit"
+            />
+          )}
         </div>
       </form>
     </div>

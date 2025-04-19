@@ -10,11 +10,10 @@ const createGameSchema = z.object({
   playersMax: z.coerce.number(),
   playtimeMin: z.coerce.number(),
   playtimeMax: z.coerce.number(),
-  category: z
+  language: z.string(),
+  categories: z
     .array(z.coerce.number().min(1, "Catégorie invalide"))
     .default([0]),
-  theme: z.array(z.coerce.number().min(1, "Catégorie invalide")).default([0]),
-  mode: z.array(z.coerce.number().min(1, "Catégorie invalide")).default([0]),
   name: z
     .string()
     .min(4, "4 caractères minimum")
@@ -83,21 +82,15 @@ export async function getGame(id: number, type: string) {
   return data;
 }
 
-export async function addGame(formData: FormData) {
+export async function addGame(formData: FormData, type: string) {
   const rawData = Object.fromEntries(formData.entries());
-  const category = formData.getAll("category[]");
-  const mode = formData.getAll("mode[]");
-  const theme = formData.getAll("theme[]");
+  const categories = formData.getAll("categories[]");
 
-  delete rawData["category[]"];
-  delete rawData["mode[]"];
-  delete rawData["theme[]"];
+  delete rawData["categories[]"];
 
   const fixedData = {
     ...rawData,
-    category,
-    mode,
-    theme,
+    categories,
   };
 
   const validatedFields = createGameSchema.safeParse(fixedData);
@@ -111,16 +104,25 @@ export async function addGame(formData: FormData) {
   }
 
   const headers = await handleAuth();
-  const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game`);
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}`
+  );
   const response = await fetch(url, {
     headers: headers,
     method: "POST",
     body: JSON.stringify(validatedFields.data),
   });
-
-  if (!response.ok) {
-    throw new Error("Impossible de charger le jeu");
-  }
   const data = await response.json();
-  return data;
+  if (!response.ok) {
+    return {
+      ok: false,
+      message: data.message,
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Fiche de jeu créée avec succès",
+    data: data,
+  };
 }

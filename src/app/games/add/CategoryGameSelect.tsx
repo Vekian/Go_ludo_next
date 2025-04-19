@@ -93,7 +93,7 @@ export default function CategoryGameSelect({
               icon={faTrash}
               onClick={() => deleteCategory(category)}
             />
-            <input type="hidden" name={`${type}[]`} value={category.value} />
+            <input type="hidden" name={`categories[]`} value={category.value} />
           </div>
         ))}
       </div>
