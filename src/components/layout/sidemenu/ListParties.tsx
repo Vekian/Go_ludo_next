@@ -61,7 +61,7 @@ export default function ListParties({
               <FontAwesomeIcon icon={faUsers} className="text-secondary-900" />
             </ListItemIcon>
             <ListItemText
-              primary="Parties"
+              primary="Trouver une partie"
               sx={[
                 (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
@@ -86,11 +86,6 @@ export default function ListParties({
               paddingLeft: 6,
             }}
           >
-            <ListItem component="li">
-              <ListItemButton sx={{ py: 0 }}>
-                <ListItemText primary="Trouver une partie" />
-              </ListItemButton>
-            </ListItem>
             <ListItem component="li">
               <ListItemButton sx={{ py: 0 }}>
                 <ListItemText primary="Vos parties en cours" />

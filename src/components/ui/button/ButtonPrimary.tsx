@@ -27,7 +27,12 @@ function ButtonPrimary({
       onClick={onClick}
     >
       <div className="h-3 flex items-center py-3">
-        {icon && <FontAwesomeIcon icon={icon} className="me-2" />}
+        {icon && (
+          <FontAwesomeIcon
+            icon={icon}
+            className={`${label !== "" && "me-2"}`}
+          />
+        )}
         {label}
       </div>
     </button>

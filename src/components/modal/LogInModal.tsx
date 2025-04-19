@@ -105,6 +105,7 @@ function LogInModal() {
             />
             <ButtonPrimary
               label="Se connecter"
+              type="submit"
               color={theme.colors.primary[500]}
             />
           </DialogActions>

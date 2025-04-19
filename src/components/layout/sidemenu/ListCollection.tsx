@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
 
@@ -18,11 +19,13 @@ export default function ListCollection({
   isMobile?: boolean;
 }) {
   const { isMenuOpen, isMobileMenuOpen, toggleMobileMenu } = useSidemenu();
+  const { data } = useSession();
+
   return (
     <List>
       <ListItem key={"Collection"} disablePadding sx={{ display: "block" }}>
         <Link
-          href={"/users/profil"}
+          href={"/"}
           onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
         >
           <ListItemButton
@@ -60,7 +63,7 @@ export default function ListCollection({
               <FontAwesomeIcon icon={faDice} className="text-primary-600" />
             </ListItemIcon>
             <ListItemText
-              primary="Collection"
+              primary="Tous les jeux"
               sx={[
                 (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
@@ -87,19 +90,28 @@ export default function ListCollection({
           >
             <ListItem component="li">
               <ListItemButton sx={{ py: 0 }}>
-                <ListItemText primary="Tous les jeux" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem component="li">
-              <ListItemButton sx={{ py: 0 }}>
                 <ListItemText primary="Recherche avancée" />
               </ListItemButton>
             </ListItem>
-            <ListItem component="li">
-              <ListItemButton sx={{ py: 0 }}>
-                <ListItemText primary="Voir votre collection" />
-              </ListItemButton>
-            </ListItem>
+            {data && data.user.id && (
+              <ListItem component="li">
+                <Link href={"/users/profil"}>
+                  <ListItemButton sx={{ py: 0 }}>
+                    <ListItemText primary="Votre collection" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            )}
+
+            {data && data.user.roles.includes("ROLE_ADMIN") && (
+              <ListItem component="li">
+                <Link href={"/games/add"}>
+                  <ListItemButton sx={{ py: 0 }}>
+                    <ListItemText primary="Ajouter une fiche de jeu" />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            )}
           </List>
         </Collapse>
       </ListItem>
