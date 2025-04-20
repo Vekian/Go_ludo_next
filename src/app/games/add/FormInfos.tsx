@@ -13,6 +13,7 @@ import { addGame } from "@/lib/api/server/game";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { useRouter } from "next/navigation";
 import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
+import FormError from "@/components/ui/error/FormError";
 
 export default function FormInfos() {
   const [language, setLanguage] = useState<string>("french");
@@ -42,8 +43,11 @@ export default function FormInfos() {
     const response = await addGame(formData, type);
 
     if (!response.ok) {
-      setErrors(response.errors);
-      showSnackbar("Erreur lors de la création de fiche de jeu", "error");
+      if (response.errors) {
+        setErrors(response.errors);
+      }
+
+      showSnackbar(response.message, "error");
       setLoading(false);
     } else {
       setErrors(null);
@@ -66,6 +70,7 @@ export default function FormInfos() {
                 Nom du jeu
               </label>
               <InputText id="name" required={true} />
+              {errors?.name && <FormError name="name" errors={errors.name} />}
             </div>
             <div className="flex flex-col justify-start">
               <label className="text-primary-950 font-semibold">Langue</label>
@@ -83,6 +88,9 @@ export default function FormInfos() {
                   setLanguage(event.target.value);
                 }}
               />
+              {errors?.language && (
+                <FormError name="language" errors={errors.language} />
+              )}
             </div>
             <div className="flex flex-col justify-start">
               <label className="text-primary-950 font-semibold">
@@ -111,6 +119,9 @@ export default function FormInfos() {
               Description:
             </label>
             <TextAreaAutosize name="description" />
+            {errors?.description && (
+              <FormError name="description" errors={errors.description} />
+            )}
           </div>
           <div className="w-full flex justify-between">
             <div className="flex flex-col w-1/4">
@@ -130,6 +141,12 @@ export default function FormInfos() {
                   thumb: RangeThumb,
                 }}
               />
+              {errors?.playtimeMin && (
+                <FormError name="playtimeMin" errors={errors.playtimeMin} />
+              )}
+              {errors?.playtimeMax && (
+                <FormError name="playtimeMax" errors={errors.playtimeMax} />
+              )}
             </div>
             <div className="flex flex-col w-1/4">
               <label
@@ -148,6 +165,12 @@ export default function FormInfos() {
                   thumb: RangeThumb,
                 }}
               />
+              {errors?.playersMin && (
+                <FormError name="playersMin" errors={errors.playersMin} />
+              )}
+              {errors?.playersMax && (
+                <FormError name="playersMax" errors={errors.playersMax} />
+              )}
             </div>
             <div className="flex flex-col w-1/4">
               <label
@@ -175,6 +198,12 @@ export default function FormInfos() {
                   color: theme.colors.primary[600],
                 }}
               />
+              {errors?.ageMin && (
+                <FormError name="ageMin" errors={errors.ageMin} />
+              )}
+              {errors?.ageMax && (
+                <FormError name="ageMax" errors={errors.ageMax} />
+              )}
             </div>
           </div>
           <div className="flex flex-col w-1/4 mt-3">
@@ -197,7 +226,13 @@ export default function FormInfos() {
               label="Thème"
               color={theme.colors.neutral[500]}
             />
+            {errors?.categories && (
+              <FormError name="categories" errors={errors.categories} />
+            )}
           </div>
+          {errors?.general && (
+            <FormError name="general" errors={errors.general} />
+          )}
         </div>
         <div className="text-center">
           {loading ? (

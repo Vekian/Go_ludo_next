@@ -116,7 +116,10 @@ export async function addGame(formData: FormData, type: string) {
   if (!response.ok) {
     return {
       ok: false,
-      message: data.message,
+      message: "Impossible de créer la fiche de jeu",
+      errors: {
+        general: data.message,
+      },
     };
   }
 
