@@ -8,11 +8,21 @@ import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
 import { uploadImageGame } from "@/lib/api/server/game";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
+import FormError from "../ui/error/FormError";
+import { Game } from "@/interfaces";
 
-export default function FormImage({ gameId }: { gameId: number }) {
+export default function FormImage({
+  game,
+  setStep,
+}: {
+  game: Game;
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const [previews, setPreviews] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [imagesUploaded, setImagesUploaded] = useState<boolean[]>([]);
+  const [indexError, setIndexError] = useState<number | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const { showSnackbar } = useSnackbarContext();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,16 +56,26 @@ export default function FormImage({ gameId }: { gameId: number }) {
   };
 
   const handleUploads = () => {
+    let noError = true;
     for (let i = 0; i < imagesUploaded.length; i++) {
-      const uploaded = handleUpload(images[i], gameId);
+      if (!imagesUploaded[i]) {
+        const uploaded = handleUpload(images[i], game.id);
 
-      if (!uploaded) {
-        break;
-      } else {
-        setImagesUploaded((prev) =>
-          prev.map((value, index) => (index === i ? true : value))
-        );
+        if (!uploaded) {
+          setIndexError(i);
+          noError = false;
+          break;
+        } else {
+          setImagesUploaded((prev) =>
+            prev.map((value, index) => (index === i ? true : value))
+          );
+        }
       }
+    }
+
+    if (noError) {
+      showSnackbar("Images uploadés avec succès", "success");
+      setStep(3);
     }
   };
 
@@ -64,6 +84,9 @@ export default function FormImage({ gameId }: { gameId: number }) {
     formData.set("file", image);
     const response = await uploadImageGame(formData, gameId);
     if (!response.ok) {
+      if (response.errors) {
+        setErrors(response.errors);
+      }
       if (response.message) {
         showSnackbar(response.message, "error");
         return false;
@@ -81,13 +104,17 @@ export default function FormImage({ gameId }: { gameId: number }) {
     );
   };
 
+  const indexErrors = (errors: string[], indexError: number | null) => {
+    return errors.map((error: string) => `Image n°${indexError} ${error}`);
+  };
+
   return (
     <div className="flex flex-col items-center gap-y-6">
       <div className="flex flex-col bg-white rounded-lg flex-wrap p-10 gap-y-6 w-full">
         <div className="flex items-center">
           <label
             htmlFor="images"
-            className="bg-primary-700 text-white rounded-full px-5 py-1.5 cursor-pointer hover:brightness-75 inline-flex items-center gap-2"
+            className="bg-primary-700 text-white rounded-md px-5 py-1.5 cursor-pointer hover:brightness-75 inline-flex items-center gap-2 font-bold"
             style={{ textShadow: "0px 0px 4px rgba(0, 0, 0, 0.3)" }}
           >
             <FontAwesomeIcon icon={faImage} />
@@ -103,6 +130,12 @@ export default function FormImage({ gameId }: { gameId: number }) {
             multiple
             onChange={handleInput}
           />
+          {errors?.file && (
+            <FormError
+              name="file"
+              errors={indexErrors(errors.file, indexError)}
+            />
+          )}
         </div>
 
         <div className="flex flex-wrap gap-4">

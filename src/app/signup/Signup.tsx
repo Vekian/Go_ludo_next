@@ -83,7 +83,7 @@ export default function Signup() {
           <label>Nom utilisateur</label>
           <InputText
             id="username"
-            value={userData.username}
+            defaultValue={userData.username}
             onChange={(value) => handleChange("username", value)}
           />
           {errors?.username && (
@@ -95,7 +95,7 @@ export default function Signup() {
           <InputText
             id="email"
             type="email"
-            value={userData.email}
+            defaultValue={userData.email}
             onChange={(value) => handleChange("email", value)}
           />
           {errors?.email && <FormError errors={errors.email} name="email" />}
@@ -105,7 +105,7 @@ export default function Signup() {
           <InputText
             id="password"
             type="password"
-            value={userData.password}
+            defaultValue={userData.password}
             onChange={(value) => handleChange("password", value)}
           />
           {errors?.password && (

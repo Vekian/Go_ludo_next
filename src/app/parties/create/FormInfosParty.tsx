@@ -46,7 +46,7 @@ export default function FormInfosParty({
           <label htmlFor="title" className="text-primary-950 font-semibold">
             Nom du groupe
           </label>
-          <InputText value="" id="title" />
+          <InputText defaultValue="" id="title" />
           {errors?.title && <FormError name="title" errors={errors.title} />}
         </div>
         <div className="flex flex-wrap w-full lg:w-3/5 gap-x-12">

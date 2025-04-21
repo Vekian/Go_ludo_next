@@ -36,6 +36,7 @@ export interface Game {
   language: string;
   weight: number;
   height: number;
+  type: string;
   length: number;
   width: number;
   edition: number;

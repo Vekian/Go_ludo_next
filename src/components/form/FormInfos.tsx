@@ -9,17 +9,20 @@ import { SelectChangeEvent } from "@mui/material";
 import React, { useState } from "react";
 import CategoryGameSelect from "./CategoryGameSelect";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
-import { addGame } from "@/lib/api/server/game";
+import { addGame, updateGame } from "@/lib/api/server/game";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 import FormError from "@/components/ui/error/FormError";
+import { Game } from "@/interfaces";
 
 export default function FormInfos({
   setStep,
-  setGameId,
+  setGame,
+  game,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  setGameId: React.Dispatch<React.SetStateAction<number | null>>;
+  setGame: React.Dispatch<React.SetStateAction<Game | null>>;
+  game: Game | null;
 }) {
   const [language, setLanguage] = useState<string>("french");
 
@@ -28,7 +31,7 @@ export default function FormInfos({
   const { showSnackbar } = useSnackbarContext();
   const [loading, setLoading] = useState(false);
 
-  const createGame = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleGame = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const durations = formData.getAll("duration");
@@ -45,7 +48,13 @@ export default function FormInfos({
     formData.delete("players");
     formData.delete("age");
     setLoading(true);
-    const response = await addGame(formData, type);
+
+    let response = null;
+    if (game) {
+      response = await updateGame(formData, type, game.id);
+    } else {
+      response = await addGame(formData, type);
+    }
 
     if (!response.ok) {
       if (response.errors) {
@@ -56,9 +65,9 @@ export default function FormInfos({
       setLoading(false);
     } else {
       setErrors(null);
-      const id = response.data.id;
-      setGameId(id);
+      setGame(response.data);
       setStep(2);
+      setLoading(false);
       showSnackbar(response.message, "success");
     }
   };
@@ -68,7 +77,7 @@ export default function FormInfos({
       <form
         method="POST"
         className="w-full flex flex-col gap-y-6"
-        onSubmit={createGame}
+        onSubmit={handleGame}
       >
         <div className="flex flex-col bg-white rounded-lg flex-wrap p-10  gap-y-6">
           <div className="flex justify-between w-full">
@@ -246,7 +255,7 @@ export default function FormInfos({
             <CustomCircularLoader />
           ) : (
             <ButtonPrimary
-              label="Créer une fiche de jeu"
+              label={`${game ? "Modifier la" : "Créer une"} fiche de jeu`}
               color={theme.colors.primary[500]}
               type="submit"
             />

@@ -94,7 +94,7 @@ export default function SearchBarMobil() {
               <FontAwesomeIcon icon={faArrowLeft} />
             </IconButton>
             <InputText
-              value={search ?? ""}
+              defaultValue={search ?? ""}
               id={"search"}
               onChange={setSearch}
             />

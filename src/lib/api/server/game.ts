@@ -28,6 +28,15 @@ const createGameSchema = z.object({
     .default(""),
 });
 
+const updateGameSchema = z.object({
+  weight: z.coerce.number(),
+  length: z.coerce.number(),
+  height: z.coerce.number(),
+  width: z.coerce.number(),
+  content: z.array(z.string()),
+  publishedAt: z.union([z.coerce.date(), z.null()]).optional(),
+});
+
 export async function getGames(params: Param[] = []) {
   const headers = await handleAuth();
   const url = new URL(
@@ -131,6 +140,116 @@ export async function addGame(formData: FormData, type: string) {
   };
 }
 
+export async function updateGame(
+  formData: FormData,
+  type: string,
+  gameId: number
+) {
+  const rawData = Object.fromEntries(formData.entries());
+  const categories = formData.getAll("categories[]");
+
+  delete rawData["categories[]"];
+
+  const fixedData = {
+    ...rawData,
+    categories,
+  };
+
+  const validatedFields = createGameSchema.safeParse(fixedData);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Impossible de créer la fiche de jeu",
+      ok: false,
+    };
+  }
+
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${gameId}`
+  );
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PUT",
+    body: JSON.stringify(validatedFields.data),
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    return {
+      ok: false,
+      message: "Impossible de modifier la fiche de jeu",
+      errors: {
+        general: data.message,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Fiche de jeu modifiée avec succès",
+    data: {
+      id: gameId,
+    },
+  };
+}
+
+export async function updateGameInfosSec(
+  formData: FormData,
+  type: string,
+  gameId: number
+) {
+  const rawData = Object.fromEntries(formData.entries());
+  const content = formData.getAll("content[]");
+
+  delete rawData["content[]"];
+
+  const fixedData = {
+    ...rawData,
+    content,
+  };
+
+  const validatedFields = updateGameSchema.safeParse(fixedData);
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Impossible d'ajouter les infos secondaires",
+      ok: false,
+    };
+  }
+
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${gameId}`
+  );
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PATCH",
+    body: JSON.stringify(validatedFields.data),
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    return {
+      ok: false,
+      message: "Impossible d'ajouter les infos secondaires",
+      errors: {
+        general: data.message,
+      },
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Infos secondaires ajoutées avec succès",
+    data: {
+      id: gameId,
+    },
+  };
+}
+
 export async function uploadImageGame(formData: FormData, gameId: number) {
   const file = formData.get("file") as File | null;
 
@@ -139,7 +258,7 @@ export async function uploadImageGame(formData: FormData, gameId: number) {
       ok: false,
       message: "Aucun fichier reçu.",
       errors: {
-        file: "Veuillez sélectionner une image",
+        file: ["Veuillez sélectionner une image"],
       },
     };
   }

@@ -105,7 +105,7 @@ export default function ListCollection({
 
             {data && data.user.roles.includes("ROLE_ADMIN") && (
               <ListItem component="li">
-                <Link href={"/games/add"}>
+                <Link href={"/games/create"}>
                   <ListItemButton sx={{ py: 0 }}>
                     <ListItemText primary="Ajouter une fiche de jeu" />
                   </ListItemButton>
