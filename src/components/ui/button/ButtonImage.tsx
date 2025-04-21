@@ -92,7 +92,7 @@ function ButtonImage({
         />
       </div>
       {uploading && (
-        <div className="flex">
+        <div className="flex items-center">
           <input
             type="submit"
             value="Valider"

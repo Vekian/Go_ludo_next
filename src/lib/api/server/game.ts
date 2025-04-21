@@ -2,6 +2,7 @@
 import { Param } from "@/interfaces";
 import { handleAuth } from "../authServer";
 import { z } from "zod";
+import { validateImageGame } from "../validation/image";
 
 const createGameSchema = z.object({
   ageMin: z.coerce.number(),
@@ -127,5 +128,48 @@ export async function addGame(formData: FormData, type: string) {
     ok: true,
     message: "Fiche de jeu créée avec succès",
     data: data,
+  };
+}
+
+export async function uploadImageGame(formData: FormData, gameId: number) {
+  const file = formData.get("file") as File | null;
+
+  if (!file) {
+    return {
+      ok: false,
+      message: "Aucun fichier reçu.",
+      errors: {
+        file: "Veuillez sélectionner une image",
+      },
+    };
+  }
+  const validationResult = validateImageGame(file);
+  if (!validationResult.success) {
+    return {
+      ok: false,
+      errors: validationResult.error.flatten().fieldErrors,
+    };
+  }
+  const headers = await handleAuth();
+  headers.set("Accept", "application/json");
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/upload/image/${gameId}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    return {
+      ok: false,
+      message: data.message,
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Image upload avec succès",
   };
 }

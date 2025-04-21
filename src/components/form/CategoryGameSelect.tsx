@@ -54,7 +54,7 @@ export default function CategoryGameSelect({
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div className="flex justify-between">
+      <div className="flex justify-between w-1/4">
         <div className="w-4/5">
           <ColorSelect
             label={label}

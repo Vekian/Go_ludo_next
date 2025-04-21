@@ -1,5 +1,5 @@
 import React from "react";
-import FormInfos from "./FormInfos";
+import FormGame from "@/components/form/FormGame";
 
 export default function page() {
   return (
@@ -9,7 +9,7 @@ export default function page() {
           <h2>Ajouter une fiche de jeu</h2>
         </div>
       </div>
-      <FormInfos />
+      <FormGame />
     </div>
   );
 }

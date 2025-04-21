@@ -11,17 +11,22 @@ import CategoryGameSelect from "./CategoryGameSelect";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { addGame } from "@/lib/api/server/game";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
-import { useRouter } from "next/navigation";
 import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 import FormError from "@/components/ui/error/FormError";
 
-export default function FormInfos() {
+export default function FormInfos({
+  setStep,
+  setGameId,
+}: {
+  setStep: React.Dispatch<React.SetStateAction<number>>;
+  setGameId: React.Dispatch<React.SetStateAction<number | null>>;
+}) {
   const [language, setLanguage] = useState<string>("french");
+
   const [type, setType] = useState<"base" | "extension">("base");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const { showSnackbar } = useSnackbarContext();
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const createGame = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,10 +57,12 @@ export default function FormInfos() {
     } else {
       setErrors(null);
       const id = response.data.id;
-      router.push(`/${type === "base" ? "game" : type}s/${id}`);
+      setGameId(id);
+      setStep(2);
       showSnackbar(response.message, "success");
     }
   };
+
   return (
     <div className="flex flex-col gap-y-6">
       <form
@@ -206,21 +213,21 @@ export default function FormInfos() {
               )}
             </div>
           </div>
-          <div className="flex flex-col w-1/4 mt-3">
+          <div className="flex flex-col  mt-3">
             <CategoryGameSelect
               type="category"
               label="Catégorie"
               color={theme.colors.primary[500]}
             />
           </div>
-          <div className="flex flex-col w-1/4">
+          <div className="flex flex-col ">
             <CategoryGameSelect
               type="mode"
               label="Mode de jeu"
               color={theme.colors.secondary[500]}
             />
           </div>
-          <div className="flex flex-col w-1/4">
+          <div className="flex flex-col ">
             <CategoryGameSelect
               type="theme"
               label="Thème"
