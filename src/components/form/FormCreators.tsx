@@ -5,8 +5,8 @@ import SelectClassic from "../ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
 import { SelectChangeEvent } from "@mui/material";
 import ButtonPrimary from "../ui/button/ButtonPrimary";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { CreatorJob, jobNames } from "@/interfaces/enum.interface";
+import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { CreatorJob, jobNames } from "@/interfaces/creator.interface";
 import CardCreator from "../cards/CardCreator";
 import { addGameCreator } from "@/lib/api/server/creator";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
@@ -83,6 +83,11 @@ export default function FormCreators({
     }
   };
 
+  const deleteCreator = (creator: Creator) => {
+    const creatorAlreadyExist = false;
+    creator.jobs.forEach((job) => {});
+  };
+
   return (
     <div className="flex flex-col gap-y-6">
       <div className="flex flex-col bg-white rounded-lg flex-wrap p-10  gap-y-12">
@@ -134,7 +139,18 @@ export default function FormCreators({
                     creatorsSelected
                       .filter((creator) => creator.jobs.includes(job))
                       .map((creator) => (
-                        <CardCreator creator={creator} key={creator.id} />
+                        <div
+                          key={creator.id}
+                          className="flex flex-col items-center"
+                        >
+                          <CardCreator creator={creator} />
+                          <ButtonPrimary
+                            color={theme.colors.primary[700]}
+                            label=""
+                            icon={faTrash}
+                            onClick={() => deleteCreator(creator)}
+                          />
+                        </div>
                       ))}
                 </div>
               </div>

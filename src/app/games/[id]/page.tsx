@@ -22,7 +22,7 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <div className="xl:w-1/3 w-full pt-5 flex justify-center overflow-x-hidden">
           <Carousel
             autoPlay={false}
-            imgs={game.images}
+            imgs={game.images.map((image) => image.filepath)}
             thumbs={true}
             height={300}
             width={200}

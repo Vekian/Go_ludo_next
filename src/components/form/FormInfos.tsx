@@ -14,22 +14,26 @@ import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 import FormError from "@/components/ui/error/FormError";
 import { Game } from "@/interfaces";
+import { useRouter } from "next/navigation";
 
 export default function FormInfos({
   setStep,
-  setGame,
   game,
 }: {
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  setGame: React.Dispatch<React.SetStateAction<Game | null>>;
   game: Game | null;
 }) {
-  const [language, setLanguage] = useState<string>("french");
+  const [language, setLanguage] = useState<string>(
+    game ? game.language : "french"
+  );
 
-  const [type, setType] = useState<"base" | "extension">("base");
+  const [type, setType] = useState<"base" | "extension">(
+    game ? game.type : "base"
+  );
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const { showSnackbar } = useSnackbarContext();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleGame = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -65,8 +69,12 @@ export default function FormInfos({
       setLoading(false);
     } else {
       setErrors(null);
-      setGame(response.data);
-      setStep(2);
+      router.push(
+        `/${
+          response.data.type === "base" ? "game" : response.data.type
+        }s/edit/${response.data.id}?step=2`
+      );
+      setStep(5);
       setLoading(false);
       showSnackbar(response.message, "success");
     }
@@ -85,7 +93,7 @@ export default function FormInfos({
               <label htmlFor="name" className="text-primary-950 font-semibold">
                 Nom du jeu
               </label>
-              <InputText id="name" required={true} />
+              <InputText id="name" required={true} defaultValue={game?.name} />
               {errors?.name && <FormError name="name" errors={errors.name} />}
             </div>
             <div className="flex flex-col justify-start">
@@ -134,7 +142,10 @@ export default function FormInfos({
             <label className="text-primary-950 font-semibold">
               Description:
             </label>
-            <TextAreaAutosize name="description" />
+            <TextAreaAutosize
+              name="description"
+              defaultValue={game?.description}
+            />
             {errors?.description && (
               <FormError name="description" errors={errors.description} />
             )}
@@ -150,7 +161,10 @@ export default function FormInfos({
               <DoubleSlider
                 max={300}
                 min={5}
-                defaultValue={[5, 30]}
+                defaultValue={[
+                  game ? game.playtimeMin : 5,
+                  game ? game.playtimeMax : 30,
+                ]}
                 valueLabelDisplay="auto"
                 name="duration"
                 slots={{
@@ -174,7 +188,10 @@ export default function FormInfos({
               <DoubleSlider
                 max={30}
                 min={2}
-                defaultValue={[5, 10]}
+                defaultValue={[
+                  game ? game.playersMin : 5,
+                  game ? game.playersMax : 10,
+                ]}
                 valueLabelDisplay="auto"
                 name="players"
                 slots={{
@@ -198,7 +215,10 @@ export default function FormInfos({
               <DoubleSlider
                 max={100}
                 min={1}
-                defaultValue={[4, 100]}
+                defaultValue={[
+                  game ? game.ageMin : 4,
+                  game ? game.ageMax : 100,
+                ]}
                 valueLabelDisplay="auto"
                 name="age"
                 slots={{
@@ -227,6 +247,7 @@ export default function FormInfos({
               type="category"
               label="Catégorie"
               color={theme.colors.primary[500]}
+              gameCategories={game?.categories.categories}
             />
           </div>
           <div className="flex flex-col ">
@@ -234,6 +255,7 @@ export default function FormInfos({
               type="mode"
               label="Mode de jeu"
               color={theme.colors.secondary[500]}
+              gameCategories={game?.categories.modes}
             />
           </div>
           <div className="flex flex-col ">
@@ -241,6 +263,7 @@ export default function FormInfos({
               type="theme"
               label="Thème"
               color={theme.colors.neutral[500]}
+              gameCategories={game?.categories.themes}
             />
             {errors?.categories && (
               <FormError name="categories" errors={errors.categories} />

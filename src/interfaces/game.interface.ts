@@ -1,3 +1,5 @@
+import { Creators } from "./creator.interface";
+
 export interface GameListItem {
   id: number;
   name: string;
@@ -27,8 +29,8 @@ export interface Game {
   description: string;
   playersMin: number;
   playersMax: number;
-  playtimeMin: string;
-  playtimeMax: string;
+  playtimeMin: number;
+  playtimeMax: number;
   ageMin: number;
   ageMax: number;
   barCode: string;
@@ -36,15 +38,20 @@ export interface Game {
   language: string;
   weight: number;
   height: number;
-  type: string;
+  type: "base" | "extension";
   length: number;
   width: number;
   edition: number;
-  images: string[];
+  images: ImageGame[];
   categories: GameCategories;
   creators: Creators;
   awards: GameAward[];
   extensions?: GameListItem[];
+}
+
+export interface ImageGame {
+  id: number;
+  filepath: string;
 }
 
 export interface GameDetails {
@@ -62,13 +69,6 @@ export interface GameCategory {
   id: number;
   name: string;
   icon?: string;
-}
-
-export interface Creators {
-  authors?: Creator[];
-  editors?: Creator[];
-  illustrators?: Creator[];
-  distributors?: Creator[];
 }
 
 export interface Creator {

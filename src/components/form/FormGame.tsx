@@ -7,10 +7,16 @@ import BreadCrumb from "./BreadCrumb";
 import { Game } from "@/interfaces";
 import FormCreators from "./FormCreators";
 import { useRouter } from "next/navigation";
+import CustomLinearProgress from "../ui/loader/CustomLoader";
 
-export default function FormGame({ gameEdit }: { gameEdit?: Game }) {
-  const [step, setStep] = useState(1);
-  const [game, setGame] = useState<Game | null>(gameEdit ?? null);
+export default function FormGame({
+  game,
+  initialStep = 1,
+}: {
+  game?: Game | null;
+  initialStep?: string | number;
+}) {
+  const [step, setStep] = useState(Number(initialStep));
   const router = useRouter();
 
   useEffect(() => {
@@ -18,23 +24,31 @@ export default function FormGame({ gameEdit }: { gameEdit?: Game }) {
       router.push(`/${game.type === "base" ? "game" : game.type}s/${game.id}`);
     }
   }, [step, game, router]);
+  console.log(step);
   return (
     <div className="flex flex-col gap-y-3">
       <div className="flex justify-center">
-        <BreadCrumb step={step} setStep={setStep} game={game} />
+        <BreadCrumb step={step} setStep={setStep} game={game ?? null} />
       </div>
       <div className={`${step !== 1 && "hidden"}`}>
-        <FormInfos setStep={setStep} setGame={setGame} game={game} />
+        <FormInfos setStep={setStep} game={game ?? null} />
       </div>
-      <div className={`${game && step !== 2 && "hidden"}`}>
-        {game && <FormImage game={game} setStep={setStep} />}
+      <div className={`${step !== 5 && "hidden"}`}>
+        <CustomLinearProgress />
       </div>
-      <div className={`${game && step !== 3 && "hidden"}`}>
-        {game && <FormInfosSec game={game} setStep={setStep} />}
-      </div>
-      <div className={`${game && step !== 4 && "hidden"}`}>
-        {game && <FormCreators game={game} setStep={setStep} />}
-      </div>
+      {game && (
+        <>
+          <div className={`${step !== 2 && "hidden"}`}>
+            {<FormImage game={game} setStep={setStep} />}
+          </div>
+          <div className={`${step !== 3 && "hidden"}`}>
+            {<FormInfosSec game={game} setStep={setStep} />}
+          </div>
+          <div className={`${step !== 4 && "hidden"}`}>
+            {<FormCreators game={game} setStep={setStep} />}
+          </div>
+        </>
+      )}
     </div>
   );
 }

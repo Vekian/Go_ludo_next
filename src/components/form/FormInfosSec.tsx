@@ -57,7 +57,6 @@ export default function FormInfosSec({
       showSnackbar(response.message, "success");
     }
   };
-  console.log(errors);
   return (
     <div>
       <form onSubmit={handleSubmit}>

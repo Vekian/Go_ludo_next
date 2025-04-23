@@ -5,7 +5,7 @@ import React from "react";
 
 export default function CardCreator({ creator }: { creator: Creator }) {
   return (
-    <div className="flex items-center flex-col ml-3">
+    <div className="flex items-center flex-col">
       <Avatar
         alt={creator.name}
         src={getImg(creator.image)}

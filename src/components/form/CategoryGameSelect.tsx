@@ -11,14 +11,23 @@ export default function CategoryGameSelect({
   type,
   label,
   color,
+  gameCategories,
 }: {
   type: "category" | "mode" | "theme" | "gamme";
   label: string;
   color: string;
+  gameCategories?: GameCategory[] | null;
 }) {
   const [categories, setCategories] = useState<GameCategory[] | null>(null);
   const [categorySelected, setCategorySelected] = useState<Option | null>(null);
-  const [categoriesSelected, setCategoriesSelected] = useState<Option[]>([]);
+  const [categoriesSelected, setCategoriesSelected] = useState<Option[]>(
+    gameCategories
+      ? gameCategories.map((option) => ({
+          label: option.name,
+          value: option.id.toString(),
+        }))
+      : []
+  );
   useEffect(() => {
     fetchCategories();
   }, []);

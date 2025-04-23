@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faImage, faTrash } from "@fortawesome/free-solid-svg-icons";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
-import { uploadImageGame } from "@/lib/api/server/game";
+import { deleteImageGame, uploadImageGame } from "@/lib/api/server/game";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import FormError from "../ui/error/FormError";
 import { Game } from "@/interfaces";
+import { getImg } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function FormImage({
   game,
@@ -18,13 +20,17 @@ export default function FormImage({
   game: Game;
   setStep: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [previews, setPreviews] = useState<string[]>(
+    game ? game.images.map((image) => getImg(image.filepath)) : []
+  );
   const [images, setImages] = useState<File[]>([]);
-  const [imagesUploaded, setImagesUploaded] = useState<boolean[]>([]);
+  const [imagesUploaded, setImagesUploaded] = useState<boolean[]>(
+    game ? game.images.map(() => true) : []
+  );
   const [indexError, setIndexError] = useState<number | null>(null);
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const { showSnackbar } = useSnackbarContext();
-
+  const router = useRouter();
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -75,6 +81,8 @@ export default function FormImage({
 
     if (noError) {
       showSnackbar("Images uploadés avec succès", "success");
+      setImages([]);
+      router.refresh();
       setStep(3);
     }
   };
@@ -96,12 +104,20 @@ export default function FormImage({
     }
   };
 
-  const removeImage = (indexToRemove: number) => {
-    setImages((prev) => prev.filter((_, index) => index !== indexToRemove));
-    setPreviews((prev) => prev.filter((_, index) => index !== indexToRemove));
-    setImagesUploaded((prev) =>
-      prev.filter((_, index) => index !== indexToRemove)
-    );
+  const removeImage = async (indexToRemove: number) => {
+    if (game.images && indexToRemove < game.images.length) {
+      const imageGame = game.images[indexToRemove];
+      const response = await deleteImageGame(imageGame.id);
+      if (!response.ok) {
+        showSnackbar(response.message, "error");
+      } else {
+        showSnackbar(response.message, "success");
+      }
+    } else {
+      showSnackbar("image introuvable", "error");
+      return;
+    }
+    router.refresh();
   };
 
   const indexErrors = (errors: string[], indexError: number | null) => {
@@ -147,19 +163,20 @@ export default function FormImage({
                 width={128}
                 height={128}
               />
-              {imagesUploaded[index] ? (
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  color={theme.colors.secondary[700]}
-                />
-              ) : (
+              <div className="flex items-center gap-x-2">
+                {imagesUploaded[index] && (
+                  <FontAwesomeIcon
+                    icon={faCheck}
+                    color={theme.colors.secondary[700]}
+                  />
+                )}
                 <ButtonPrimary
                   label=""
                   color={theme.colors.primary[700]}
                   onClick={() => removeImage(index)}
                   icon={faTrash}
                 />
-              )}
+              </div>
             </div>
           ))}
         </div>

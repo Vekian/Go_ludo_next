@@ -1,3 +1,5 @@
+import { Creator } from "./game.interface";
+
 export enum CreatorJob {
   Author = "author",
   Illustrator = "illustrator",
@@ -12,4 +14,8 @@ export const jobNames: Record<CreatorJob, string> = {
   [CreatorJob.Distributor]: "Distributeur",
   [CreatorJob.Editor]: "Éditeur",
   [CreatorJob.Traductor]: "Traducteur",
+};
+
+export type Creators = {
+  [key in CreatorJob]?: Creator[];
 };

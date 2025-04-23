@@ -5,7 +5,9 @@ import { handleAuth } from "./authServer";
 
 export async function searchGames(params: Param[] = []) {
   const headers = await handleAuth();
-  const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game`);
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/search`
+  );
   params
     .filter((param) => param.value)
     .forEach((param) => {

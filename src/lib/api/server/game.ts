@@ -215,8 +215,6 @@ export async function updateGameInfosSec(
     content,
   };
 
-  console.log(fixedData);
-
   const validatedFields = updateGameSchema.safeParse(fixedData);
 
   if (!validatedFields.success) {
@@ -278,7 +276,7 @@ export async function uploadImageGame(formData: FormData, gameId: number) {
   }
   const headers = await handleAuth();
   headers.set("Accept", "application/json");
-  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/upload/image/${gameId}`;
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/image/${gameId}`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -297,5 +295,29 @@ export async function uploadImageGame(formData: FormData, gameId: number) {
   return {
     ok: true,
     message: "Image upload avec succès",
+  };
+}
+
+export async function deleteImageGame(id: number) {
+  const headers = await handleAuth();
+  headers.set("Accept", "application/json");
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/image/${id}`;
+
+  const response = await fetch(url, {
+    method: "DELETE",
+    headers: headers,
+  });
+
+  if (!response.ok) {
+    const data = await response.json();
+    return {
+      ok: false,
+      message: data.message,
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Image effacée avec succès",
   };
 }
