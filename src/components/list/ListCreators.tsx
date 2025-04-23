@@ -1,13 +1,11 @@
-import { GameCreator } from "@/interfaces";
-import { getImg } from "@/lib/utils";
-import { Avatar } from "@mui/material";
-import React from "react";
+import { Creator } from "@/interfaces";
+import CardCreator from "../cards/CardCreator";
 
 export default function ListCreators({
   creators,
   title,
 }: {
-  creators: GameCreator[];
+  creators: Creator[];
   title: string;
 }) {
   return (
@@ -15,14 +13,7 @@ export default function ListCreators({
       <h4>{title}</h4>
       <div className="flex mt-2">
         {creators.map((creator) => (
-          <div className="flex items-center flex-col ml-3" key={creator.id}>
-            <Avatar
-              alt={creator.name}
-              src={getImg(creator.image)}
-              sx={{ width: 50, height: 50 }}
-            />
-            <h5>{creator.name}</h5>
-          </div>
+          <CardCreator creator={creator} key={creator.id} />
         ))}
       </div>
     </div>

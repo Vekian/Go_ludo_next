@@ -1,15 +1,23 @@
 "use client";
 import FormImage from "./FormImage";
 import FormInfos from "@/components/form/FormInfos";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormInfosSec from "./FormInfosSec";
 import BreadCrumb from "./BreadCrumb";
 import { Game } from "@/interfaces";
 import FormCreators from "./FormCreators";
+import { useRouter } from "next/navigation";
 
 export default function FormGame({ gameEdit }: { gameEdit?: Game }) {
   const [step, setStep] = useState(1);
   const [game, setGame] = useState<Game | null>(gameEdit ?? null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (step === 5 && game) {
+      router.push(`/${game.type === "base" ? "game" : game.type}s/${game.id}`);
+    }
+  }, [step, game, router]);
   return (
     <div className="flex flex-col gap-y-3">
       <div className="flex justify-center">

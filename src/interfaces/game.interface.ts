@@ -42,7 +42,7 @@ export interface Game {
   edition: number;
   images: string[];
   categories: GameCategories;
-  creators: GameCreators;
+  creators: Creators;
   awards: GameAward[];
   extensions?: GameListItem[];
 }
@@ -64,17 +64,24 @@ export interface GameCategory {
   icon?: string;
 }
 
-export interface GameCreators {
-  authors?: GameCreator[];
-  editors?: GameCreator[];
-  illustrators?: GameCreator[];
-  distributors?: GameCreator[];
+export interface Creators {
+  authors?: Creator[];
+  editors?: Creator[];
+  illustrators?: Creator[];
+  distributors?: Creator[];
 }
 
-export interface GameCreator {
+export interface Creator {
   id: number;
   name: string;
   image: string;
+  jobs: string[];
+}
+
+export interface GameCreator {
+  game: number;
+  creator: number;
+  jobs: string[];
 }
 
 export interface GameAward {

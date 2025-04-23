@@ -29,10 +29,10 @@ const createGameSchema = z.object({
 });
 
 const updateGameSchema = z.object({
-  weight: z.coerce.number(),
-  length: z.coerce.number(),
-  height: z.coerce.number(),
-  width: z.coerce.number(),
+  weight: z.coerce.number().nullable().optional(),
+  length: z.coerce.number().nullable().optional(),
+  height: z.coerce.number().nullable().optional(),
+  width: z.coerce.number().nullable().optional(),
   content: z.array(z.string()),
   publishedAt: z.union([z.coerce.date(), z.null()]).optional(),
 });
@@ -201,14 +201,21 @@ export async function updateGameInfosSec(
   gameId: number
 ) {
   const rawData = Object.fromEntries(formData.entries());
+  const cleanedRawData = Object.fromEntries(
+    Object.entries(rawData).filter(([, value]) => {
+      return typeof value === "string" && value.trim() !== "";
+    })
+  );
   const content = formData.getAll("content[]");
 
-  delete rawData["content[]"];
+  delete cleanedRawData["content[]"];
 
   const fixedData = {
-    ...rawData,
+    ...cleanedRawData,
     content,
   };
+
+  console.log(fixedData);
 
   const validatedFields = updateGameSchema.safeParse(fixedData);
 
