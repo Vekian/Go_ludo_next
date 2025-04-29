@@ -80,7 +80,7 @@ export default function FormInfos({ game }: { game: Game | null }) {
         onSubmit={handleGame}
       >
         <div className="flex flex-col bg-white rounded-lg flex-wrap p-10  gap-y-6">
-          <div className="flex justify-between w-full">
+          <div className="flex flex-wrap justify-between w-full">
             <div className="flex flex-col">
               <label htmlFor="name" className="text-primary-950 font-semibold">
                 Nom du jeu
@@ -142,8 +142,8 @@ export default function FormInfos({ game }: { game: Game | null }) {
               <FormError name="description" errors={errors.description} />
             )}
           </div>
-          <div className="w-full flex justify-between">
-            <div className="flex flex-col w-1/4">
+          <div className="w-full flex flex-wrap justify-between">
+            <div className="flex flex-col w-full md:w-1/4">
               <label
                 htmlFor="duration"
                 className="text-primary-950 font-semibold"
@@ -170,7 +170,7 @@ export default function FormInfos({ game }: { game: Game | null }) {
                 <FormError name="playtimeMax" errors={errors.playtimeMax} />
               )}
             </div>
-            <div className="flex flex-col w-1/4">
+            <div className="flex flex-col w-full md:w-1/4">
               <label
                 htmlFor="players"
                 className="text-primary-950 font-semibold"
@@ -197,7 +197,7 @@ export default function FormInfos({ game }: { game: Game | null }) {
                 <FormError name="playersMax" errors={errors.playersMax} />
               )}
             </div>
-            <div className="flex flex-col w-1/4">
+            <div className="flex flex-col w-full md:w-1/4">
               <label
                 htmlFor="players"
                 className="text-primary-950 font-semibold"

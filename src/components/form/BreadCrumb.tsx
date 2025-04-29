@@ -21,7 +21,7 @@ export default function BreadCrumb({
     router.push(`/${getBaseUrl(game)}edit/${game.id}/${step}`);
   };
   return (
-    <div className="flex gap-x-3">
+    <div className="flex justify-center gap-y-4 flex-wrap gap-x-3">
       <div className="flex gap-x-2 items-center">
         <ButtonPrimary
           label="Infos principales"

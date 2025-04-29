@@ -63,7 +63,7 @@ export default function CategoryGameSelect({
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div className="flex justify-between w-1/4">
+      <div className="flex justify-between w-full lg:w-1/4">
         <div className="w-4/5">
           <ColorSelect
             label={label}
@@ -87,7 +87,7 @@ export default function CategoryGameSelect({
           onClick={addCategory}
         />
       </div>
-      <div className="flex gap-x-2">
+      <div className="flex flex-wrap gap-x-2 gap-y-3">
         {categoriesSelected.map((category) => (
           <div key={category.value} className="flex gap-x-1">
             <div

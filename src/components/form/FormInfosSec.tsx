@@ -69,7 +69,7 @@ export default function FormInfosSec({ game }: { game: Game }) {
               okButtonLabel: "Valider", // Personnaliser le bouton OK
             }}
           >
-            <div className="flex justify-between w-full items-center">
+            <div className="flex flex-wrap gap-y-3 justify-between w-full items-center">
               <div className="flex flex-col">
                 <label
                   htmlFor="publishedAt"
@@ -94,22 +94,22 @@ export default function FormInfosSec({ game }: { game: Game }) {
                 >
                   Dimensions
                 </label>
-                <div className="flex gap-x-3">
-                  <div className="w-1/3">
+                <div className="flex flex-wrap gap-y-3 gap-x-3">
+                  <div className="md:w-1/3 w-full">
                     <InputText
                       id="length"
                       placeholder="Longueur (cm)"
                       defaultValue={game.length}
                     />
                   </div>
-                  <div className="w-1/3">
+                  <div className="md:w-1/3 w-full">
                     <InputText
                       id="width"
                       placeholder="Largeur (cm)"
                       defaultValue={game.width}
                     />
                   </div>
-                  <div className="w-1/3">
+                  <div className="md:w-1/3 w-full">
                     <InputText
                       id="height"
                       placeholder="Hauteur (cm)"
@@ -145,7 +145,7 @@ export default function FormInfosSec({ game }: { game: Game }) {
                 )}
               </div>
             </div>
-            <div className="flex items-center">
+            <div className="flex flex-wrap gap-y-3 items-center">
               <div className="flex flex-col gap-y-5 flex-1">
                 <label
                   htmlFor="content"

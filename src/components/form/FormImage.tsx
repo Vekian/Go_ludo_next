@@ -90,7 +90,7 @@ export default function FormImage({ game }: { game: Game }) {
 
   return (
     <div className="flex flex-col items-center gap-y-6">
-      <div className="flex flex-col bg-white rounded-lg flex-wrap p-10 gap-y-6 w-full">
+      <div className="flex flex-col md:items-start items-center bg-white rounded-lg flex-wrap p-10 gap-y-6 w-full">
         <div className="flex items-center">
           <label
             htmlFor="images"
@@ -113,7 +113,7 @@ export default function FormImage({ game }: { game: Game }) {
           {errors?.file && <FormError name="file" errors={errors.file} />}
         </div>
 
-        <div className="flex flex-wrap gap-4">
+        <div className="flex md:justify-start justify-center flex-wrap gap-4">
           {images.map((image, index) => (
             <div key={index} className="flex flex-col items-center">
               <div className="relative w-32 min-h-32 ">
