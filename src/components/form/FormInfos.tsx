@@ -16,13 +16,7 @@ import FormError from "@/components/ui/error/FormError";
 import { Game } from "@/interfaces";
 import { useRouter } from "next/navigation";
 
-export default function FormInfos({
-  setStep,
-  game,
-}: {
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-  game: Game | null;
-}) {
+export default function FormInfos({ game }: { game: Game | null }) {
   const [language, setLanguage] = useState<string>(
     game ? game.language : "french"
   );
@@ -72,9 +66,8 @@ export default function FormInfos({
       router.push(
         `/${
           response.data.type === "base" ? "game" : response.data.type
-        }s/edit/${response.data.id}?step=2`
+        }s/edit/${response.data.id}/2`
       );
-      setStep(5);
       setLoading(false);
       showSnackbar(response.message, "success");
     }

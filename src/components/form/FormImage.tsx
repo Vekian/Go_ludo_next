@@ -13,13 +13,7 @@ import { Game } from "@/interfaces";
 import { getImg } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
-export default function FormImage({
-  game,
-  setStep,
-}: {
-  game: Game;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export default function FormImage({ game }: { game: Game }) {
   const [previews, setPreviews] = useState<string[]>(
     game ? game.images.map((image) => getImg(image.filepath)) : []
   );
@@ -82,8 +76,9 @@ export default function FormImage({
     if (noError) {
       showSnackbar("Images uploadés avec succès", "success");
       setImages([]);
-      router.refresh();
-      setStep(3);
+      router.push(
+        `/${game.type === "base" ? "game" : game.type}s/edit/${game.id}/2`
+      );
     }
   };
 

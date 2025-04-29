@@ -1,3 +1,4 @@
+"use client";
 import { Game, Creator, GameCreator } from "@/interfaces";
 import React, { useState } from "react";
 import CreatorSelect from "../ui/input/CreatorSelect";
@@ -11,19 +12,15 @@ import CardCreator from "../cards/CardCreator";
 import { addGameCreator } from "@/lib/api/server/creator";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import FormError from "../ui/error/FormError";
+import { useRouter } from "next/navigation";
 
-export default function FormCreators({
-  game,
-  setStep,
-}: {
-  game: Game;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export default function FormCreators({ game }: { game: Game }) {
   const [creatorSelected, setCreatorSelected] = useState<Creator | null>(null);
   const [job, setJob] = useState("");
   const [creatorsSelected, setCreatorsSelected] = useState<Creator[]>([]);
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const { showSnackbar } = useSnackbarContext();
+  const router = useRouter();
 
   const handleSelect = () => {
     if (!creatorSelected) {
@@ -78,7 +75,9 @@ export default function FormCreators({
       });
       if (!errors) {
         showSnackbar("Créateur associé au jeu avec succès", "success");
-        setStep(5);
+        router.push(
+          `/${game.type === "base" ? "game" : game.type}s/${game.id}`
+        );
       }
     }
   };

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import FormError from "../ui/error/FormError";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -11,19 +12,15 @@ import { updateGameInfosSec } from "@/lib/api/server/game";
 import { Game } from "@/interfaces";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
+import { useRouter } from "next/navigation";
 
-export default function FormInfosSec({
-  game,
-  setStep,
-}: {
-  game: Game;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}) {
+export default function FormInfosSec({ game }: { game: Game }) {
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const [contents, setContents] = useState<string[]>([]);
   const [content, setContent] = useState<string | null>("");
   const [loading, setLoading] = useState(false);
   const { showSnackbar } = useSnackbarContext();
+  const router = useRouter();
 
   const addContent = () => {
     const exists = contents.some((cat) => cat === content);
@@ -52,7 +49,9 @@ export default function FormInfosSec({
       setLoading(false);
     } else {
       setErrors(null);
-      setStep(4);
+      router.push(
+        `/${game.type === "base" ? "game" : game.type}s/edit/${game.id}/2`
+      );
       setLoading(false);
       showSnackbar(response.message, "success");
     }
