@@ -15,6 +15,7 @@ import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 import FormError from "@/components/ui/error/FormError";
 import { Game } from "@/interfaces";
 import { useRouter } from "next/navigation";
+import { getBaseUrl } from "@/lib/game";
 
 export default function FormInfos({ game }: { game: Game | null }) {
   const [language, setLanguage] = useState<string>(
@@ -64,9 +65,7 @@ export default function FormInfos({ game }: { game: Game | null }) {
     } else {
       setErrors(null);
       router.push(
-        `/${
-          response.data.type === "base" ? "game" : response.data.type
-        }s/edit/${response.data.id}/2`
+        `/${getBaseUrl(game || response.data)}edit/${response.data.id}/2`
       );
       setLoading(false);
       showSnackbar(response.message, "success");

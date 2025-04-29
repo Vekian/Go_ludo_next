@@ -10,7 +10,7 @@ export default function InputText({
   placeholder,
 }: {
   value?: string;
-  defaultValue?: string;
+  defaultValue?: string | number;
   id: string;
   onChange?: (value: string | null) => void;
   type?: string;

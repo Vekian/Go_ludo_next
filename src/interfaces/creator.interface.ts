@@ -1,4 +1,4 @@
-import { Creator } from "./game.interface";
+import { GameCreator } from "./game.interface";
 
 export enum CreatorJob {
   Author = "author",
@@ -17,5 +17,5 @@ export const jobNames: Record<CreatorJob, string> = {
 };
 
 export type Creators = {
-  [key in CreatorJob]?: Creator[];
+  [key in CreatorJob]?: GameCreator[];
 };

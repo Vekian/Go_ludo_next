@@ -13,10 +13,14 @@ import { Game } from "@/interfaces";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
 import { useRouter } from "next/navigation";
+import { getBaseUrl } from "@/lib/game";
+import dayjs from "dayjs";
 
 export default function FormInfosSec({ game }: { game: Game }) {
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
-  const [contents, setContents] = useState<string[]>([]);
+  const [contents, setContents] = useState<string[]>(
+    game.content ? game.content : []
+  );
   const [content, setContent] = useState<string | null>("");
   const [loading, setLoading] = useState(false);
   const { showSnackbar } = useSnackbarContext();
@@ -49,9 +53,7 @@ export default function FormInfosSec({ game }: { game: Game }) {
       setLoading(false);
     } else {
       setErrors(null);
-      router.push(
-        `/${game.type === "base" ? "game" : game.type}s/edit/${game.id}/2`
-      );
+      router.push(`/${getBaseUrl(game)}edit/${game.id}/4`);
       setLoading(false);
       showSnackbar(response.message, "success");
     }
@@ -75,7 +77,12 @@ export default function FormInfosSec({ game }: { game: Game }) {
                 >
                   Date de sortie
                 </label>
-                <PartyDatePicker name="publishedAt" />
+                <PartyDatePicker
+                  name="publishedAt"
+                  defaultValue={
+                    game.publishedAt ? dayjs(game.publishedAt) : undefined
+                  }
+                />
                 {errors?.publishedAt && (
                   <FormError name="publishedAt" errors={errors.publishedAt} />
                 )}
@@ -89,13 +96,25 @@ export default function FormInfosSec({ game }: { game: Game }) {
                 </label>
                 <div className="flex gap-x-3">
                   <div className="w-1/3">
-                    <InputText id="length" placeholder="Longueur (cm)" />
+                    <InputText
+                      id="length"
+                      placeholder="Longueur (cm)"
+                      defaultValue={game.length}
+                    />
                   </div>
                   <div className="w-1/3">
-                    <InputText id="width" placeholder="Largeur (cm)" />
+                    <InputText
+                      id="width"
+                      placeholder="Largeur (cm)"
+                      defaultValue={game.width}
+                    />
                   </div>
                   <div className="w-1/3">
-                    <InputText id="height" placeholder="Hauteur (cm)" />
+                    <InputText
+                      id="height"
+                      placeholder="Hauteur (cm)"
+                      defaultValue={game.height}
+                    />
                   </div>
                 </div>
 
@@ -116,7 +135,11 @@ export default function FormInfosSec({ game }: { game: Game }) {
                 >
                   Poids
                 </label>
-                <InputText id="weight" placeholder="(en grammes)" />
+                <InputText
+                  id="weight"
+                  placeholder="(en grammes)"
+                  defaultValue={game.weight}
+                />
                 {errors?.weight && (
                   <FormError name="weight" errors={errors.weight} />
                 )}
@@ -163,11 +186,20 @@ export default function FormInfosSec({ game }: { game: Game }) {
           {loading ? (
             <CustomCircularLoader />
           ) : (
-            <ButtonPrimary
-              label="Ajouter les infos secondaires"
-              color={theme.colors.primary[500]}
-              type="submit"
-            />
+            <div className="flex gap-x-3">
+              <ButtonPrimary
+                label="Ajouter les infos secondaires"
+                color={theme.colors.primary[500]}
+                type="submit"
+              />
+              <ButtonPrimary
+                label="Voir la fiche"
+                color={theme.colors.primary[900]}
+                onClick={() => {
+                  router.push(`/${getBaseUrl(game)}${game.id}`);
+                }}
+              />
+            </div>
           )}
         </div>
       </form>

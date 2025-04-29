@@ -10,9 +10,17 @@ import { getGame } from "@/lib/api/server/game";
 import { GameDetails } from "@/interfaces";
 import GameContent from "@/components/layout/gamePage/GameContent";
 import ReviewsList from "@/components/layout/gamePage/review/ReviewsList";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { theme } from "@/theme/theme";
+import Link from "next/link";
+import { getBaseUrl } from "@/lib/game";
 
 async function page({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
+  const session = await getServerSession(authOptions);
   const gameData: GameDetails = await getGame(id, "base");
   const game = gameData.game;
 
@@ -30,7 +38,19 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         </div>
         <div className=" xl:w-2/3 w-full lg:p-5 ">
           <div className="flex justify-between items-start p-5">
-            <h2>{game.name}</h2>
+            <div className="flex items-center gap-x-3">
+              <h2>{game.name}</h2>
+              {session && session.user.roles.includes("ROLE_ADMIN") && (
+                <Link href={`/${getBaseUrl(game)}edit/${game.id}/1`}>
+                  <ButtonPrimary
+                    label=""
+                    icon={faPen}
+                    color={theme.colors.primary[600]}
+                  />
+                </Link>
+              )}
+            </div>
+
             <Rating value={game.rating} />
           </div>
           <GameContent>

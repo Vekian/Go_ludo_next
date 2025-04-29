@@ -47,11 +47,13 @@ export interface Game {
   creators: Creators;
   awards: GameAward[];
   extensions?: GameListItem[];
+  content?: string[];
 }
 
 export interface ImageGame {
   id: number;
   filepath: string;
+  cover: boolean;
 }
 
 export interface GameDetails {
@@ -79,8 +81,13 @@ export interface Creator {
 }
 
 export interface GameCreator {
-  game: number;
+  id?: number;
+  creator: Creator;
+}
+
+export interface GameCreatorToAdd {
   creator: number;
+  game: number;
   jobs: string[];
 }
 

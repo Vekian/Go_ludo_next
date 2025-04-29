@@ -1,6 +1,6 @@
 "use client";
-import { Game, Creator, GameCreator } from "@/interfaces";
-import React, { useState } from "react";
+import { Game, Creator, GameCreator, GameCreatorToAdd } from "@/interfaces";
+import React, { useEffect, useState } from "react";
 import CreatorSelect from "../ui/input/CreatorSelect";
 import SelectClassic from "../ui/input/SelectClassic";
 import { theme } from "@/theme/theme";
@@ -9,18 +9,32 @@ import ButtonPrimary from "../ui/button/ButtonPrimary";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { CreatorJob, jobNames } from "@/interfaces/creator.interface";
 import CardCreator from "../cards/CardCreator";
-import { addGameCreator } from "@/lib/api/server/creator";
+import { addGameCreator, deleteGameCreator } from "@/lib/api/server/creator";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import FormError from "../ui/error/FormError";
 import { useRouter } from "next/navigation";
+import { getBaseUrl } from "@/lib/game";
 
 export default function FormCreators({ game }: { game: Game }) {
-  const [creatorSelected, setCreatorSelected] = useState<Creator | null>(null);
+  const [creatorSelected, setCreatorSelected] = useState<GameCreator | null>(
+    null
+  );
   const [job, setJob] = useState("");
-  const [creatorsSelected, setCreatorsSelected] = useState<Creator[]>([]);
+  const [creatorsSelected, setCreatorsSelected] = useState<GameCreator[]>([]);
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
+
+  useEffect(() => {
+    const allCreators = Object.entries(game.creators).flatMap(
+      ([job, creatorsArray]) =>
+        creatorsArray.map((gameCreator: GameCreator) => {
+          gameCreator.creator.jobs = [job];
+          return gameCreator;
+        })
+    );
+    setCreatorsSelected(allCreators);
+  }, [game]);
 
   const handleSelect = () => {
     if (!creatorSelected) {
@@ -32,34 +46,32 @@ export default function FormCreators({ game }: { game: Game }) {
         job: ["Veuillez sélectionner un job"],
       });
     } else {
-      const creator = creatorsSelected.find(
-        (creator) => creator.id === creatorSelected.id
+      const gameCreator = creatorsSelected.find(
+        (gameCreator) => gameCreator.creator.id === creatorSelected.creator.id
       );
-      if (creator) {
-        creator.jobs.push(job);
+      if (gameCreator) {
+        gameCreator.creator.jobs.push(job);
       } else {
-        const newCreator: Creator = {
+        const newCreator: GameCreator = {
+          creator: creatorSelected.creator,
           id: creatorSelected.id,
-          name: creatorSelected.name,
-          image: creatorSelected.image,
-          jobs: [job],
         };
         setCreatorsSelected((prev) => [...prev, newCreator]);
       }
+      setCreatorSelected(null);
+      setJob("");
     }
   };
 
   const submitCreators = () => {
     if (creatorsSelected) {
-      const gameCreators: GameCreator[] = creatorsSelected.map(
-        (creatorSelected) => {
-          return {
-            game: game.id,
-            creator: creatorSelected.id,
-            jobs: creatorSelected.jobs,
-          };
-        }
-      );
+      const gameCreators: GameCreatorToAdd[] = creatorsSelected
+        .filter((creator) => !creator.id)
+        .map((creator) => ({
+          game: game.id,
+          creator: creator.creator.id,
+          jobs: creator.creator.jobs,
+        }));
       setErrors(null);
       gameCreators.forEach(async (gameCreator) => {
         const response = await addGameCreator(gameCreator);
@@ -69,22 +81,35 @@ export default function FormCreators({ game }: { game: Game }) {
         if (!response.ok) {
           showSnackbar(response.message, "error");
           setErrors({
-            gameCreator: [creator?.name + "n'a pas pu être associé au jeu"],
+            gameCreator: [
+              creator?.creator.name + "n'a pas pu être associé au jeu",
+            ],
           });
         }
       });
       if (!errors) {
         showSnackbar("Créateur associé au jeu avec succès", "success");
-        router.push(
-          `/${game.type === "base" ? "game" : game.type}s/${game.id}`
-        );
+        router.refresh();
       }
     }
   };
 
-  const deleteCreator = (creator: Creator) => {
-    const creatorAlreadyExist = false;
-    creator.jobs.forEach((job) => {});
+  const deleteCreator = async (gameCreator: GameCreator) => {
+    if (gameCreator.id) {
+      const response = await deleteGameCreator(gameCreator.id);
+      if (!response.ok) {
+        showSnackbar(response.message, "error");
+      } else {
+        showSnackbar(response.message, "success");
+        router.refresh();
+      }
+    } else {
+      setCreatorsSelected(
+        creatorsSelected.filter(
+          (creator) => creator.creator.id !== gameCreator.creator.id
+        )
+      );
+    }
   };
 
   return (
@@ -95,10 +120,20 @@ export default function FormCreators({ game }: { game: Game }) {
             <div className="w-1/3">
               <CreatorSelect
                 setCreatorSelected={(creator: Creator | null) => {
-                  setCreatorSelected(creator);
-                  setJob(creator?.jobs[0] ?? "");
+                  if (creator) {
+                    const gameCreator: GameCreator = {
+                      creator: creator,
+                    };
+                    setCreatorSelected(gameCreator);
+                    setJob(gameCreator?.creator.jobs[0] ?? "");
+                  } else {
+                    setCreatorSelected(null);
+                    setJob("");
+                  }
                 }}
-                creatorSelected={creatorSelected}
+                creatorSelected={
+                  creatorSelected ? creatorSelected.creator : null
+                }
               />
               {errors?.creator && (
                 <FormError name="creator" errors={errors.creator} />
@@ -112,7 +147,7 @@ export default function FormCreators({ game }: { game: Game }) {
                   onChange={(event: SelectChangeEvent<string>) => {
                     setJob(event.target.value);
                   }}
-                  options={creatorSelected.jobs.map((job) => ({
+                  options={creatorSelected.creator.jobs.map((job) => ({
                     name: "creator[]",
                     label: jobNames[job as CreatorJob],
                     value: job,
@@ -136,13 +171,13 @@ export default function FormCreators({ game }: { game: Game }) {
                 <div className="flex justify-start">
                   {creatorsSelected &&
                     creatorsSelected
-                      .filter((creator) => creator.jobs.includes(job))
+                      .filter((creator) => creator.creator.jobs.includes(job))
                       .map((creator) => (
                         <div
-                          key={creator.id}
+                          key={creator.creator.id}
                           className="flex flex-col items-center"
                         >
-                          <CardCreator creator={creator} />
+                          <CardCreator creator={creator.creator} />
                           <ButtonPrimary
                             color={theme.colors.primary[700]}
                             label=""
@@ -160,11 +195,18 @@ export default function FormCreators({ game }: { game: Game }) {
           )}
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-x-3">
         <ButtonPrimary
           label="Modifier les créateurs"
           color={theme.colors.primary[500]}
           onClick={submitCreators}
+        />
+        <ButtonPrimary
+          label="Voir la fiche"
+          color={theme.colors.primary[900]}
+          onClick={() => {
+            router.push(`/${getBaseUrl(game)}${game.id}`);
+          }}
         />
       </div>
     </div>

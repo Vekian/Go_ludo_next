@@ -6,6 +6,7 @@ import ButtonPrimary from "../ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
 import { Game } from "@/interfaces";
 import { useRouter } from "next/navigation";
+import { getBaseUrl } from "@/lib/game";
 
 export default function BreadCrumb({
   step,
@@ -17,9 +18,7 @@ export default function BreadCrumb({
   const router = useRouter();
 
   const setStep = (step: number) => {
-    router.push(
-      `/${game.type === "base" ? "game" : game.type}s/edit/${game.id}/${step}`
-    );
+    router.push(`/${getBaseUrl(game)}edit/${game.id}/${step}`);
   };
   return (
     <div className="flex gap-x-3">
@@ -39,7 +38,7 @@ export default function BreadCrumb({
           color={
             step === 2 ? theme.colors.primary[500] : theme.colors.primary[900]
           }
-          onClick={() => () => setStep(2)}
+          onClick={() => setStep(2)}
         />
       </div>
       <div className="flex gap-x-2 items-center">
@@ -49,7 +48,7 @@ export default function BreadCrumb({
           color={
             step === 3 ? theme.colors.primary[500] : theme.colors.primary[900]
           }
-          onClick={() => () => setStep(3)}
+          onClick={() => setStep(3)}
         />
       </div>
       <div className="flex gap-x-2 items-center">
@@ -59,7 +58,7 @@ export default function BreadCrumb({
           color={
             step === 4 ? theme.colors.primary[500] : theme.colors.primary[900]
           }
-          onClick={() => () => setStep(4)}
+          onClick={() => setStep(4)}
         />
       </div>
     </div>

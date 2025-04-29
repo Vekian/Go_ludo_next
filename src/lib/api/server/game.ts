@@ -309,6 +309,29 @@ export async function deleteImageGame(id: number) {
   });
 
   if (!response.ok) {
+    return {
+      ok: false,
+      message: "Impossible de supprimer l'image",
+    };
+  }
+
+  return {
+    ok: true,
+    message: "Image effacée avec succès",
+  };
+}
+
+export async function coverImageGame(id: number) {
+  const headers = await handleAuth();
+  headers.set("Accept", "application/json");
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/image/${id}`;
+
+  const response = await fetch(url, {
+    method: "PATCH",
+    headers: headers,
+  });
+
+  if (!response.ok) {
     const data = await response.json();
     return {
       ok: false,
@@ -318,6 +341,6 @@ export async function deleteImageGame(id: number) {
 
   return {
     ok: true,
-    message: "Image effacée avec succès",
+    message: "Image mise en couverture",
   };
 }
