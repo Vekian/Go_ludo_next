@@ -31,7 +31,7 @@ function ProfilButton({ user }: { user: User }) {
       <Button
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        variant="contained"
+        variant="text"
         disableElevation
         onClick={handleClick}
         endIcon={
@@ -39,10 +39,28 @@ function ProfilButton({ user }: { user: User }) {
             <FontAwesomeIcon icon={faAngleDown} />
           </span>
         }
-        sx={{ textTransform: "none" }}
-        className="md:rounded-md rounded-full md:min-w-32 md:w-auto min-w-0 w-0 bg-primary-600   hover:brightness-90 h-10 font-semibold"
+        sx={{
+          textTransform: "none",
+          backgroundColor: theme.colors.primary[600], // bg-primary-600
+          color: "white",
+          "&:hover": {
+            backgroundColor: theme.colors.primary[400],
+          },
+          padding: "0 8px",
+          borderRadius: {
+            xs: "9999px",
+            md: "8px",
+          },
+          minWidth: {
+            xs: 0,
+            md: "8rem",
+          },
+          height: "40px",
+          fontWeight: 600,
+          fontSize: 16,
+        }}
       >
-        <div className="md:-ml-12">
+        <div style={{ marginLeft: "-3rem" }} className="md:-ml-12">
           <Avatar
             alt={user.name}
             src={getImg(user.avatar)}

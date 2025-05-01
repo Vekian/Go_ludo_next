@@ -7,6 +7,9 @@ import AuthProvider from "@/components/provider/AuthProvider";
 import SnackbarProvider from "@/components/provider/SnackbarProvider";
 import SidemenuProvider from "@/components/provider/SidemenuProvider";
 import Sidemenu from "@/components/layout/sidemenu/Sidemenu";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { muiTheme } from "@/theme/muiTheme";
+import { ThemeProvider } from "@mui/material";
 
 export const metadata: Metadata = {
   title: "Go Ludo",
@@ -21,18 +24,23 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`${nunito.variable} ${farro.variable} bg-neutral-100  `}>
-        <SnackbarProvider>
-          <AuthProvider>
-            <SidemenuProvider>
-              <Header />
-
-              <div className="pt-16 h-screen lg:flex">
-                <Sidemenu />
-                <div className=" w-full h-full overflow-y-auto">{children}</div>
-              </div>
-            </SidemenuProvider>
-          </AuthProvider>
-        </SnackbarProvider>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={muiTheme}>
+            <SnackbarProvider>
+              <AuthProvider>
+                <SidemenuProvider>
+                  <Header />
+                  <div className="pt-16 h-screen lg:flex">
+                    <Sidemenu />
+                    <div className=" w-full h-full overflow-y-auto">
+                      {children}
+                    </div>
+                  </div>
+                </SidemenuProvider>
+              </AuthProvider>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

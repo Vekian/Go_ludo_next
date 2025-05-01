@@ -11,7 +11,7 @@ export default async function SimilarGames() {
     <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
       <div>
         <h2>Jeux similaires</h2>
-        <ListGames games={gamesList.items} key="similar" />
+        <ListGames games={gamesList.items} keyName="similar" />
       </div>
     </div>
   );

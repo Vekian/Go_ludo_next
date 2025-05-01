@@ -71,7 +71,7 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
           <div>
             <h2>Extensions</h2>
-            <ListGames games={gameData.extensions} key="extension" />
+            <ListGames games={gameData.extensions} keyName="extension" />
           </div>
         </div>
       )}
