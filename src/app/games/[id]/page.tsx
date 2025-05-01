@@ -17,6 +17,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
 import Link from "next/link";
 import { getBaseUrl } from "@/lib/game";
+import ListGames from "@/components/list/ListGames";
 
 async function page({ params }: { params: Promise<{ id: number }> }) {
   const id = (await params).id;
@@ -66,8 +67,16 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <p>{game.description}</p>
       </div>
       <ReviewsList game={game} />
+      {gameData.extensions && gameData.extensions.length > 0 && (
+        <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
+          <div>
+            <h2>Extensions</h2>
+            <ListGames games={gameData.extensions} key="extension" />
+          </div>
+        </div>
+      )}
       <Suspense fallback={<p>Chargement...</p>}>
-        <SimilarGames gameData={game} />
+        <SimilarGames />
       </Suspense>
     </div>
   );

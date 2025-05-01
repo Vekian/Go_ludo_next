@@ -19,7 +19,7 @@ async function ReviewsList({ game }: { game: Game }) {
           <h3>{reviewList.totalResults} avis</h3>
         </div>
         {!reviewList.accountReview && session && (
-          <ReviewModal gameId={game.id} review={reviewList.accountReview} />
+          <ReviewModal gameId={game.id} />
         )}
       </div>
       <div className="flex flex-col gap-y-4">

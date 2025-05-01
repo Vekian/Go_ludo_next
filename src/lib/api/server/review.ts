@@ -3,7 +3,11 @@ import { z } from "zod";
 import { handleAuth } from "../authServer";
 
 const schema = z.object({
-  content: z.string().max(3000, "L'avis ne doit pas dépasser 3000 caractères"),
+  content: z
+    .string()
+    .max(3000, "L'avis ne doit pas dépasser 3000 caractères")
+    .optional()
+    .nullable(),
   rating: z.preprocess(
     (val) => (val === "" || val === null ? undefined : Number(val)), // Convertit en `number` sauf si vide/null
     z
@@ -40,6 +44,7 @@ export async function addReview(formData: FormData) {
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
+      message: "Impossible de valider l'avis",
       ok: false,
     };
   }

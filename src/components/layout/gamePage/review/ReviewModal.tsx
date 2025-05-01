@@ -16,14 +16,15 @@ import { useRouter } from "next/navigation";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
 import { addReview, updateReview } from "@/lib/api/server/review";
+import dynamic from "next/dynamic";
 
-function ReviewModal({
+const ReviewModal = ({
   gameId,
   review,
 }: {
   gameId: number;
   review?: GameReview | null;
-}) {
+}) => {
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
@@ -40,12 +41,30 @@ function ReviewModal({
       setRating(value);
     }
   };
+
   const handleSubmit = async (event: React.SyntheticEvent<Element, Event>) => {
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
     formData.set("rating", String(rating ?? ""));
     formData.set("game", String(gameId));
+    sendReview(formData);
+  };
+
+  const sendOnlyRating = async (
+    event: React.SyntheticEvent<Element, Event>,
+    value: number | null
+  ) => {
+    if (value) {
+      setRating(value);
+      const formData = new FormData();
+      formData.set("rating", String(value ?? ""));
+      formData.set("game", String(gameId));
+      sendReview(formData);
+    }
+  };
+
+  const sendReview = async (formData: FormData) => {
     if (!review) {
       showSnackbar("Avis en cours d'ajout", "info");
       const response = await addReview(formData);
@@ -148,11 +167,11 @@ function ReviewModal({
         </div>
 
         <div className="sm:ml-20 sm:order-last order-first">
-          <Rating onChange={handleChange} readOnly={false} value={rating} />
+          <Rating onChange={sendOnlyRating} readOnly={false} value={rating} />
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default ReviewModal;
+export default dynamic(() => Promise.resolve(ReviewModal), { ssr: false });
