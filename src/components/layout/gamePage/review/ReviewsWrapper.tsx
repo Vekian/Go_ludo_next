@@ -1,12 +1,11 @@
-import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import Review from "@/components/layout/gamePage/review/Review";
 import React from "react";
 import { Game, GameReview, ReviewList } from "@/interfaces";
 import ReviewModal from "./ReviewModal";
 import { getReviews } from "@/lib/api/server/review";
-import { theme } from "@/theme/theme";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import ReviewsPagination from "./ReviewsPagination";
 
 export default async function ReviewsWrapper({
   game,
@@ -40,12 +39,7 @@ export default async function ReviewsWrapper({
         ))}
       </div>
 
-      <div className="flex justify-center p-5">
-        <ButtonSecondary
-          label="Voir plus de commentaires"
-          color={theme.colors.primary[800]}
-        />
-      </div>
+      <ReviewsPagination reviewList={reviewList} />
     </div>
   );
 }

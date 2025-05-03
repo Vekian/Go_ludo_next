@@ -27,7 +27,7 @@ async function page({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const id = (await params).id;
-  const reviewsPage = (await searchParams).reviews;
+  const reviewsPage = (await searchParams).page;
 
   const session = await getServerSession(authOptions);
   const gameData: GameDetails = await getGame(id, "base");
