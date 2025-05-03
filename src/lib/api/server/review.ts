@@ -21,9 +21,9 @@ const schema = z.object({
   game: z.coerce.number().min(1),
 });
 
-export async function getReviews(gameId: number) {
+export async function getReviews(gameId: number, reviewsPage: number) {
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}?page=${reviewsPage}`
   );
   const headers = await handleAuth();
   const response = await fetch(url, { headers });

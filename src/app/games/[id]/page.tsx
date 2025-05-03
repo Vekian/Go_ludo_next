@@ -9,7 +9,6 @@ import SimilarGames from "@/components/layout/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/server/game";
 import { GameDetails } from "@/interfaces";
 import GameContent from "@/components/layout/gamePage/GameContent";
-import ReviewsList from "@/components/layout/gamePage/review/ReviewsList";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
@@ -18,9 +17,18 @@ import { theme } from "@/theme/theme";
 import Link from "next/link";
 import { getBaseUrl } from "@/lib/game";
 import ListGames from "@/components/list/ListGames";
+import ReviewsWrapper from "@/components/layout/gamePage/review/ReviewsWrapper";
 
-async function page({ params }: { params: Promise<{ id: number }> }) {
+async function page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: number }>;
+  searchParams: Promise<Record<string, string | undefined>>;
+}) {
   const id = (await params).id;
+  const reviewsPage = (await searchParams).reviews;
+
   const session = await getServerSession(authOptions);
   const gameData: GameDetails = await getGame(id, "base");
   const game = gameData.game;
@@ -66,7 +74,7 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <h2>Description</h2>
         <p>{game.description}</p>
       </div>
-      <ReviewsList game={game} />
+      <ReviewsWrapper game={game} reviewsPage={reviewsPage} />
       {gameData.extensions && gameData.extensions.length > 0 && (
         <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
           <div>

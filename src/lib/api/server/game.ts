@@ -24,7 +24,7 @@ const createGameSchema = z.object({
   description: z
     .string()
     .min(4, "4 caractères minimum")
-    .max(500, "500 caractères maximum")
+    .max(5000, "5000 caractères maximum")
     .default(""),
 });
 
@@ -160,7 +160,7 @@ export async function updateGame(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de créer la fiche de jeu",
+      message: "Impossible de modifier la fiche de jeu",
       ok: false,
     };
   }

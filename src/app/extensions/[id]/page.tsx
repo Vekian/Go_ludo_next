@@ -9,7 +9,7 @@ import SimilarGames from "../../../components/layout/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/server/game";
 import { Game } from "@/interfaces";
 import GameContent from "@/components/layout/gamePage/GameContent";
-import ReviewsList from "@/components/layout/gamePage/review/ReviewsList";
+import ReviewsList from "@/components/layout/gamePage/review/ReviewsWrapper";
 import Link from "next/link";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faPen } from "@fortawesome/free-solid-svg-icons";

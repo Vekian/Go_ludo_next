@@ -36,7 +36,7 @@ export default function CategorySelect({
       newSearchParams.delete(name);
     }
 
-    router.replace(`${pathname}?${newSearchParams.toString()}`);
+    router.push(`${pathname}?${newSearchParams.toString()}`, { scroll: false });
   };
 
   return (

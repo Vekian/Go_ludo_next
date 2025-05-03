@@ -8,8 +8,17 @@ import { theme } from "@/theme/theme";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-async function ReviewsList({ game }: { game: Game }) {
-  const reviewList: ReviewList = await getReviews(game.id);
+export default async function ReviewsWrapper({
+  game,
+  reviewsPage,
+}: {
+  game: Game;
+  reviewsPage: string | undefined;
+}) {
+  const reviewList: ReviewList = await getReviews(
+    game.id,
+    reviewsPage ? Number(reviewsPage) : 1
+  );
   const session = await getServerSession(authOptions);
 
   return (
@@ -40,5 +49,3 @@ async function ReviewsList({ game }: { game: Game }) {
     </div>
   );
 }
-
-export default ReviewsList;
