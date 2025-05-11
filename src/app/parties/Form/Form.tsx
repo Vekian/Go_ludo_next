@@ -11,6 +11,21 @@ import Link from "next/link";
 import { ListPaginated } from "@/interfaces/paginator.interface";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 
+const defaultFormData = {
+  city: null,
+  game: null,
+  theme: null,
+  mode: null,
+  playersMin: "2",
+  playersMax: "30",
+  zone: "20",
+  date: null,
+  startTime: null,
+  endTime: null,
+  age: "0",
+  max_duration: null,
+};
+
 export default function Form({
   categories,
   themes,
@@ -22,21 +37,27 @@ export default function Form({
   modes: GameCategory[];
   setParties: (parties: ListPaginated<PartyCard> | null) => void;
 }) {
-  const [formData, setFormData] = useState<FormData>(new FormData());
+  const [formData, setFormData] =
+    useState<Record<string, string | null>>(defaultFormData);
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const handleChange = (name: string, value: string | number | null) => {
-    const newFormData = formData;
-    if (value) {
-      formData.set(name, String(value));
-    } else {
-      formData.delete(name);
-    }
-    setFormData(newFormData);
+    setFormData({
+      ...formData,
+      [name]: value !== null ? String(value) : null,
+    });
   };
+
   const handleSubmitAll = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await searchParties(formData);
+    const formDataInstance = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null) {
+        formDataInstance.append(key, String(value));
+      }
+    });
+    console.log(formDataInstance);
+    /*     const response = await searchParties(formDataInstance);
 
     if (!response.ok) {
       if (response.errors) {
@@ -47,12 +68,16 @@ export default function Form({
         setParties(response.data);
         setErrors(null);
       }
-    }
+    } */
   };
   return (
     <div>
       <div className="flex gap-x-10 p-10 flex-wrap gap-y-3">
-        <FormLocalisation handleChange={handleChange} errors={errors} />
+        <FormLocalisation
+          handleChange={handleChange}
+          errors={errors}
+          formData={formData}
+        />
         <FormGame
           categories={categories}
           themes={themes}
@@ -75,7 +100,7 @@ export default function Form({
               color={theme.colors.primary[900]}
               label="Réinitialiser"
               onClick={() => {
-                setFormData(new FormData());
+                setFormData(defaultFormData);
                 setErrors(null);
               }}
             />

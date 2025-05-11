@@ -14,11 +14,15 @@ const InputSearchCity = ({
   icon,
   onChange,
   city,
+  value,
+  onInputChange,
 }: {
   label: string;
   icon: IconDefinition;
   onChange?: (newCityValue: GameLocalisation | null) => void;
   city?: GameLocalisation | null;
+  value?: string;
+  onInputChange?: (value: string) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameLocalisation[]>([]);
@@ -26,17 +30,12 @@ const InputSearchCity = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (inputValue.length > 2) {
-      loadOptions([
-        {
-          key: "search",
-          value: inputValue,
-        },
-      ]);
-    } else if (inputValue === "") {
-      loadOptions();
+    if (value !== undefined) {
+      handleOptions(value);
+    } else {
+      handleOptions(inputValue);
     }
-  }, [inputValue]);
+  }, [inputValue, value]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -47,6 +46,19 @@ const InputSearchCity = ({
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOptions = (value: string) => {
+    if (value.length > 2) {
+      loadOptions([
+        {
+          key: "search",
+          value: value,
+        },
+      ]);
+    } else if (value === "") {
+      loadOptions();
+    }
   };
 
   async function loadOptions(params?: Param[]) {
@@ -79,7 +91,11 @@ const InputSearchCity = ({
       onOpen={handleOpen}
       onClose={handleClose}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+        if (onInputChange) {
+          onInputChange(newInputValue);
+        } else {
+          setInputValue(newInputValue);
+        }
       }}
       onChange={(event, newValue) => {
         if (onChange) {
@@ -90,7 +106,7 @@ const InputSearchCity = ({
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
-      inputValue={inputValue}
+      inputValue={value !== undefined ? value : inputValue}
       clearOnBlur={false}
       filterOptions={(x) => x}
       noOptionsText="Pas de résultats..."
