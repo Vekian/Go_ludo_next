@@ -16,7 +16,7 @@ import { formatDate } from "@/lib/date";
 export default function CardParty({ party }: { party: PartyCard }) {
   return (
     <Link href={`/parties/${party.id}`}>
-      <div className="flex justify-between px-6 bg-white rounded-lg p-3 w-full gap-x-6">
+      <div className="flex justify-between px-6 bg-white hover:bg-secondary-50 rounded-lg p-3 w-full gap-x-6">
         <div className="flex items-center h-full gap-x-6">
           <div className="h-28 relative  w-32 ">
             {party.games[0] && (

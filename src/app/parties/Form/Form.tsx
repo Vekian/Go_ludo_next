@@ -9,6 +9,7 @@ import { theme } from "@/theme/theme";
 import { searchParties } from "@/lib/api/server/party";
 import Link from "next/link";
 import { ListPaginated } from "@/interfaces/paginator.interface";
+import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 
 export default function Form({
   categories,
@@ -59,24 +60,38 @@ export default function Form({
           handleChange={handleChange}
         />
       </div>
-      <div className="flex justify-center sm:px--10 gap-x-10">
-        <div className="sm:flex-1 flex justify-end">
-          <Link href="/parties/create">
+      <div className="flex justify-center sm:px--10 gap-x-3">
+        <div className="flex">
+          <div className="px-3">
             <ButtonPrimary
-              color={theme.colors.primary[600]}
-              label="Créer une partie"
+              color={theme.colors.primary[900]}
+              label="Rechercher"
               addClass="px-16 py-2"
+              onClick={handleSubmitAll}
             />
-          </Link>
+          </div>
+          <div className="px-3">
+            <ButtonSecondary
+              color={theme.colors.primary[900]}
+              label="Réinitialiser"
+              onClick={() => {
+                setFormData(new FormData());
+                setErrors(null);
+              }}
+            />
+          </div>
         </div>
-        <div className="sm:flex-1 justify-start">
+      </div>{" "}
+      <div className="flex flex-col items-center justify-center mt-3">
+        <h4>Vous ne trouvez pas la partie qui vous convient ?</h4>
+        <h4>Créez en une!</h4>
+        <Link href="/parties/create">
           <ButtonPrimary
-            color={theme.colors.primary[900]}
-            label="Rechercher"
+            color={theme.colors.primary[600]}
+            label="Créer une partie"
             addClass="px-16 py-2"
-            onClick={handleSubmitAll}
           />
-        </div>
+        </Link>
       </div>
     </div>
   );
