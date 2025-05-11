@@ -1,6 +1,6 @@
 "use client";
 // CategorySelect.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import dynamic from "next/dynamic";
@@ -20,18 +20,31 @@ const InputSearch = ({ label }: { label: string }) => {
   const [options, setOptions] = useState<GameListItem[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const debounceTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (inputValue.length > 2) {
-      loadOptions([
-        {
-          key: "search",
-          value: inputValue,
-        },
-      ]);
-    } else if (inputValue === "") {
-      loadOptions();
+    if (debounceTimeoutRef.current !== null) {
+      clearTimeout(debounceTimeoutRef.current);
     }
+
+    debounceTimeoutRef.current = window.setTimeout(() => {
+      if (inputValue.length > 2) {
+        loadOptions([
+          {
+            key: "search",
+            value: inputValue,
+          },
+        ]);
+      } else if (inputValue === "") {
+        loadOptions();
+      }
+    }, 300);
+
+    return () => {
+      if (debounceTimeoutRef.current !== null) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
   }, [inputValue]);
 
   const handleOpen = () => {
@@ -131,6 +144,7 @@ const InputSearch = ({ label }: { label: string }) => {
                   alt={option.name}
                   src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${option.cover}`}
                   fill
+                  sizes="64px"
                   className="object-contain"
                 />
               </div>

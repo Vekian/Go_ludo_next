@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { theme } from "@/theme/theme";
@@ -28,13 +28,26 @@ const InputSearchCity = ({
   const [options, setOptions] = useState<GameLocalisation[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const debounceTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (value !== undefined) {
-      handleOptions(value);
-    } else {
-      handleOptions(inputValue);
+    if (debounceTimeoutRef.current !== null) {
+      clearTimeout(debounceTimeoutRef.current);
     }
+
+    debounceTimeoutRef.current = window.setTimeout(() => {
+      if (value !== undefined) {
+        handleOptions(value);
+      } else {
+        handleOptions(inputValue);
+      }
+    }, 300);
+
+    return () => {
+      if (debounceTimeoutRef.current !== null) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
   }, [inputValue, value]);
 
   const handleOpen = () => {
