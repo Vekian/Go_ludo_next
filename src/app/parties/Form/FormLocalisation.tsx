@@ -176,13 +176,8 @@ export default function FormLocalisation({
               <h5 className="font-semibold">De</h5>
               <PartyTimePicker
                 ampm={false}
-                value={formData.date ? dayjs(formData.startTime) : null}
-                onChange={(timeStart) => {
-                  if (timeStart) {
-                    handleChange("startTime", timeStart.format("HH:mm:ss"));
-                  }
-                }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
+                name="startTime"
               />
               {errors?.startTime && (
                 <p className="text-red-500 text-sm">{errors.startTime}</p>
@@ -192,12 +187,7 @@ export default function FormLocalisation({
               <h5 className="font-semibold">À</h5>
               <PartyTimePicker
                 ampm={false}
-                value={formData.date ? dayjs(formData.endTime) : null}
-                onChange={(timeEnd) => {
-                  if (timeEnd) {
-                    handleChange("endTime", timeEnd.format("HH:mm:ss"));
-                  }
-                }}
+                name="endTime"
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
               {errors?.endTime && (

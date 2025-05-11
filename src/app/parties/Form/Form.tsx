@@ -14,8 +14,10 @@ import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 const defaultFormData = {
   city: null,
   game: null,
+  category: null,
   theme: null,
   mode: null,
+  rating: null,
   playersMin: "2",
   playersMax: "30",
   zone: "20",
@@ -23,7 +25,7 @@ const defaultFormData = {
   startTime: null,
   endTime: null,
   age: "0",
-  max_duration: null,
+  duration: "0",
 };
 
 export default function Form({
@@ -48,16 +50,16 @@ export default function Form({
     });
   };
 
-  const handleSubmitAll = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formDataInstance = new FormData();
+  const handleSubmitAll = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formDataInstance = new FormData(event.currentTarget);
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== null) {
         formDataInstance.append(key, String(value));
       }
     });
-    console.log(formDataInstance);
-    /*     const response = await searchParties(formDataInstance);
+    const response = await searchParties(formDataInstance);
+    console.log(response);
 
     if (!response.ok) {
       if (response.errors) {
@@ -68,10 +70,10 @@ export default function Form({
         setParties(response.data);
         setErrors(null);
       }
-    } */
+    }
   };
   return (
-    <div>
+    <form onSubmit={handleSubmitAll}>
       <div className="flex gap-x-10 p-10 flex-wrap gap-y-3">
         <FormLocalisation
           handleChange={handleChange}
@@ -83,6 +85,7 @@ export default function Form({
           themes={themes}
           modes={modes}
           handleChange={handleChange}
+          formData={formData}
         />
       </div>
       <div className="flex justify-center sm:px--10 gap-x-3">
@@ -92,7 +95,7 @@ export default function Form({
               color={theme.colors.primary[900]}
               label="Rechercher"
               addClass="px-16 py-2"
-              onClick={handleSubmitAll}
+              type="submit"
             />
           </div>
           <div className="px-3">
@@ -118,6 +121,6 @@ export default function Form({
           />
         </Link>
       </div>
-    </div>
+    </form>
   );
 }

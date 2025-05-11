@@ -11,8 +11,28 @@ const searchPartySchema = z.object({
   playersMin: z.coerce.number().optional(),
   playersMax: z.coerce.number().optional(),
   date: z.string().date().optional(),
-  startTime: z.string().time().optional(),
-  endTime: z.string().time().optional(),
+  startTime: z
+    .string()
+    .refine(
+      (value) => {
+        // Format accepté : "HH:mm" ou "HH:mm:ss"
+        const regex = /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.test(value);
+        return regex;
+      },
+      { message: "Heure invalide" }
+    )
+    .optional(),
+
+  endTime: z
+    .string()
+    .refine(
+      (value) => {
+        const regex = /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.test(value);
+        return regex;
+      },
+      { message: "Heure invalide" }
+    )
+    .optional(),
   game: z.coerce.number().optional(),
   category: z.coerce.number().optional(),
   theme: z.coerce.number().optional(),
@@ -99,13 +119,13 @@ export async function searchParties(formData: FormData) {
     return {
       ok: false,
       message:
-        "Impossible d'ajouter l'avis, veuillez vérifier vos informations",
+        "Impossible de rechercher les parties, veuillez vérifier vos informations",
     };
   }
   const data = await response.json();
   return {
     ok: true,
-    message: "Avis ajouté avec succès",
+    message: "Partie recherchée avec succès",
     data: data,
   };
 }

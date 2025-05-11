@@ -12,6 +12,7 @@ export async function searchGames(params: Param[] = []) {
     .filter((param) => param.value)
     .forEach((param) => {
       if (typeof param.value === "string") {
+        console.log(param.key, param.value);
         url.searchParams.append(param.key, param.value);
       }
     });

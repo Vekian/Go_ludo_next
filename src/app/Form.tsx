@@ -2,7 +2,7 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
-import { GameLocalisation } from "@/interfaces";
+import { GameListItem, GameLocalisation } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
@@ -26,9 +26,9 @@ export default function Form() {
     router.push(url.toString());
   }
 
-  function handleGlobal(value: number | null, type: string | null) {
-    setGlobal(value);
-    setGlobalType(type);
+  function handleGlobal(value: GameListItem | null) {
+    setGlobal(value?.id ?? null);
+    setGlobalType(value?.type ?? null);
   }
 
   function handleCityChange(city: GameLocalisation | null) {

@@ -3,31 +3,57 @@ import ColorSelect from "@/components/ui/input/ColorSelect";
 import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import Rating from "@/components/ui/rating/Rating";
-import { GameCategory, Option } from "@/interfaces";
+import { GameCategory, GameListItem, Option } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faDice } from "@fortawesome/free-solid-svg-icons";
 import { SelectChangeEvent } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function FormGame({
   categories,
   themes,
   modes,
   handleChange,
+  formData,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
   handleChange: (name: string, value: string | number | null) => void;
+  formData: Record<string, string | null | number>;
 }) {
   const [categoryValue, setCategoryValue] = useState<Option | null>(null);
   const [modeValue, setModeValue] = useState<Option | null>(null);
   const [themeValue, setThemeValue] = useState<Option | null>(null);
-  const [durationValue, setDurationValue] = useState<string>("0");
   const [ratingValue, setRatingValue] = useState<number | null>(null);
 
-  function handleGameChange(newGameValue: number | null) {
-    handleChange("game", newGameValue);
+  const [game, setGame] = React.useState<GameListItem | null>(null);
+  const [inputGame, setInputGame] = React.useState("");
+
+  useEffect(() => {
+    if (!formData.category && categoryValue) {
+      setCategoryValue(null);
+    }
+    if (!formData.theme && themeValue) {
+      setThemeValue(null);
+    }
+    if (!formData.mode && modeValue) {
+      setModeValue(null);
+    }
+    if (!formData.rating && ratingValue) {
+      setRatingValue(null);
+    }
+    if (!formData.game) {
+      setGame(null);
+      setInputGame("");
+    }
+  }, [formData]);
+
+  function handleGameChange(newGameValue: GameListItem | null) {
+    setGame(newGameValue);
+    if (newGameValue) {
+      handleChange("game", newGameValue.id);
+    }
   }
 
   function handleCategoryValue(
@@ -64,6 +90,9 @@ export default function FormGame({
             icon={faDice}
             global={false}
             onChange={handleGameChange}
+            value={game}
+            valueInput={inputGame}
+            onInputChange={setInputGame}
           />
         </div>
       </div>
@@ -126,10 +155,9 @@ export default function FormGame({
               { label: "4 heures", value: "240" },
             ]}
             onChange={(event: SelectChangeEvent<string>) => {
-              setDurationValue(event.target.value);
               handleChange("duration", event.target.value);
             }}
-            value={durationValue}
+            value={formData.duration as string}
           />
         </div>
         <div className="md:flex-1">

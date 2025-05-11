@@ -15,11 +15,17 @@ const InputSearchGlobal = ({
   icon,
   global = true,
   onChange,
+  value,
+  valueInput,
+  onInputChange,
 }: {
   label: string;
   icon: IconDefinition;
   global?: boolean;
-  onChange?: (newCityValue: number | null, newType: string | null) => void;
+  onChange?: (newCityValue: GameListItem | null) => void;
+  value?: GameListItem | null;
+  valueInput?: string;
+  onInputChange?: (value: string) => void;
 }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<GameListItem[]>([]);
@@ -27,17 +33,25 @@ const InputSearchGlobal = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (inputValue.length > 2) {
+    if (valueInput !== undefined) {
+      handleOptions(valueInput);
+    } else {
+      handleOptions(inputValue);
+    }
+  }, [inputValue, valueInput]);
+
+  const handleOptions = (newValue: string) => {
+    if (newValue.length > 2) {
       loadOptions([
         {
           key: "search",
-          value: inputValue,
+          value: newValue,
         },
       ]);
-    } else if (inputValue === "") {
+    } else if (newValue === "") {
       loadOptions();
     }
-  }, [inputValue]);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -82,21 +96,26 @@ const InputSearchGlobal = ({
         />
       }
       open={open}
+      value={value}
       onOpen={handleOpen}
       onClose={handleClose}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+        if (onInputChange) {
+          onInputChange(newInputValue);
+        } else {
+          setInputValue(newInputValue);
+        }
       }}
       onChange={(event, object) => {
-        if (onChange && object) {
-          onChange(object.id, object.type);
+        if (onChange) {
+          onChange(object);
         }
       }}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       getOptionLabel={(option) => option.name}
       options={options}
       loading={loading}
-      inputValue={inputValue}
+      inputValue={valueInput !== undefined ? valueInput : inputValue}
       clearOnBlur={false}
       filterOptions={(x) => x}
       noOptionsText="Pas de résultats..."
