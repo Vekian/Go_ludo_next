@@ -70,7 +70,7 @@ const InputSearchGlobal = ({
     fontFamily: "nunito",
     fontWeight: 700,
     fontSize: "17px",
-    marginLeft: "30px",
+    marginLeft: "40px",
   };
 
   return (
@@ -113,8 +113,7 @@ const InputSearchGlobal = ({
         marginRight: "10px",
         ".MuiInputLabel-root": styleLabel,
         ".MuiAutocomplete-input": {
-          marginLeft: "10px",
-          marginRight: "10px", // Change la couleur de la valeur sélectionnée
+          marginRight: "10px",
         },
         ".MuiOutlinedInput-root": {
           borderRadius: "50px",

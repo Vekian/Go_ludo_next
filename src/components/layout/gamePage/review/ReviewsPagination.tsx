@@ -12,7 +12,7 @@ export default function ReviewsPagination({
   const router = useRouter();
   const handlePagination = (page: number) => {
     const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set("page", page.toString());
+    currentUrl.searchParams.set("reviews", page.toString());
 
     router.push(currentUrl.toString(), { scroll: false });
   };

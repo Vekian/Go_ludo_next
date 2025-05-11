@@ -205,6 +205,7 @@ export default function FormGame({
                   type="text"
                   id="name"
                   onChange={(value) => value && setName(value)}
+                  placeholder="Nom du jeu"
                 />
               </FormControl>
               <SelectClassic
@@ -355,7 +356,7 @@ export default function FormGame({
             <ButtonPrimary
               onClick={handleClose}
               label="Fermer"
-              color={theme.colors.primary[500]}
+              color={theme.colors.primary[900]}
             />
           </DialogActions>
         </Dialog>
