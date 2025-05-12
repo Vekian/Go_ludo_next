@@ -1,9 +1,9 @@
-import { UserProfil } from "@/interfaces";
+import { UserStatus } from "@/interfaces";
 import { getImg } from "@/lib/utils";
 import { Avatar } from "@mui/material";
 import React from "react";
 
-export default function UserInfos({ user }: { user: UserProfil }) {
+export default function UserInfos({ user }: { user: UserStatus }) {
   return (
     <div className="h-full w-2/6 sm:w-1/6 flex flex-col items-center ">
       <div className="w-14 sm:w-20 lg:w-24 h-14 sm:h-20 lg:h-24 flex justify-center">

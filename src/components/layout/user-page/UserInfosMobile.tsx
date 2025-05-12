@@ -1,5 +1,5 @@
 "use client";
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import { faCity, faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
@@ -7,7 +7,7 @@ import EditUser from "./EditUser";
 import { Avatar } from "@mui/material";
 import { getImg } from "@/lib/utils";
 import ButtonImage from "@/components/ui/button/ButtonImage";
-function UserInfosMobile({ user }: { user: UserProfil }) {
+function UserInfosMobile({ user }: { user: User }) {
   const [sourceState, setSourceState] = useState(getImg(user.avatar));
   return (
     <div

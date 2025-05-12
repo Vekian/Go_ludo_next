@@ -1,9 +1,9 @@
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import React from "react";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
 
-function UserParams({ user }: { user: UserProfil }) {
+function UserParams({ user }: { user: User }) {
   return (
     <div
       id="onglet2"

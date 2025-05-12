@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import ButtonSecondary from "./ButtonSecondary";
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { theme } from "@/theme/theme";
 import { uploadAvatar } from "@/lib/api/server/user";
@@ -17,7 +17,7 @@ function ButtonImage({
   id,
 }: {
   setSourceState: React.Dispatch<React.SetStateAction<string>>;
-  user: UserProfil;
+  user: User;
   id: string;
 }) {
   const { showSnackbar } = useSnackbarContext();

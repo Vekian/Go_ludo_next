@@ -16,20 +16,20 @@ const Page = async () => {
   if (!session) {
     redirect("/");
   }
-  const user: UserProfil = await getUser(session.user.id);
+  const userProfil: UserProfil = await getUser(session.user.id);
 
   return (
     <div className="pt-6">
       <div>
-        <UserContent user={user}>
-          <UserInfos user={user} />
-          <UserParams user={user} />
-          <UserNotifs user={user} />
+        <UserContent user={userProfil.user}>
+          <UserInfos user={userProfil.user} />
+          <UserParams user={userProfil.user} />
+          <UserNotifs user={userProfil.user} />
         </UserContent>
       </div>
       <div>
         <h1 className="text-center">Collection</h1>
-        <ListGames games={user.games} />
+        <ListGames games={userProfil.games} />
       </div>
     </div>
   );

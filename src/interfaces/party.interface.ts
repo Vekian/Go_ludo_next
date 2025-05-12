@@ -1,5 +1,5 @@
 import { GameListItem } from "./game.interface";
-import { UserProfil } from "./user.interface";
+import { User } from "./user.interface";
 
 export interface PartyCard {
   id: number;
@@ -10,7 +10,7 @@ export interface PartyCard {
   city: City;
   meetingDate: string;
   meetingTime: string;
-  author: UserProfil;
+  author: User;
   participants: number;
   ageMax: number;
   ageMin: number;
@@ -28,8 +28,8 @@ export interface Party {
   city: City;
   meetingDate: string;
   meetingTime: string;
-  author: UserProfil;
-  participants: UserProfil[];
+  author: User;
+  participants: User[];
   closedAt: string;
   joined?: boolean;
   messages?: Message[] | [];
@@ -43,7 +43,7 @@ export interface Message {
   content: string;
   createdAt: string;
   updatedAt: string;
-  author: UserProfil;
+  author: User;
 }
 export interface City {
   name: string;

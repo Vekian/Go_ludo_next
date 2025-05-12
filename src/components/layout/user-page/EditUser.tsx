@@ -1,5 +1,5 @@
 "use client";
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import React from "react";
 import ButtonInput from "@/components/ui/button/ButtonInput";
 import { Button, SelectChangeEvent } from "@mui/material";
@@ -15,7 +15,7 @@ import { useSession } from "next-auth/react";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { updateProfil } from "@/lib/api/server/user";
 
-function EditUser({ user }: { user: UserProfil }) {
+function EditUser({ user }: { user: User }) {
   const { data, update } = useSession();
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();

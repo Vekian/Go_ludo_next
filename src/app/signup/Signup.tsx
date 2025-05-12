@@ -122,6 +122,7 @@ export default function Signup() {
             <ButtonPrimary
               label="S'inscrire"
               color={theme.colors.primary[600]}
+              type="submit"
             />
           )}
         </div>

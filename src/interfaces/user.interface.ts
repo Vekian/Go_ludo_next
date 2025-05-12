@@ -1,6 +1,6 @@
 import { GameListItem } from "./game.interface";
 
-export interface UserProfil {
+export interface User {
   id: number;
   username: string;
   email: string;
@@ -12,4 +12,15 @@ export interface UserProfil {
   avatar: string;
   description: string;
   games: GameListItem[];
+}
+
+export interface UserProfil {
+  user: User;
+  games: GameListItem[];
+}
+
+export interface UserStatus {
+  id: number;
+  username: string;
+  avatar: string;
 }

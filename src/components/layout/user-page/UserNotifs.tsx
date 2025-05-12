@@ -1,7 +1,7 @@
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import React from "react";
 
-function UserNotifs({ user }: { user: UserProfil }) {
+function UserNotifs({ user }: { user: User }) {
   return (
     <div
       id="onglet3"

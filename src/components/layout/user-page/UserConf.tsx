@@ -1,7 +1,7 @@
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import React from "react";
 
-function UserConf({ user }: { user: UserProfil }) {
+function UserConf({ user }: { user: User }) {
   return (
     <div
       id="onglet4"
