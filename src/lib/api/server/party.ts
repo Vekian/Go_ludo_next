@@ -10,29 +10,9 @@ const searchPartySchema = z.object({
   zone: z.coerce.number().optional(),
   playersMin: z.coerce.number().optional(),
   playersMax: z.coerce.number().optional(),
-  date: z.string().date().optional(),
-  startTime: z
-    .string()
-    .refine(
-      (value) => {
-        // Format accepté : "HH:mm" ou "HH:mm:ss"
-        const regex = /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.test(value);
-        return regex;
-      },
-      { message: "Heure invalide" }
-    )
-    .optional(),
-
-  endTime: z
-    .string()
-    .refine(
-      (value) => {
-        const regex = /^([01]\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?$/.test(value);
-        return regex;
-      },
-      { message: "Heure invalide" }
-    )
-    .optional(),
+  date: z.string().date().optional().nullable(),
+  startTime: z.string().optional().nullable(),
+  endTime: z.string().optional().nullable(),
   game: z.coerce.number().optional(),
   category: z.coerce.number().optional(),
   theme: z.coerce.number().optional(),
@@ -106,6 +86,7 @@ export async function searchParties(formData: FormData) {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`);
 
   const validatedData = Object.entries(validatedFields.data);
+
   validatedData.forEach((param) => {
     url.searchParams.append(param[0], String(param[1]));
   });
@@ -116,6 +97,8 @@ export async function searchParties(formData: FormData) {
   });
 
   if (!response.ok) {
+    const data = await response.json();
+    console.log(data);
     return {
       ok: false,
       message:

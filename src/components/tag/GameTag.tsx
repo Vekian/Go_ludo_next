@@ -1,10 +1,11 @@
 import { GameListItem } from "@/interfaces";
+import { truncateText } from "@/lib/utils";
 import React from "react";
 
 export default function GameTag({ game }: { game: Partial<GameListItem> }) {
   return (
     <div className="bg-neutral-500 text-white px-5 py-0.5 rounded-full">
-      {game.name}
+      {game.name && truncateText(game.name)}
     </div>
   );
 }

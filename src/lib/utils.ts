@@ -11,3 +11,8 @@ export function getLinkGame(game: GameListItem): string {
     return `/${game.type}s/${game.id}`;
   }
 }
+
+export function truncateText(text: string) {
+  if (text.length <= 14) return text;
+  return text.substring(0, 14) + "...";
+}

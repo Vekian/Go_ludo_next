@@ -14,6 +14,8 @@ export interface PartyCard {
   participants: number;
   ageMax: number;
   ageMin: number;
+  score?: number;
+  distance?: number;
 }
 
 export interface Party {

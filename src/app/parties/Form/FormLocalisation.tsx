@@ -132,7 +132,10 @@ export default function FormLocalisation({
             max={30}
             min={2}
             valueLabelDisplay="auto"
-            value={[Number(formData.playersMin), Number(formData.playersMax)]}
+            value={[
+              Number(formData.playersMin) ?? undefined,
+              Number(formData.playersMax) ?? undefined,
+            ]}
             onChange={handleRangeChange}
             slots={{
               thumb: RangeThumb,

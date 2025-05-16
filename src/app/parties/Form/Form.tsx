@@ -18,8 +18,8 @@ const defaultFormData = {
   theme: null,
   mode: null,
   rating: null,
-  playersMin: "2",
-  playersMax: "30",
+  playersMin: null,
+  playersMax: null,
   zone: "20",
   date: null,
   startTime: null,
@@ -53,13 +53,21 @@ export default function Form({
   const handleSubmitAll = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formDataInstance = new FormData(event.currentTarget);
+
+    const cleanedFormData = new FormData();
+
+    for (const [key, value] of formDataInstance.entries()) {
+      if (value !== null && value !== "") {
+        cleanedFormData.append(key, value);
+      }
+    }
     Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null) {
-        formDataInstance.append(key, String(value));
+      if (value !== null && value !== "0") {
+        cleanedFormData.append(key, String(value));
       }
     });
-    const response = await searchParties(formDataInstance);
-    console.log(response);
+    console.log(cleanedFormData);
+    const response = await searchParties(cleanedFormData);
 
     if (!response.ok) {
       if (response.errors) {
