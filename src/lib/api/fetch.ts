@@ -48,6 +48,12 @@ export async function handleResponse<T>(
       message: errorMess ?? "Erreur lors de la requête",
     };
   }
+  if (response.status === 204) {
+    return {
+      ok: true,
+      message: successMess ?? "Requête effectuée avec succès",
+    };
+  }
   const data = await response.json();
   return {
     ok: true,

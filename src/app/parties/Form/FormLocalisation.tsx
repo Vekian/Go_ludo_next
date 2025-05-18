@@ -5,14 +5,11 @@ import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import ZoneSlider from "@/components/ui/slider/ZoneSlider";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { SelectChangeEvent } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import "dayjs/locale/fr";
-import SelectClassic from "@/components/ui/input/SelectClassic";
-import { theme } from "@/theme/theme";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import { GameLocalisation } from "@/interfaces";
 
@@ -46,6 +43,10 @@ export default function FormLocalisation({
     newSlideValue: number | number[]
   ) => {
     handleChange("zone", newSlideValue as number);
+  };
+
+  const handleAgeChange = (event: Event, newSlideValue: number | number[]) => {
+    handleChange("age", newSlideValue as number);
   };
 
   const handleRangeChange = (
@@ -106,21 +107,22 @@ export default function FormLocalisation({
       <div className="mt-5 flex-wrap flex gap-x-10 gap-y-3">
         <div className="md:flex-1">
           <div className="lg:w-2/3">
-            <SelectClassic
-              value={(formData.age as string) ?? "0"}
-              color={theme.colors.primary[800]}
-              options={[
-                { value: "0", label: "N'importe quel âge" },
-                { value: "18", label: "18-24 ans" },
-                { value: "25", label: "25-34 ans" },
-                { value: "35", label: "35-44 ans" },
-                { value: "45", label: "45-54 ans" },
-                { value: "55", label: "55 ans et plus" },
-              ]}
-              onChange={(event: SelectChangeEvent<string>) => {
-                handleChange("age", event.target.value);
-              }}
+            <div className="flex justify-between">
+              <h5 className="font-semibold">Moyenne d&apos;âge</h5>
+              <h5 className="font-semibold">
+                {formData.age ? Number(formData.age) : 18} ans
+              </h5>
+            </div>
+            <ZoneSlider
+              valueLabelDisplay="auto"
+              aria-label="pretto slider"
+              value={formData.age ? Number(formData.age) : 18}
+              onChange={handleAgeChange}
             />
+            <div className="flex justify-between text-neutral-400 text-sm -mt-2">
+              <p>18 ans</p>
+              <p>100 ans</p>
+            </div>
           </div>
         </div>
         <div className="md:flex-1 w-full">

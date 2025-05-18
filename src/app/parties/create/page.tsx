@@ -1,12 +1,18 @@
 import React from "react";
-import { GameCategory } from "@/interfaces";
 import { getCategories } from "@/lib/api/server/category";
 import Form from "./Form";
 
 export default async function page() {
-  const categories: GameCategory[] = await getCategories("category");
-  const modes: GameCategory[] = await getCategories("mode");
-  const themes: GameCategory[] = await getCategories("theme");
+  const [categories, modes, themes] = await Promise.all([
+    getCategories("category"),
+    getCategories("mode"),
+    getCategories("theme"),
+  ]);
+
+  if (!categories.data || !modes.data || !themes.data) {
+    throw new Error("Categories, modes or themes not found");
+  }
+
   return (
     <div className="h-full w-full p-2 lg:p-4 flex flex-col items-center gap-y-5">
       <div className="bg-white rounded-lg px-6 lg:px-12 py-6 text-center flex flex-col items-center gap-y-4">
@@ -22,7 +28,11 @@ export default async function page() {
           </p>
         </div>
       </div>
-      <Form categories={categories} themes={themes} modes={modes} />
+      <Form
+        categories={categories.data}
+        themes={themes.data}
+        modes={modes.data}
+      />
     </div>
   );
 }

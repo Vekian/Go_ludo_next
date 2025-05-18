@@ -10,7 +10,6 @@ import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import { GameCategory, GameListItem, Option } from "@/interfaces";
-import { ListPaginated } from "@/interfaces/paginator.interface";
 import { getGames } from "@/lib/api/server/game";
 import { theme } from "@/theme/theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -100,9 +99,9 @@ export default function FormGame({
         value: mode.value,
       });
     }
-    const data: ListPaginated<GameListItem> = await getGames(params);
-    if (data) {
-      setGames(data.items);
+    const data = await getGames(params);
+    if (data.data) {
+      setGames(data.data.items);
     }
   };
 
