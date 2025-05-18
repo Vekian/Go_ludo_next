@@ -1,7 +1,6 @@
 import React from "react";
 
 import { getCategories } from "@/lib/api/server/category";
-import { GameCategory } from "@/interfaces";
 import Form from "./Form/Form";
 import SortParties from "./SortParties";
 import ListParties from "@/components/list/ListParties";
@@ -9,7 +8,7 @@ import { searchParties } from "@/lib/api/server/party";
 import { ListPaginated } from "@/interfaces/paginator.interface";
 import { PartyCard } from "@/interfaces/party.interface";
 import { getCity } from "@/lib/api/server/city";
-import { getGame } from "@/lib/api/server/game";
+import { getGameItem } from "@/lib/api/server/game";
 
 export default async function page({
   searchParams,
@@ -19,37 +18,37 @@ export default async function page({
   const params = await searchParams;
   const partiesData = await searchParties(params);
   const cityData = await getCity(Number(params.city));
-  const gameData = await getGame(
+  const gameData = await getGameItem(
     Number(params?.game ? params.game : params.extension),
     params.game ? "base" : "extension"
   );
 
-  let parties: ListPaginated<PartyCard> | null = null;
+  let parties: ListPaginated<PartyCard> | undefined = undefined;
 
   if (partiesData.ok) {
     parties = partiesData.data;
   }
 
-  const [categories, modes, themes]: [
-    GameCategory[],
-    GameCategory[],
-    GameCategory[]
-  ] = await Promise.all([
+  const [categories, modes, themes] = await Promise.all([
     getCategories("category"),
     getCategories("mode"),
     getCategories("theme"),
   ]);
 
+  if (!categories.data || !modes.data || !themes.data) {
+    throw new Error("Categories, modes or themes not found");
+  }
+
   return (
     <main>
       <div>
         <Form
-          categories={categories}
-          themes={themes}
-          modes={modes}
+          categories={categories.data}
+          themes={themes.data}
+          modes={modes.data}
           params={params}
-          city={cityData}
-          game={gameData.game}
+          city={cityData?.data ?? null}
+          game={gameData?.data ?? null}
         />
         {parties && (
           <div className="lg:p-10 p-3 flex-col gap-y-3 flex">

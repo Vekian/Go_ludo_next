@@ -18,7 +18,8 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] =
+    useState<Record<string, string[] | undefined>>(null);
 
   const handleChange = (field: string, value: string | null) => {
     setUserData((prev) => ({

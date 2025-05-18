@@ -17,7 +17,7 @@ dayjs.locale("fr");
 export default function FormInfosParty({
   errors,
 }: {
-  errors: Record<string, string[]> | null;
+  errors: Record<string, string[] | undefined>;
 }) {
   const [rangeValue, setRangeValue] = useState([2, 30]);
   const [ageValue, setAgeValue] = useState([2, 30]);

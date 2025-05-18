@@ -1,65 +1,10 @@
 "use server";
 
 import { handleAuth } from "../authServer";
-import { z } from "zod";
-
-const searchPartySchema = z.object({
-  age: z.coerce.number().optional(),
-  page: z.coerce.number().optional(),
-  city: z.coerce.number().optional(),
-  zone: z.coerce.number().optional(),
-  playersMin: z.coerce.number().optional(),
-  playersMax: z.coerce.number().optional(),
-  date: z.string().date().optional().nullable(),
-  startTime: z.string().optional().nullable(),
-  endTime: z.string().optional().nullable(),
-  game: z.coerce.number().optional(),
-  category: z.coerce.number().optional(),
-  theme: z.coerce.number().optional(),
-  mode: z.coerce.number().optional(),
-  duration: z.coerce.number().optional(),
-  rating: z.coerce.number().optional(),
-});
-
-const createPartySchema = z.object({
-  ageMin: z.coerce
-    .number()
-    .min(18, "L'application est réservée aux gens majeurs"),
-  ageMax: z.coerce
-    .number()
-    .min(18, "L'application est réservée aux gens majeurs"),
-  city: z.coerce.number().min(1, "Veuillez choisir une ville").default(0),
-  latitude: z.coerce
-    .number()
-    .min(-90, "Mauvaise coordonnée")
-    .max(90, "Mauvaise coordonnées"),
-  longitude: z.coerce
-    .number()
-    .min(-180, "Mauvaise coordonnée")
-    .max(180, "Mauvaise coordonnées"),
-  playersMin: z.coerce.number(),
-  playersMax: z.coerce.number(),
-  games: z
-    .array(z.number().min(1, "Veuillez choisir au moins un jeu"))
-    .default([0]),
-  meetingDate: z.union([z.coerce.date(), z.null()]).optional(),
-  meetingTime: z
-    .string()
-    .regex(/^([01]\d|2[0-3]):([0-5]\d)$/, "Format invalide (HH:MM)")
-    .optional()
-    .nullable(),
-  title: z
-    .string()
-    .min(4, "4 caractères minimum")
-    .max(300, "300 caractères maximum")
-    .default(""),
-
-  description: z
-    .string()
-    .min(4, "4 caractères minimum")
-    .max(500, "500 caractères maximum")
-    .default(""),
-});
+import { createPartySchema, searchPartySchema } from "../validation/party";
+import { handleResponse, handleValidation, ResponserServer } from "../fetch";
+import { ListPaginated } from "@/interfaces/paginator.interface";
+import { PartyCard } from "@/interfaces/party.interface";
 
 export async function getParty(id: number) {
   const url = new URL(
@@ -77,45 +22,41 @@ export async function getParty(id: number) {
 
 export async function searchParties(
   parameters: Record<string, string | undefined>
-) {
-  const validatedFields = searchPartySchema.safeParse(parameters);
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de modifier l'avis",
-      ok: false,
-    };
+): Promise<ResponserServer<ListPaginated<PartyCard>>> {
+  const validatedData = handleValidation(
+    parameters,
+    searchPartySchema,
+    "Impossible de modifier l'avis"
+  );
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<ListPaginated<PartyCard>>;
   }
   const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`);
 
-  const validatedData = Object.entries(validatedFields.data);
-
-  validatedData.forEach((param) => {
-    url.searchParams.append(param[0], String(param[1]));
-  });
+  if (validatedData.data) {
+    Object.entries(validatedData.data).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, String(value));
+      }
+    });
+  }
   const headers = await handleAuth();
   const response = await fetch(url, {
     headers: headers,
     method: "GET",
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible de rechercher les parties, veuillez vérifier vos informations",
-    };
-  }
-  const data = await response.json();
-  return {
-    ok: true,
-    message: "Partie recherchée avec succès",
-    data: data,
-  };
+  return handleResponse(
+    response,
+    "Partie recherchée avec succès",
+    "Impossible de rechercher les parties, veuillez vérifier vos informations"
+  );
 }
 
-export async function leaveParty(idParty: number, idParticipant: number) {
+export async function leaveParty(
+  idParty: number,
+  idParticipant: number
+): Promise<ResponserServer> {
   const body = {
     participant: idParticipant,
   };
@@ -129,19 +70,14 @@ export async function leaveParty(idParty: number, idParticipant: number) {
     body: JSON.stringify(body),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible de quitter la partie",
-    };
-  }
-  return {
-    ok: true,
-    message: "Vous avez quitté la partie avec succès",
-  };
+  return handleResponse(
+    response,
+    "Vous avez quitté la partie",
+    "Impossible de quitter la partie"
+  );
 }
 
-export async function joinParty(idParty: number) {
+export async function joinParty(idParty: number): Promise<ResponserServer> {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/join/${idParty}`
   );
@@ -151,22 +87,17 @@ export async function joinParty(idParty: number) {
     method: "PUT",
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible de rejoindre la partie",
-    };
-  }
-  return {
-    ok: true,
-    message: "Vous avez rejoint la partie avec succès",
-  };
+  return handleResponse(
+    response,
+    "Vous avez rejoint la partie",
+    "Impossible de rejoindre la partie"
+  );
 }
 
 export async function createParty(
   formData: FormData,
   gamesId: number[] | undefined
-) {
+): Promise<ResponserServer<PartyCard>> {
   const rawData = Object.fromEntries(formData.entries());
   const filteredData = Object.fromEntries(
     Object.entries(rawData).filter(
@@ -174,17 +105,17 @@ export async function createParty(
     )
   );
 
-  const validatedFields = createPartySchema.safeParse({
-    games: gamesId,
-    ...filteredData,
-  });
+  const validatedData = handleValidation(
+    {
+      games: gamesId,
+      ...filteredData,
+    },
+    createPartySchema,
+    "Impossible de créer la partie"
+  );
 
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de créer la partie",
-      ok: false,
-    };
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<PartyCard>;
   }
 
   const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`);
@@ -192,20 +123,12 @@ export async function createParty(
   const response = await fetch(url, {
     headers: headers,
     method: "POST",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible de créeer la partie, veuillez vérifier vos informations",
-    };
-  }
-  const data = await response.json();
-  return {
-    ok: true,
-    message: "Partie créée avec succès",
-    data: data,
-  };
+  return handleResponse(
+    response,
+    "Partie créée avec succès",
+    "Impossible de créeer la partie, veuillez vérifier vos informations"
+  );
 }

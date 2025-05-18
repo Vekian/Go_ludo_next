@@ -3,10 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
 import SelectCity from "./SelectCity";
-import {
-  CityDetails,
-  TypeSelectionLocalisation,
-} from "@/interfaces/localisation.interface";
+import { TypeSelectionLocalisation } from "@/interfaces/localisation.interface";
 import { getCity } from "@/lib/api/server/city";
 import { GameLocalisation } from "@/interfaces";
 import FormError from "@/components/ui/error/FormError";
@@ -18,7 +15,7 @@ const DynamicMap = dynamic(() => import("@/components/map/Map"), {
 export default function FormLocalisationParty({
   errors,
 }: {
-  errors: Record<string, string[]> | null;
+  errors: Record<string, string[] | undefined>;
 }) {
   const [position, setPosition] = useState<[number, number] | null>(null);
   const [city, setCity] = useState<GameLocalisation | null>(null);
@@ -34,9 +31,11 @@ export default function FormLocalisationParty({
 
   const fetchCityDetails = async () => {
     if (city) {
-      const cityDetails: CityDetails = await getCity(city.id);
-      const coordinates = cityDetails.geoPoint.coordinates;
-      setPosition(coordinates);
+      const cityDetails = await getCity(city.id);
+      if (cityDetails.data) {
+        const coordinates = cityDetails.data.geoPoint.coordinates;
+        setPosition(coordinates);
+      }
     }
   };
 

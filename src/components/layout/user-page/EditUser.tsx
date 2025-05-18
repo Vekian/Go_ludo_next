@@ -21,9 +21,8 @@ function EditUser({ user }: { user: User }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [gender, setGender] = React.useState(user.gender);
-  const [errors, setErrors] = React.useState<Record<string, string[]> | null>(
-    null
-  );
+  const [errors, setErrors] =
+    React.useState<Record<string, string[] | undefined>>(null);
 
   const handleClickOpen = () => {
     setOpen(true);

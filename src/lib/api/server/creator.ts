@@ -1,7 +1,8 @@
 "use server";
-import { GameCreatorToAdd } from "@/interfaces";
+import { Creator, GameCreatorToAdd } from "@/interfaces";
 import { handleAuth } from "../authServer";
 import { z } from "zod";
+import { handleResponse, ResponserServer } from "../fetch";
 
 const createGameCreatorSchema = z.object({
   game: z.coerce.number().min(1, "Jeu invalide"),
@@ -14,7 +15,7 @@ const createGameCreatorSchema = z.object({
   ),
 });
 
-export async function getCreators() {
+export async function getCreators(): Promise<ResponserServer<Creator[]>> {
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/creator`
@@ -28,7 +29,9 @@ export async function getCreators() {
   return data;
 }
 
-export async function addGameCreator(creator: GameCreatorToAdd) {
+export async function addGameCreator(
+  creator: GameCreatorToAdd
+): Promise<ResponserServer> {
   const validatedFields = createGameCreatorSchema.safeParse(creator);
 
   if (!validatedFields.success) {
@@ -49,22 +52,14 @@ export async function addGameCreator(creator: GameCreatorToAdd) {
     body: JSON.stringify(validatedFields.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible d'associer le créateur au jeu, veuillez vérifier vos informations",
-    };
-  }
-  const data = await response.json();
-  return {
-    ok: true,
-    message: "Créateur associé au jeu avec succès",
-    data: data,
-  };
+  return handleResponse(
+    response,
+    "Créateur associé au jeu avec succès",
+    "Impossible d'associer le créateur au jeu, veuillez vérifier vos informations"
+  );
 }
 
-export async function deleteGameCreator(id: number) {
+export async function deleteGameCreator(id: number): Promise<ResponserServer> {
   const headers = await handleAuth();
   headers.set("Accept", "application/json");
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/game-creator/${id}`;
@@ -74,15 +69,9 @@ export async function deleteGameCreator(id: number) {
     headers: headers,
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible de supprimer le créateur",
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Créateur enlevé avec succès",
-  };
+  return handleResponse(
+    response,
+    "Créateur enlevé avec succès",
+    "Impossible de supprimer le créateur"
+  );
 }

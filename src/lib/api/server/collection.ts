@@ -3,18 +3,17 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession, User } from "next-auth";
 import { handleAuth } from "../authServer";
+import { handleResponse, ResponserServer } from "../fetch";
 
-interface GameCollection {
-  game: number;
-  owner: number;
-}
-export async function addGameToCollection(gameId: number) {
+export async function addGameToCollection(
+  gameId: number
+): Promise<ResponserServer> {
   const session = await getServerSession(authOptions);
   if (!session) {
     throw new Error("Non authorisé");
   }
   const user = session.user as User;
-  const body: GameCollection = {
+  const body = {
     game: gameId,
     owner: Number(user.id),
   };
@@ -28,17 +27,16 @@ export async function addGameToCollection(gameId: number) {
     method: "POST",
   });
 
-  if (!response.ok) {
-    return {
-      message: "Erreur lors de l'ajout du jeu dans la collection",
-      ok: false,
-    };
-  }
-
-  return { message: "Jeu ajouté à votre collection", ok: true };
+  return handleResponse(
+    response,
+    "Jeu ajouté à votre collection",
+    "Erreur lors de l'ajout du jeu dans la collection"
+  );
 }
 
-export async function deleteGameFromCollection(gameId: number) {
+export async function deleteGameFromCollection(
+  gameId: number
+): Promise<ResponserServer> {
   const headers = await handleAuth();
   headers.set("Content-Type", "application/json");
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/game/${gameId}`;
@@ -48,12 +46,9 @@ export async function deleteGameFromCollection(gameId: number) {
     method: "DELETE",
   });
 
-  if (!response.ok) {
-    return {
-      message: "Erreur lors du retrait du jeu dans la collection",
-      ok: false,
-    };
-  }
-
-  return { message: "Jeu retiré de votre collection", ok: true };
+  return handleResponse(
+    response,
+    "Jeu retiré de votre collection",
+    "Erreur lors du retrait du jeu dans la collection"
+  );
 }

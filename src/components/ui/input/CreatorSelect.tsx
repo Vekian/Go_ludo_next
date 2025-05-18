@@ -18,8 +18,10 @@ export default function CreatorSelect({
   }, []);
 
   const fetchCreators = async () => {
-    const creatorsData: Creator[] = await getCreators();
-    setCreators(creatorsData);
+    const creatorsData = await getCreators();
+    if (creatorsData?.data) {
+      setCreators(creatorsData.data);
+    }
   };
   const handleSelect = (event: React.SyntheticEvent, value: Option | null) => {
     if (!value) {

@@ -25,7 +25,7 @@ export default function FormLocalisation({
   cityDefault,
 }: {
   handleChange: (name: string, value: string | number | null) => void;
-  errors: Record<string, string[]> | null;
+  errors: Record<string, string[] | undefined>;
   formData: Record<string, string | undefined>;
   cityDefault: GameLocalisation | null;
 }) {

@@ -44,7 +44,9 @@ export default function Form({
   const router = useRouter();
   const [formData, setFormData] =
     useState<Record<string, string | undefined>>(params);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>(
+    {}
+  );
 
   const handleChange = (name: string, value: string | number | null) => {
     setFormData({
@@ -108,7 +110,7 @@ export default function Form({
               label="Réinitialiser"
               onClick={() => {
                 setFormData(defaultFormData);
-                setErrors(null);
+                setErrors({});
               }}
             />
           </div>

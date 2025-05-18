@@ -23,7 +23,8 @@ function ButtonImage({
   const { showSnackbar } = useSnackbarContext();
   const { data: session, update } = useSession();
   const [uploading, setUploading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] =
+    useState<Record<string, string[] | undefined>>(null);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

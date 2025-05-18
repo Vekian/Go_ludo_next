@@ -21,7 +21,9 @@ export default function Form({
 }) {
   const [games, setGames] = useState<GameListItem[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>(
+    {}
+  );
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
 
@@ -62,10 +64,12 @@ export default function Form({
       showSnackbar("Erreur lors de la création de partie", "error");
       setLoading(false);
     } else {
-      setErrors(null);
-      const id = response.data.id;
-      router.push(`/parties/${id}`);
-      showSnackbar("Partie créée avec succès", "success");
+      setErrors({});
+      if (response.data) {
+        const id = response.data.id;
+        router.push(`/parties/${id}`);
+        showSnackbar("Partie créée avec succès", "success");
+      }
     }
   };
   return (

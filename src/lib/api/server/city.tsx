@@ -1,9 +1,17 @@
 "use server";
+import { GameLocalisation } from "@/interfaces";
 import { handleAuth } from "../authServer";
+import { handleResponse, ResponserServer } from "../fetch";
+import { CityDetails } from "@/interfaces/localisation.interface";
 
-export async function getCity(cityId: number | null) {
+export async function getCity(
+  cityId: number | null
+): Promise<ResponserServer<CityDetails>> {
   if (!cityId) {
-    return null;
+    return {
+      ok: false,
+      message: "Ville invalide",
+    };
   }
   const headers = await handleAuth();
   const url = new URL(
@@ -11,14 +19,30 @@ export async function getCity(cityId: number | null) {
   );
   const response = await fetch(url, { headers });
 
-  if (!response.ok) {
-    throw new Error("Impossible de charger la ville");
-  }
-  const data = await response.json();
-  return data;
+  return handleResponse(response);
 }
 
-export async function getCityByGps(position: [number, number]) {
+export async function getCityItem(
+  cityId: number | null
+): Promise<ResponserServer<GameLocalisation>> {
+  if (!cityId) {
+    return {
+      ok: false,
+      message: "Ville invalide",
+    };
+  }
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/commune/${cityId}`
+  );
+  const response = await fetch(url, { headers });
+
+  return handleResponse(response);
+}
+
+export async function getCityByGps(
+  position: [number, number]
+): Promise<ResponserServer<GameLocalisation>> {
   const headers = await handleAuth();
 
   const body = {
@@ -35,9 +59,5 @@ export async function getCityByGps(position: [number, number]) {
     body: JSON.stringify(body),
   });
 
-  if (!response.ok) {
-    throw new Error("Impossible de charger la ville");
-  }
-  const data = await response.json();
-  return data;
+  return handleResponse(response);
 }

@@ -42,7 +42,7 @@ export default function FormGame({
   addGame: (game: GameListItem) => void;
   removeGame: (game: GameListItem) => void;
   gamesAdd: GameListItem[] | null;
-  errors: Record<string, string[]> | null;
+  errors: Record<string, string[] | undefined>;
 }) {
   const { showSnackbar } = useSnackbarContext();
   const [open, setOpen] = React.useState(false);

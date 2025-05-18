@@ -16,7 +16,9 @@ export default function InputChat({
 }) {
   const [value, setValue] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<
+    Record<string, string[] | undefined> | undefined
+  >();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -30,7 +32,7 @@ export default function InputChat({
     if (response.data) {
       addMessage(response.data);
       setValue("");
-      setErrors(null);
+      setErrors(undefined);
     }
     setLoading(false);
   };

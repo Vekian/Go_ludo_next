@@ -1,52 +1,30 @@
 "use server";
-import { z } from "zod";
 import { handleAuth } from "../authServer";
+import { handleResponse, handleValidation, ResponserServer } from "../fetch";
+import { createReviewSchema } from "../validation/review";
 
-const schema = z.object({
-  content: z
-    .string()
-    .max(3000, "L'avis ne doit pas dépasser 3000 caractères")
-    .optional()
-    .nullable(),
-  rating: z.preprocess(
-    (val) => (val === "" || val === null ? undefined : Number(val)), // Convertit en `number` sauf si vide/null
-    z
-      .number({
-        required_error: "La note est requise.",
-        invalid_type_error: "La note doit être un nombre.",
-      })
-      .min(1, "La note doit être entre 1 et 5.")
-      .max(5, "La note doit être entre 1 et 5.")
-  ),
-  game: z.coerce.number().min(1),
-});
-
-export async function getReviews(gameId: number, reviewsPage: number) {
+export async function getReviews(
+  gameId: number,
+  reviewsPage: number
+): Promise<ResponserServer> {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}?page=${reviewsPage}`
   );
   const headers = await handleAuth();
   const response = await fetch(url, { headers });
 
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
-
-  return data;
+  return handleResponse(response);
 }
 
-export async function addReview(formData: FormData) {
-  const validatedFields = schema.safeParse(
-    Object.fromEntries(formData.entries())
+export async function addReview(formData: FormData): Promise<ResponserServer> {
+  const validatedData = handleValidation(
+    Object.fromEntries(formData.entries()),
+    createReviewSchema,
+    "Impossible de valider l'avis"
   );
 
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de valider l'avis",
-      ok: false,
-    };
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer;
   }
 
   const url = new URL(
@@ -56,36 +34,28 @@ export async function addReview(formData: FormData) {
   const response = await fetch(url, {
     headers: headers,
     method: "POST",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible d'ajouter l'avis, veuillez vérifier vos informations",
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Avis ajouté avec succès",
-  };
+  return handleResponse(
+    response,
+    "Avis ajouté avec succès",
+    "Impossible d'ajouter l'avis, veuillez vérifier vos informations"
+  );
 }
 
-export async function updateReview(formData: FormData, reviewId: number) {
-  const validatedFields = schema.safeParse({
-    content: formData.get("content"),
-    rating: formData.get("rating"),
-    game: formData.get("game"),
-  });
+export async function updateReview(
+  formData: FormData,
+  reviewId: number
+): Promise<ResponserServer> {
+  const validatedData = handleValidation(
+    Object.fromEntries(formData.entries()),
+    createReviewSchema,
+    "Impossible de modifier l'avis"
+  );
 
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de modifier l'avis",
-      ok: false,
-    };
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer;
   }
 
   const url = new URL(
@@ -95,24 +65,17 @@ export async function updateReview(formData: FormData, reviewId: number) {
   const response = await fetch(url, {
     headers: headers,
     method: "PUT",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible de modifier l'avis, veuillez vérifier vos informations",
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Avis modifié avec succès",
-  };
+  return handleResponse(
+    response,
+    "Avis modifié avec succès",
+    "Impossible de modifier l'avis, veuillez vérifier vos informations"
+  );
 }
 
-export async function deleteReview(reviewId: number) {
+export async function deleteReview(reviewId: number): Promise<ResponserServer> {
   const headers = await handleAuth();
   headers.set("Content-Type", "application/json");
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${reviewId}`;
@@ -122,12 +85,9 @@ export async function deleteReview(reviewId: number) {
     method: "DELETE",
   });
 
-  if (!response.ok) {
-    return {
-      message: "Erreur lors du retrait de l'avis",
-      ok: false,
-    };
-  }
-
-  return { message: "Avis supprimé", ok: true };
+  return handleResponse(
+    response,
+    "Avis supprimé avec succès",
+    "Impossible de supprimer l'avis"
+  );
 }
