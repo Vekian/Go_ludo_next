@@ -1,4 +1,5 @@
 "use server";
+import { ReviewList } from "@/interfaces";
 import { handleAuth } from "../authServer";
 import { handleResponse, handleValidation, ResponserServer } from "../fetch";
 import { createReviewSchema } from "../validation/review";
@@ -6,7 +7,7 @@ import { createReviewSchema } from "../validation/review";
 export async function getReviews(
   gameId: number,
   reviewsPage: number
-): Promise<ResponserServer> {
+): Promise<ResponserServer<ReviewList>> {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/review/${gameId}?page=${reviewsPage}`
   );

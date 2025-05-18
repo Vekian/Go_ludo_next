@@ -95,7 +95,7 @@ export default function FormGame({
             icon={faDice}
             global={false}
             onChange={handleGameChange}
-            value={game ?? undefined}
+            value={game}
             valueInput={inputGame}
             onInputChange={setInputGame}
           />

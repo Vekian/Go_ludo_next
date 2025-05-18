@@ -12,8 +12,10 @@ export default function ModeFilter() {
   }, []);
 
   const fetchModes = async () => {
-    const modesData: GameCategory[] = await getCategories("mode");
-    setModes(modesData);
+    const modesData = await getCategories("mode");
+    if (modesData.data) {
+      setModes(modesData.data);
+    }
   };
   return (
     <CategorySelect

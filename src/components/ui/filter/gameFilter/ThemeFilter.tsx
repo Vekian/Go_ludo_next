@@ -12,8 +12,10 @@ export default function ThemeFilter() {
   }, []);
 
   const fetchThemes = async () => {
-    const themesData: GameCategory[] = await getCategories("theme");
-    setThemes(themesData);
+    const themesData = await getCategories("theme");
+    if (themesData.data) {
+      setThemes(themesData.data);
+    }
   };
   return (
     <CategorySelect

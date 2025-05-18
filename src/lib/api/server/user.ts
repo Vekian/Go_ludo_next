@@ -1,4 +1,5 @@
 "use server";
+import { User } from "@/interfaces";
 import { handleAuth } from "../authServer";
 import { handleResponse, handleValidation, ResponserServer } from "../fetch";
 import { avatarUserSchema } from "../validation/image";
@@ -12,14 +13,17 @@ export async function getUser(id: string): Promise<ResponserServer> {
   return fetch(url, { headers }).then((response) => response.json());
 }
 
-export async function updateProfil(formData: FormData, userId: number) {
+export async function updateProfil(
+  formData: FormData,
+  userId: number
+): Promise<ResponserServer<User>> {
   const validatedData = handleValidation(
     Object.fromEntries(formData.entries()),
     createUserSchema,
     "Impossible de modifier le profil"
   );
   if (!validatedData.ok) {
-    return validatedData;
+    return validatedData as ResponserServer<User>;
   }
 
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${userId}`;
@@ -52,10 +56,11 @@ export async function uploadAvatar(
     };
   }
   const validatedData = handleValidation(
-    { file: file },
+    { avatar: file },
     avatarUserSchema,
     "Impossible d'upload l'image'"
   );
+
   if (!validatedData.ok) {
     return validatedData;
   }

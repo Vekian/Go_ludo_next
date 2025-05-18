@@ -59,6 +59,7 @@ export interface ImageGame {
 export interface GameDetails {
   game: Game;
   extensions?: GameListItem[];
+  baseGames?: GameListItem[];
 }
 
 export interface GameCategories {

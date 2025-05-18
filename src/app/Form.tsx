@@ -32,9 +32,7 @@ export default function Form() {
   }
 
   function handleCityChange(city: GameLocalisation | null) {
-    if (city) {
-      setCity(city.id);
-    }
+    setCity(city?.id ?? null);
   }
   return (
     <div className="xl:w-1/3 w-full flex sm:px-16 px-3  flex-col items-center justify-center xl:mt-0 mt-6">

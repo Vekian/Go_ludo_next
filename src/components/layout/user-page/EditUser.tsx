@@ -22,7 +22,7 @@ function EditUser({ user }: { user: User }) {
   const [open, setOpen] = React.useState(false);
   const [gender, setGender] = React.useState(user.gender);
   const [errors, setErrors] =
-    React.useState<Record<string, string[] | undefined>>(null);
+    React.useState<Record<string, string[] | undefined>>();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,8 +49,8 @@ function EditUser({ user }: { user: User }) {
         "error"
       );
     } else {
-      if (data && update) {
-        const updatedUser = response.user;
+      if (data && update && response.data) {
+        const updatedUser = response.data;
         const updatedSessionUser = {
           ...updatedUser,
           name: updatedUser.username,
@@ -61,7 +61,7 @@ function EditUser({ user }: { user: User }) {
           user: updatedSessionUser,
         });
         showSnackbar("Profil modifié", "success");
-        setErrors(null);
+        setErrors(undefined);
       }
       handleClose(event);
       router.refresh();
