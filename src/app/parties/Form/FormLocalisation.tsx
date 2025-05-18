@@ -22,13 +22,17 @@ export default function FormLocalisation({
   handleChange,
   errors,
   formData,
+  cityDefault,
 }: {
   handleChange: (name: string, value: string | number | null) => void;
   errors: Record<string, string[]> | null;
-  formData: Record<string, string | null | number>;
+  formData: Record<string, string | undefined>;
+  cityDefault: GameLocalisation | null;
 }) {
-  const [city, setCity] = React.useState<GameLocalisation | null>(null);
-  const [inputCity, setInputCity] = React.useState("");
+  const [city, setCity] = React.useState<GameLocalisation | null>(cityDefault);
+  const [inputCity, setInputCity] = React.useState(
+    cityDefault?.name ?? undefined
+  );
 
   useEffect(() => {
     if (!formData.city) {
@@ -49,9 +53,9 @@ export default function FormLocalisation({
     newRangeValue: number | number[]
   ) => {
     if (Array.isArray(newRangeValue)) {
-      if (newRangeValue[0] != formData.playersMin) {
+      if (newRangeValue[0] != Number(formData.playersMin)) {
         handleChange("playersMin", newRangeValue[0]);
-      } else if (newRangeValue[1] != formData.playersMax) {
+      } else if (newRangeValue[1] != Number(formData.playersMax)) {
         handleChange("playersMax", newRangeValue[1]);
       }
     }
@@ -59,9 +63,7 @@ export default function FormLocalisation({
 
   const handleCityChange = (newCityValue: GameLocalisation | null) => {
     setCity(newCityValue);
-    if (newCityValue) {
-      handleChange("city", newCityValue.id);
-    }
+    handleChange("city", newCityValue?.id ?? null);
   };
 
   return (
@@ -82,11 +84,30 @@ export default function FormLocalisation({
             <p className="text-red-500 text-sm">{errors.city}</p>
           )}
         </div>
+        <div className="md:flex-1 w-full">
+          <div className="flex justify-between">
+            <h5 className="font-semibold">Dans un rayon de</h5>
+            <h5 className="font-semibold">
+              {formData.zone ? Number(formData.zone) : 0} km
+            </h5>
+          </div>
+          <ZoneSlider
+            valueLabelDisplay="auto"
+            aria-label="pretto slider"
+            value={formData.zone ? Number(formData.zone) : 0}
+            onChange={handleSliderChange}
+          />
+          <div className="flex justify-between text-neutral-400 text-sm -mt-2">
+            <p>0 km</p>
+            <p>100 km</p>
+          </div>
+        </div>
+      </div>
+      <div className="mt-5 flex-wrap flex gap-x-10 gap-y-3">
         <div className="md:flex-1">
           <div className="lg:w-2/3">
-            {" "}
             <SelectClassic
-              value={formData.age as string}
+              value={(formData.age as string) ?? "0"}
               color={theme.colors.primary[800]}
               options={[
                 { value: "0", label: "N'importe quel âge" },
@@ -102,24 +123,6 @@ export default function FormLocalisation({
             />
           </div>
         </div>
-      </div>
-      <div className="mt-5 flex-wrap flex gap-x-10 gap-y-3">
-        <div className="md:flex-1 w-full">
-          <div className="flex justify-between">
-            <h5 className="font-semibold">Dans un rayon de</h5>
-            <h5 className="font-semibold">{formData.zone} km</h5>
-          </div>
-          <ZoneSlider
-            valueLabelDisplay="auto"
-            aria-label="pretto slider"
-            value={Number(formData.zone)}
-            onChange={handleSliderChange}
-          />
-          <div className="flex justify-between text-neutral-400 text-sm -mt-2">
-            <p>0 km</p>
-            <p>100 km</p>
-          </div>
-        </div>
         <div className="md:flex-1 w-full">
           <div className="flex justify-between">
             <h5 className="font-semibold">Nombre de joueurs</h5>
@@ -132,10 +135,11 @@ export default function FormLocalisation({
             max={30}
             min={2}
             valueLabelDisplay="auto"
-            value={[
-              Number(formData.playersMin) ?? undefined,
-              Number(formData.playersMax) ?? undefined,
-            ]}
+            value={
+              formData.playersMax && formData.playersMin
+                ? [Number(formData.playersMin), Number(formData.playersMax)]
+                : undefined
+            }
             onChange={handleRangeChange}
             slots={{
               thumb: RangeThumb,

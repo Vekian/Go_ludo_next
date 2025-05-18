@@ -22,8 +22,12 @@ const searchPartySchema = z.object({
 });
 
 const createPartySchema = z.object({
-  ageMin: z.coerce.number(),
-  ageMax: z.coerce.number(),
+  ageMin: z.coerce
+    .number()
+    .min(18, "L'application est réservée aux gens majeurs"),
+  ageMax: z.coerce
+    .number()
+    .min(18, "L'application est réservée aux gens majeurs"),
   city: z.coerce.number().min(1, "Veuillez choisir une ville").default(0),
   latitude: z.coerce
     .number()
@@ -71,10 +75,10 @@ export async function getParty(id: number) {
   return data;
 }
 
-export async function searchParties(formData: FormData) {
-  const validatedFields = searchPartySchema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+export async function searchParties(
+  parameters: Record<string, string | undefined>
+) {
+  const validatedFields = searchPartySchema.safeParse(parameters);
 
   if (!validatedFields.success) {
     return {
@@ -97,8 +101,6 @@ export async function searchParties(formData: FormData) {
   });
 
   if (!response.ok) {
-    const data = await response.json();
-    console.log(data);
     return {
       ok: false,
       message:

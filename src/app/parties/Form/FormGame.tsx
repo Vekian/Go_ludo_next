@@ -15,20 +15,31 @@ export default function FormGame({
   modes,
   handleChange,
   formData,
+  gameDefault,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
   handleChange: (name: string, value: string | number | null) => void;
-  formData: Record<string, string | null | number>;
+  formData: Record<string, string | undefined>;
+  gameDefault: GameListItem | null;
 }) {
   const [categoryValue, setCategoryValue] = useState<Option | null>(null);
   const [modeValue, setModeValue] = useState<Option | null>(null);
   const [themeValue, setThemeValue] = useState<Option | null>(null);
   const [ratingValue, setRatingValue] = useState<number | null>(null);
 
-  const [game, setGame] = React.useState<GameListItem | null>(null);
-  const [inputGame, setInputGame] = React.useState("");
+  const [game, setGame] = React.useState<GameListItem | null>(gameDefault);
+  const [inputGame, setInputGame] = React.useState(
+    gameDefault?.name ?? undefined
+  );
+
+  useEffect(() => {
+    if (!formData.game) {
+      setGame(null);
+      setInputGame("");
+    }
+  }, [formData.game]);
 
   useEffect(() => {
     if (!formData.category && categoryValue) {
@@ -43,17 +54,11 @@ export default function FormGame({
     if (!formData.rating && ratingValue) {
       setRatingValue(null);
     }
-    if (!formData.game) {
-      setGame(null);
-      setInputGame("");
-    }
   }, [formData]);
 
   function handleGameChange(newGameValue: GameListItem | null) {
     setGame(newGameValue);
-    if (newGameValue) {
-      handleChange("game", newGameValue.id);
-    }
+    handleChange("game", newGameValue?.id ?? null);
   }
 
   function handleCategoryValue(
@@ -157,7 +162,7 @@ export default function FormGame({
             onChange={(event: SelectChangeEvent<string>) => {
               handleChange("duration", event.target.value);
             }}
-            value={formData.duration as string}
+            value={(formData.duration as string) ?? "0"}
           />
         </div>
         <div className="md:flex-1">

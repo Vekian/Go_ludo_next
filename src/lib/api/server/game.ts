@@ -78,7 +78,10 @@ export async function getGamesRec() {
   return data;
 }
 
-export async function getGame(id: number, type: string) {
+export async function getGame(id: number | null, type: string | null) {
+  if (!id) {
+    return null;
+  }
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`

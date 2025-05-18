@@ -4,21 +4,19 @@ import { PartyCard } from "@/interfaces/party.interface";
 import CardParty from "../cards/CardParty";
 import { ListPaginated } from "@/interfaces/paginator.interface";
 import NumberPaginator from "./pagination/NumberPaginator";
+import { useRouter, useSearchParams } from "next/navigation";
 
-function ListParties({
-  parties,
-  handlePagination,
-}: {
-  parties: ListPaginated<PartyCard>;
-  handlePagination: (page: number) => void;
-}) {
+function ListParties({ parties }: { parties: ListPaginated<PartyCard> }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handlePagination = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(page));
+    router.push(`/parties?${params.toString()}`, { scroll: false });
+  };
   return (
-    <div className="lg:p-10 p-3 flex-col gap-y-3 flex">
-      <h3>
-        {parties.totalResults > 1
-          ? `${parties.totalResults} parties trouvées`
-          : `${parties.totalResults} partie trouvée`}
-      </h3>
+    <div>
       <div className=" flex flex-col gap-5 mt-5">
         {parties.items.map((party) => (
           <CardParty party={party} key={party.id} />
