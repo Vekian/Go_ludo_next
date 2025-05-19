@@ -2,7 +2,7 @@
 import { User } from "@/interfaces";
 import React from "react";
 import ButtonInput from "@/components/ui/button/ButtonInput";
-import { Button, SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -14,6 +14,7 @@ import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import { useSession } from "next-auth/react";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { updateProfil } from "@/lib/api/server/user";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 
 function EditUser({ user }: { user: User }) {
   const { data, update } = useSession();
@@ -194,15 +195,11 @@ function EditUser({ user }: { user: User }) {
             label="Annuler"
             color={theme.colors.primary[800]}
           />
-          <Button
-            className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
+          <ButtonPrimary
+            color={theme.colors.primary[500]}
+            label="Modifier"
             type="submit"
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            Soumettre
-          </Button>
+          />
         </DialogActions>
       </Dialog>
       <ButtonInput

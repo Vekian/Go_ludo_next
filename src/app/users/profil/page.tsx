@@ -2,7 +2,6 @@ import { getServerSession } from "next-auth";
 import React from "react";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { UserProfil } from "@/interfaces";
 import UserContent from "@/components/layout/user-page/UserContent";
 import UserInfos from "@/components/layout/user-page/UserInfos";
 import UserParams from "@/components/layout/user-page/UserParams";
@@ -16,20 +15,27 @@ const Page = async () => {
   if (!session) {
     redirect("/");
   }
-  const userProfil: UserProfil = await getUser(session.user.id);
+  const userProfil = await getUser(session.user.id);
+
+  if (!userProfil.data) {
+    throw new Error(
+      "Impossible de récupérer les informations de l'utilisateur"
+    );
+  }
+  const user = userProfil.data;
 
   return (
     <div className="pt-6">
       <div>
-        <UserContent user={userProfil.user}>
-          <UserInfos user={userProfil.user} />
-          <UserParams user={userProfil.user} />
-          <UserNotifs user={userProfil.user} />
+        <UserContent user={user.user}>
+          <UserInfos user={user.user} />
+          <UserParams user={user.user} />
+          <UserNotifs user={user.user} />
         </UserContent>
       </div>
       <div>
         <h1 className="text-center">Collection</h1>
-        <ListGames games={userProfil.games} />
+        <ListGames games={user.games} />
       </div>
     </div>
   );

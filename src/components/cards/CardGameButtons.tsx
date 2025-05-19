@@ -1,5 +1,5 @@
 "use client";
-import { faBarcode, faDice, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faDice, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
@@ -9,8 +9,10 @@ import {
   addGameToCollection,
   deleteGameFromCollection,
 } from "@/lib/api/server/collection";
+import { useRouter } from "next/navigation";
 
 function CardGameButtons({ game }: { game: GameListItem }) {
+  const router = useRouter();
   const { showSnackbar } = useSnackbarContext();
   const [owned, setOwned] = useState(game.owned);
   const handleAdd = async () => {
@@ -34,15 +36,19 @@ function CardGameButtons({ game }: { game: GameListItem }) {
       }
     }
   };
+
   return (
-    <div className="float-right " onClick={handleAdd}>
+    <div className="float-right ">
       <Tooltip
         placement="top"
         title={`${
           owned ? "Supprimer de la collection" : "Ajouter à la collection"
         }`}
       >
-        <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
+        <div
+          className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2"
+          onClick={handleAdd}
+        >
           <FontAwesomeIcon
             icon={faPlus}
             className={`transition-transform text-xl ${
@@ -51,13 +57,11 @@ function CardGameButtons({ game }: { game: GameListItem }) {
           />
         </div>
       </Tooltip>
-      <Tooltip placement="right" title="Scanner le jeu">
-        <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer mb-2">
-          <FontAwesomeIcon icon={faBarcode} className="text-primary-950" />
-        </div>
-      </Tooltip>
       <Tooltip placement="bottom" title="Lancer une partie">
-        <div className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer">
+        <div
+          className="flex justify-center -ml-6 hover:bg-primary-50 bg-white rounded-lg w-10 py-3 cursor-pointer"
+          onClick={() => router.push("/parties/create?game=" + game.id)}
+        >
           <FontAwesomeIcon icon={faDice} className="text-primary-600 text-xl" />
         </div>
       </Tooltip>

@@ -1,16 +1,20 @@
 "use server";
-import { User } from "@/interfaces";
+import { User, UserProfil } from "@/interfaces";
 import { handleAuth } from "../authServer";
 import { handleResponse, handleValidation, ResponserServer } from "../fetch";
 import { avatarUserSchema } from "../validation/image";
 import { createUserSchema } from "../validation/user";
 
-export async function getUser(id: string): Promise<ResponserServer> {
+export async function getUser(
+  id: string
+): Promise<ResponserServer<UserProfil>> {
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${id}`
   );
-  return fetch(url, { headers }).then((response) => response.json());
+  const response = await fetch(url, { headers });
+
+  return handleResponse(response);
 }
 
 export async function updateProfil(
