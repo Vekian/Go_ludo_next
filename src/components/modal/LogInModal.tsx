@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import ButtonSecondary from "../ui/button/ButtonSecondary";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
 import InputText from "../ui/input/InputText";
+import { signIn } from "next-auth/react";
+
 
 function LogInModal() {
   const [open, setOpen] = React.useState(false);
@@ -90,6 +92,17 @@ function LogInModal() {
                 <span className="text-xl">{error}</span>
               </div>
             )}
+            <button
+              onClick={() => signIn("google")}
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex items-center"
+            >
+              <svg className="h-5 w-5 mr-2" viewBox="0 0 488 512">
+                {/* icône Google SVG */}
+                <path fill="currentColor" d="..."/>
+              </svg>
+              Se connecter avec Google
+            </button>
+
           </DialogContent>
         )}
 
