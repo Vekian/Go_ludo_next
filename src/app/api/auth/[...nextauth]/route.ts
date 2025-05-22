@@ -74,6 +74,8 @@ export const authOptions = {
           });
 
           if (!res.ok) {
+            const data = await res.json();
+            console.error(data);
             throw new Error('Invalid email or password');
           }
 

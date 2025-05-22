@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 import ButtonSecondary from "../ui/button/ButtonSecondary";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
 import InputText from "../ui/input/InputText";
-import { signIn } from "next-auth/react";
 
 
 function LogInModal() {
