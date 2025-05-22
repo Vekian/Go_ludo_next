@@ -15,6 +15,8 @@ import { useSession } from "next-auth/react";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { updateProfil } from "@/lib/api/server/user";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
+import { faCity } from "@fortawesome/free-solid-svg-icons";
 
 function EditUser({ user }: { user: User }) {
   const { data, update } = useSession();
@@ -168,6 +170,9 @@ function EditUser({ user }: { user: User }) {
                   <p className="text-red-500">{errors.gender[0]}</p>
                 )}
               </div>
+            </div>
+            <div className="mt-5 w-full">
+              <InputSearchCity label="Ville" icon={faCity} />
             </div>
             <div className="w-full flex flex-col mt-5">
               <label
