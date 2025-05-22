@@ -59,8 +59,7 @@ export async function getGame(
 }
 
 export async function getGameItem(
-  id: number | null,
-  type: string | null
+  id: number | null
 ): Promise<ResponserServer<GameListItem>> {
   if (!id) {
     return {
@@ -70,7 +69,7 @@ export async function getGameItem(
   }
   const headers = await handleAuth();
   const url = new URL(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/item/${id}`
   );
   const response = await fetch(url, { headers });
 

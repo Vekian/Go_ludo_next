@@ -1,13 +1,23 @@
 import React from "react";
 import { getCategories } from "@/lib/api/server/category";
 import Form from "./Form";
+import { getGameItem } from "@/lib/api/server/game";
 
-export default async function page() {
+export default async function page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | undefined>>;
+}) {
   const [categories, modes, themes] = await Promise.all([
     getCategories("category"),
     getCategories("mode"),
     getCategories("theme"),
   ]);
+  const params = await searchParams;
+
+  const gameData = await getGameItem(
+    Number(params?.game ? params.game : params.extension)
+  );
 
   if (!categories.data || !modes.data || !themes.data) {
     throw new Error("Categories, modes or themes not found");
@@ -32,6 +42,7 @@ export default async function page() {
         categories={categories.data}
         themes={themes.data}
         modes={modes.data}
+        game={gameData?.data ?? null}
       />
     </div>
   );

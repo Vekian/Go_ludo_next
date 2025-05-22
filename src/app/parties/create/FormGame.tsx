@@ -344,6 +344,7 @@ export default function FormGame({
                   addGame={handleAddGame}
                   removeGame={handleRemoveGame}
                   gamesAdd={gamesAdd}
+                  added={false}
                 />
               </div>
             )}
@@ -377,6 +378,7 @@ export default function FormGame({
             removeGame={handleRemoveGame}
             addGame={handleAddGame}
             gamesAdd={games}
+            added={true}
           />
         )}
       </div>

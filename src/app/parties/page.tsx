@@ -19,8 +19,7 @@ export default async function page({
   const partiesData = await searchParties(params);
   const cityData = await getCity(Number(params.city));
   const gameData = await getGameItem(
-    Number(params?.game ? params.game : params.extension),
-    params.game ? "base" : "extension"
+    Number(params?.game ? params.game : params.extension)
   );
 
   let parties: ListPaginated<PartyCard> | undefined = undefined;

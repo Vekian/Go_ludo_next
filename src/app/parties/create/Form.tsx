@@ -14,12 +14,16 @@ export default function Form({
   categories,
   themes,
   modes,
+  game,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
+  game: GameListItem | null;
 }) {
-  const [games, setGames] = useState<GameListItem[] | null>(null);
+  const [games, setGames] = useState<GameListItem[] | null>(
+    game ? [game] : null
+  );
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[] | undefined>>(
     {}
