@@ -10,7 +10,7 @@ export default async function page({
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
   const params = await searchParams;
-  const partiesData = await findPartiesByStatus("joined", params.page);
+  const partiesData = await findPartiesByStatus("closed", params.page);
 
   let parties: ListPaginated<PartyCard> | undefined = undefined;
 
@@ -20,8 +20,8 @@ export default async function page({
   return (
     <div className="p-3 flex flex-col gap-y-3">
       <div className="bg-white rounded-lg p-3 flex flex-col items-center justify-center">
-        <h2 className="text-2xl  mb-4">Parties en cours</h2>
-        <p>Vous trouverez toutes vos parties en cours ici.</p>
+        <h2 className="text-2xl  mb-4">Parties terminées</h2>
+        <p>Vous trouverez toutes vos parties terminées ici.</p>
       </div>
       {parties && (
         <div>
@@ -29,8 +29,8 @@ export default async function page({
             <div className="flex gap-x-3 items-center">
               <h3>
                 {parties.items.length > 1
-                  ? `${parties.items.length} parties en cours`
-                  : `${parties.items.length} partie en cours`}
+                  ? `${parties.items.length} parties terminées`
+                  : `${parties.items.length} partie terminées`}
               </h3>
             </div>
           </div>

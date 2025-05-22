@@ -20,6 +20,25 @@ export async function getParty(id: number) {
   return data;
 }
 
+export async function findPartiesByStatus(
+  status: string,
+  page?: string
+): Promise<ResponserServer<ListPaginated<PartyCard>>> {
+  const url = new URL(
+    `${
+      process.env.NEXT_PUBLIC_API_SYMFONY_URL
+    }/api/party?status=${status}&page=${page ?? 1}`
+  );
+  const headers = await handleAuth();
+  const response = await fetch(url, { headers });
+
+  return handleResponse(
+    response,
+    "Partie recherchée avec succès",
+    "Impossible de rechercher les parties, veuillez vérifier vos informations"
+  );
+}
+
 export async function searchParties(
   parameters: Record<string, string | undefined>
 ): Promise<ResponserServer<ListPaginated<PartyCard>>> {

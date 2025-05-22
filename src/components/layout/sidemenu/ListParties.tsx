@@ -94,11 +94,13 @@ export default function ListParties({
               </ListItem>
             </Link>
 
-            <ListItem component="li">
-              <ListItemButton sx={{ py: 0 }}>
-                <ListItemText primary="Vos parties terminées" />
-              </ListItemButton>
-            </ListItem>
+            <Link href={"/parties/closed"}>
+              <ListItem component="li">
+                <ListItemButton sx={{ py: 0 }}>
+                  <ListItemText primary="Vos parties terminées" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
           </List>
         </Collapse>
       </ListItem>

@@ -1,4 +1,4 @@
-import { ZodTypeAny } from 'zod';
+import { ZodTypeAny } from "zod";
 
 export interface ResponserServer<T = unknown> {
   ok: boolean;
@@ -7,49 +7,59 @@ export interface ResponserServer<T = unknown> {
   errors?: Record<string, string[] | undefined>;
 }
 
-export function handleValidation<T extends ZodTypeAny>(body: Record<string, unknown>, schema: T, errorMess?: string): ResponserServer {
+export function handleValidation<T extends ZodTypeAny>(
+  body: Record<string, unknown>,
+  schema: T,
+  errorMess?: string
+): ResponserServer {
   const validatedFields = schema.safeParse(body);
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       ok: false,
-      message: errorMess ?? 'Erreur, veuillez vérifier vos informations',
+      message: errorMess ?? "Erreur, veuillez vérifier vos informations",
     };
   }
 
   return {
     ok: true,
     data: validatedFields.data,
-    message: '',
+    message: "",
   };
 }
 
-export async function handleResponse<T>(response: Response, successMess?: string, errorMess?: string): Promise<ResponserServer<T>> {
+export async function handleResponse<T>(
+  response: Response,
+  successMess?: string,
+  errorMess?: string
+): Promise<ResponserServer<T>> {
   if (!response.ok) {
     if (response.status === 422) {
       const data = await response.json();
       return {
         ok: false,
-        message: 'Erreur lors de la requête',
+        message: "Erreur lors de la requête",
         errors: data.errors,
       };
     }
+    const data = await response.json();
+    console.error(data);
     return {
       ok: false,
-      message: errorMess ?? 'Erreur lors de la requête',
+      message: errorMess ?? "Erreur lors de la requête",
     };
   }
   if (response.status === 204) {
     return {
       ok: true,
-      message: successMess ?? 'Requête effectuée avec succès',
+      message: successMess ?? "Requête effectuée avec succès",
     };
   }
   const data = await response.json();
   return {
     ok: true,
-    message: successMess ?? 'Requête effectuée avec succès',
+    message: successMess ?? "Requête effectuée avec succès",
     data: data as T,
   };
 }
