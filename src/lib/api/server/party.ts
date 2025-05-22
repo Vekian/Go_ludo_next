@@ -31,7 +31,9 @@ export async function searchParties(
   if (!validatedData.ok) {
     return validatedData as ResponserServer<ListPaginated<PartyCard>>;
   }
-  const url = new URL(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party`);
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/recommendations`
+  );
 
   if (validatedData.data) {
     Object.entries(validatedData.data).forEach(([key, value]) => {

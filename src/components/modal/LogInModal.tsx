@@ -97,11 +97,10 @@ function LogInModal() {
             >
               <svg className="h-5 w-5 mr-2" viewBox="0 0 488 512">
                 {/* icône Google SVG */}
-                <path fill="currentColor" d="..."/>
+                <path fill="currentColor" d="..." />
               </svg>
               Se connecter avec Google
             </button>
-
           </DialogContent>
         )}
 

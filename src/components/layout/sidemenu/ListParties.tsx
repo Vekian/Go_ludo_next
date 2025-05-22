@@ -86,11 +86,14 @@ export default function ListParties({
               paddingLeft: 6,
             }}
           >
-            <ListItem component="li">
-              <ListItemButton sx={{ py: 0 }}>
-                <ListItemText primary="Vos parties en cours" />
-              </ListItemButton>
-            </ListItem>
+            <Link href={"/parties/joined"}>
+              <ListItem component="li">
+                <ListItemButton sx={{ py: 0 }}>
+                  <ListItemText primary="Vos parties en cours" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+
             <ListItem component="li">
               <ListItemButton sx={{ py: 0 }}>
                 <ListItemText primary="Vos parties terminées" />
