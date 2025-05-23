@@ -1,7 +1,7 @@
 import React from "react";
 
 import { getCategories } from "@/lib/api/server/category";
-import Form from "./Form/Form";
+import Form from "./components/Form";
 import SortParties from "./SortParties";
 import ListParties from "@/components/list/ListParties";
 import { searchParties } from "@/lib/api/server/party";

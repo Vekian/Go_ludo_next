@@ -1,5 +1,5 @@
-import MainContent from "./MainContent";
-import GamesList from "./GamesList";
+import MainContent from "./components/MainContent";
+import GamesList from "./components/GamesList";
 import { Suspense } from "react";
 import CategoryFilter from "@/components/ui/filter/gameFilter/CategoryFilter";
 import ThemeFilter from "@/components/ui/filter/gameFilter/ThemeFilter";

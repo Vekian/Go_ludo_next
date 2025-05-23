@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '127.0.0.1',
+        hostname: 'go-ludo-backend.cda4.garage404.com',
         pathname: '/images/**',
       },
     ],
