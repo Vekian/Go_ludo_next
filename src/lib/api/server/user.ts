@@ -64,6 +64,24 @@ export async function updateMailProfil(
   );
 }
 
+export async function deleteUser(
+  idUser: number,
+  password: string
+): Promise<ResponserServer> {
+  const headers = await handleAuth();
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${idUser}?password=${password}`;
+  const response = await fetch(url, {
+    headers: headers,
+    method: "DELETE",
+  });
+
+  return handleResponse(
+    response,
+    "Profil supprimé avec succès",
+    "Impossible de supprimer le profil, veuillez vérifier vos informations"
+  );
+}
+
 export async function sendLinkResetPassword(
   email: string
 ): Promise<ResponserServer> {

@@ -3,12 +3,17 @@ import { User } from "@/interfaces";
 import React from "react";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
-import { sendLinkResetPassword, updateMailProfil } from "@/lib/api/server/user";
+import {
+  deleteUser,
+  sendLinkResetPassword,
+  updateMailProfil,
+} from "@/lib/api/server/user";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import FormError from "@/components/ui/error/FormError";
+import InputText from "@/components/ui/input/InputText";
 
 function UserParams({ user }: { user: User }) {
   const [loadingReset, setLoadingReset] = React.useState(false);
@@ -27,6 +32,27 @@ function UserParams({ user }: { user: User }) {
       showSnackbar(response.message, "success");
     }
     setLoadingReset(false);
+  }
+
+  async function handleDelete(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const response = await deleteUser(
+      user.id,
+      formData.get("passwordDelete") as string
+    );
+
+    if (response.ok) {
+      await signOut({ callbackUrl: "/" });
+    } else {
+      if (response.errors) {
+        setErrors(response.errors);
+      }
+      showSnackbar(
+        "Impossible de supprimer le profil, veuillez réessayer plus tard",
+        "error"
+      );
+    }
   }
 
   async function handleChangeMail(event: React.FormEvent<HTMLFormElement>) {
@@ -130,24 +156,36 @@ function UserParams({ user }: { user: User }) {
         </div>
         <div className="mt-6 flex  flex-col md:flex-1">
           <label
-            htmlFor="delAccount"
+            htmlFor="passwordDelete"
             className="text-primary-950 font-semibold"
           >
             Suppression de compte:
           </label>
-          <div className="flex flex-wrap gap-3 items-center">
-            <input
-              type="text"
-              id="delAccount"
-              name="delAccount"
-              defaultValue={""}
-              className="bg-neutral-200 rounded-full px-3 py-1 ml-3"
-            />
+          <form
+            className="flex flex-wrap gap-3 items-center"
+            action=""
+            onSubmit={handleDelete}
+          >
+            <div>
+              <InputText
+                id="passwordDelete"
+                placeholder="Mot de passe"
+                type="password"
+              />
+              {errors?.passwordDelete && (
+                <FormError
+                  errors={errors.passwordDelete}
+                  name="passwordDelete"
+                />
+              )}
+            </div>
+
             <ButtonPrimary
               label="Supprimer le compte"
               color={theme.colors.primary[700]}
+              type="submit"
             />
-          </div>
+          </form>
         </div>
       </div>
     </div>

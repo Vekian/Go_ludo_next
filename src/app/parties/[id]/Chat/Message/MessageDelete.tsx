@@ -4,16 +4,20 @@ import { Message } from "@/interfaces/party.interface";
 import { deleteMessage } from "@/lib/api/server/chat";
 import { theme } from "@/theme/theme";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function MessageDelete({ message }: { message: Message }) {
-  const router = useRouter();
+export default function MessageDelete({
+  message,
+  setContent,
+}: {
+  message: Message;
+  setContent: (content: string) => void;
+}) {
   const { showSnackbar } = useSnackbarContext();
   const handleDelete = async () => {
     const response = await deleteMessage(message.id);
     if (response.ok) {
-      router.refresh();
+      setContent("Message supprimé");
     }
     showSnackbar(response.message, response.ok ? "success" : "error");
   };
