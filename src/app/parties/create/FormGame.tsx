@@ -45,7 +45,7 @@ export default function FormGame({
 }) {
   const { showSnackbar } = useSnackbarContext();
   const [open, setOpen] = React.useState(false);
-  const [typeSearch, setTypeSearch] = useState<string>("global");
+  const [typeSearch, setTypeSearch] = useState<string>("all");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState<Option | null>(null);
   const [mode, setMode] = useState<Option | null>(null);
@@ -97,6 +97,12 @@ export default function FormGame({
       params.push({
         key: "mode[]",
         value: mode.value,
+      });
+    }
+    if (typeSearch) {
+      params.push({
+        key: "type",
+        value: typeSearch,
       });
     }
     const data = await getGames(params);
@@ -194,7 +200,7 @@ export default function FormGame({
                   },
                 }}
               >
-                <MenuItem value={"global"}>Tout</MenuItem>
+                <MenuItem value={"all"}>Tout</MenuItem>
                 <MenuItem value={"collection"}>Dans ma collection</MenuItem>
               </Select>
             </FormControl>
