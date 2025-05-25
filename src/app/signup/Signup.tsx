@@ -18,8 +18,7 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [errors, setErrors] =
-    useState<Record<string, string[] | undefined>>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
 
   const handleChange = (field: string, value: string | null) => {
     setUserData((prev) => ({
@@ -62,7 +61,7 @@ export default function Signup() {
       }
 
       const routeToGo = searchParams.get("callbackUrl");
-      setErrors(null);
+      setErrors(undefined);
       router.push(routeToGo ?? "/");
     } catch (error: unknown) {
       if (error instanceof Error) {

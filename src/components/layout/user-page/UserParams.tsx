@@ -1,9 +1,26 @@
+"use client";
 import { User } from "@/interfaces";
 import React from "react";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
+import { sendLinkResetPassword } from "@/lib/api/server/user";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
+import CustomCircularLoader from "@/components/ui/loader/CustomCircularLoader";
 
 function UserParams({ user }: { user: User }) {
+  const [loadingReset, setLoadingReset] = React.useState(false);
+  const { showSnackbar } = useSnackbarContext();
+
+  async function handleResetPassword() {
+    setLoadingReset(true);
+    const response = await sendLinkResetPassword(user.email);
+    if (!response.ok) {
+      showSnackbar(response.message, "error");
+    } else {
+      showSnackbar(response.message, "success");
+    }
+    setLoadingReset(false);
+  }
   return (
     <div
       id="onglet2"
@@ -47,10 +64,15 @@ function UserParams({ user }: { user: User }) {
             Mot de passe oublié:
           </label>
           <div>
-            <ButtonPrimary
-              label="Envoyer par mail"
-              color={theme.colors.primary[600]}
-            />
+            {loadingReset ? (
+              <CustomCircularLoader />
+            ) : (
+              <ButtonPrimary
+                onClick={handleResetPassword}
+                label="Envoyer par mail"
+                color={theme.colors.primary[600]}
+              />
+            )}
           </div>
         </div>
         <div className="mt-6 flex  flex-col md:flex-1">

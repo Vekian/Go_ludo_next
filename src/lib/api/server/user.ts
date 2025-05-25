@@ -45,6 +45,54 @@ export async function updateProfil(
   );
 }
 
+export async function sendLinkResetPassword(
+  email: string
+): Promise<ResponserServer> {
+  const headers = await handleAuth();
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/reset-password/send`;
+  const response = await fetch(url, {
+    headers: headers,
+    method: "POST",
+    body: JSON.stringify({ email: email }),
+  });
+
+  return handleResponse(
+    response,
+    "Lien de réinitialisation de mot de passe envoyé par mail",
+    "Impossible d'envoyer le lien de réinitialisation de mot de passe"
+  );
+}
+
+export async function resetPassword(
+  resetToken: string,
+  formData: FormData
+): Promise<ResponserServer> {
+  if (!(formData.get("password") && formData.get("passwordConfirm"))) {
+    return {
+      ok: false,
+      message: "Impossible de modifier le mot de passe",
+      errors: {
+        passwordConfirm: ["Les mots de passes ne sont pas indentiques"],
+      },
+    };
+  }
+  const headers = await handleAuth();
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/reset-password/${resetToken}`;
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PUT",
+    body: JSON.stringify({
+      password: formData.get("password"),
+    }),
+  });
+
+  return handleResponse(
+    response,
+    "Mot de passe modifié avec succès",
+    "Impossible de modifier le mot de passe"
+  );
+}
+
 export async function uploadAvatar(
   formData: FormData
 ): Promise<ResponserServer> {

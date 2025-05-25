@@ -53,7 +53,6 @@ function EditUser({ user }: { user: User }) {
     const response = await updateProfil(formData, Number(data?.user.id));
 
     if (!response.ok) {
-      console.log(response);
       if (response.errors) {
         setErrors(response.errors);
       }
