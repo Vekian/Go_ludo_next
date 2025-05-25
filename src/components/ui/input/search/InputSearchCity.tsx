@@ -6,8 +6,9 @@ import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { GameLocalisation, Param } from "@/interfaces";
+import { Param } from "@/interfaces";
 import { searchCities } from "@/lib/api/search";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 const InputSearchCity = ({
   label,
@@ -19,13 +20,13 @@ const InputSearchCity = ({
 }: {
   label: string;
   icon: IconDefinition;
-  onChange?: (newCityValue: GameLocalisation | null) => void;
-  city?: GameLocalisation | null;
+  onChange?: (newCityValue: CityListItem | null) => void;
+  city?: CityListItem | null;
   value?: string;
   onInputChange?: (value: string) => void;
 }) => {
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<GameLocalisation[]>([]);
+  const [options, setOptions] = useState<CityListItem[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const debounceTimeoutRef = useRef<number | null>(null);

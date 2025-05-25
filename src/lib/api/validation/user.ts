@@ -7,14 +7,29 @@ export const createUserSchema = z.object({
     .string()
     .min(3, "Le pseudo doit faire au moins 3 caractères")
     .max(15, "Le pseudo ne doit pas dépasser 15 caractères"),
-  firstname: z.string().max(50, "Le nom ne doit pas dépasser 50 caractères"),
-  lastname: z.string().max(50, "Le prénom ne doit pas dépasser 50 caractères"),
+  firstname: z
+    .string()
+    .max(50, "Le nom ne doit pas dépasser 50 caractères")
+    .nullable()
+    .optional(),
+  lastname: z
+    .string()
+    .max(50, "Le prénom ne doit pas dépasser 50 caractères")
+    .nullable()
+    .optional(),
   gender: GenderEnum,
+  city: z.coerce
+    .number()
+    .min(1, "La ville doit être valide")
+    .nullable()
+    .optional(),
   description: z
     .string()
     .max(3000, "La description ne doit pas dépasser 3000 caractères"),
   age: z.coerce
     .number()
     .min(1, "Pas d'écran lorsqu'on est si jeune")
-    .max(150, "Nul n'est aussi vieux"),
+    .max(150, "Nul n'est aussi vieux")
+    .nullable()
+    .optional(),
 });

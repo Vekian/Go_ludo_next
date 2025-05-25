@@ -1,5 +1,5 @@
 "use server";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 import { handleAuth } from "../authServer";
 import { handleResponse, ResponserServer } from "../fetch";
 import { CityDetails } from "@/interfaces/localisation.interface";
@@ -24,7 +24,7 @@ export async function getCity(
 
 export async function getCityItem(
   cityId: number | null
-): Promise<ResponserServer<GameLocalisation>> {
+): Promise<ResponserServer<CityListItem>> {
   if (!cityId) {
     return {
       ok: false,
@@ -42,7 +42,7 @@ export async function getCityItem(
 
 export async function getCityByGps(
   position: [number, number]
-): Promise<ResponserServer<GameLocalisation>> {
+): Promise<ResponserServer<CityListItem>> {
   const headers = await handleAuth();
 
   const body = {

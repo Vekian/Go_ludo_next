@@ -4,7 +4,7 @@ import { MapContainer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MapContent from "./MapContent";
 import { TypeSelectionLocalisation } from "@/interfaces/localisation.interface";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 const Map = ({
   position,
@@ -13,12 +13,12 @@ const Map = ({
 }: {
   position: [number, number] | null;
   setCity: (
-    idCity: GameLocalisation | null,
+    idCity: CityListItem | null,
     localisation: TypeSelectionLocalisation
   ) => void;
   setPosition: (geopoint: [number, number] | null) => void;
 }) => {
-  const handleCityChange = (newCity: GameLocalisation | null) => {
+  const handleCityChange = (newCity: CityListItem | null) => {
     setCity(newCity, { type: "gps" });
   };
   return (

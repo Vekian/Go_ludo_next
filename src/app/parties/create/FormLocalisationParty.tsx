@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import SelectCity from "./SelectCity";
 import { TypeSelectionLocalisation } from "@/interfaces/localisation.interface";
 import { getCity } from "@/lib/api/server/city";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 import FormError from "@/components/ui/error/FormError";
 
 const DynamicMap = dynamic(() => import("@/components/map/Map"), {
@@ -18,7 +18,7 @@ export default function FormLocalisationParty({
   errors: Record<string, string[] | undefined>;
 }) {
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [city, setCity] = useState<GameLocalisation | null>(null);
+  const [city, setCity] = useState<CityListItem | null>(null);
   const [localisation, setLocalisation] = useState<TypeSelectionLocalisation>({
     type: "gps",
   });
@@ -40,7 +40,7 @@ export default function FormLocalisationParty({
   };
 
   const handleCityChange = (
-    city: GameLocalisation | null,
+    city: CityListItem | null,
     localisation: TypeSelectionLocalisation
   ) => {
     setLocalisation(localisation);

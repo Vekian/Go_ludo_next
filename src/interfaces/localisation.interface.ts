@@ -10,6 +10,12 @@ export interface CityDetails {
   codePostal: string;
 }
 
+export interface CityListItem {
+  id: number;
+  name: string;
+  codePostal: string;
+}
+
 export interface GeoPoint {
   type: string;
   coordinates: [number, number];

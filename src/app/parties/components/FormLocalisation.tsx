@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import "dayjs/locale/fr";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 dayjs.locale("fr");
 
@@ -24,9 +24,9 @@ export default function FormLocalisation({
   handleChange: (name: string, value: string | number | null) => void;
   errors: Record<string, string[] | undefined>;
   formData: Record<string, string | undefined>;
-  cityDefault: GameLocalisation | null;
+  cityDefault: CityListItem | null;
 }) {
-  const [city, setCity] = React.useState<GameLocalisation | null>(cityDefault);
+  const [city, setCity] = React.useState<CityListItem | null>(cityDefault);
   const [inputCity, setInputCity] = React.useState(
     cityDefault?.name ?? undefined
   );
@@ -62,7 +62,7 @@ export default function FormLocalisation({
     }
   };
 
-  const handleCityChange = (newCityValue: GameLocalisation | null) => {
+  const handleCityChange = (newCityValue: CityListItem | null) => {
     setCity(newCityValue);
     handleChange("city", newCityValue?.id ?? null);
   };

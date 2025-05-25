@@ -2,12 +2,13 @@
 import React, { useState } from "react";
 import FormLocalisation from "./FormLocalisation";
 import FormGame from "./FormGame";
-import { GameCategory, GameListItem, GameLocalisation } from "@/interfaces";
+import { GameCategory, GameListItem } from "@/interfaces";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { theme } from "@/theme/theme";
 import Link from "next/link";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import { useRouter } from "next/navigation";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 const defaultFormData = {
   city: undefined,
@@ -38,7 +39,7 @@ export default function Form({
   themes: GameCategory[];
   modes: GameCategory[];
   params: Record<string, string | undefined>;
-  city: GameLocalisation | null;
+  city: CityListItem | null;
   game: GameListItem | null;
 }) {
   const router = useRouter();

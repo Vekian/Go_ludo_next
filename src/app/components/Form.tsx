@@ -2,11 +2,12 @@
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import InputSearchGlobal from "@/components/ui/input/search/InputSearchGlobal";
-import { GameListItem, GameLocalisation } from "@/interfaces";
+import { GameListItem } from "@/interfaces";
 import { theme } from "@/theme/theme";
 import { faDice, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 export default function Form() {
   const [city, setCity] = useState<number | null>(null);
@@ -31,7 +32,7 @@ export default function Form() {
     setGlobalType(value?.type ?? null);
   }
 
-  function handleCityChange(city: GameLocalisation | null) {
+  function handleCityChange(city: CityListItem | null) {
     setCity(city?.id ?? null);
   }
   return (

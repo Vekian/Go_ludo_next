@@ -1,4 +1,5 @@
 import { GameListItem } from "./game.interface";
+import { CityListItem } from "./localisation.interface";
 
 export interface User {
   id: number;
@@ -9,6 +10,7 @@ export interface User {
   firstname: string;
   lastname: string;
   gender: string;
+  city: CityListItem;
   avatar: string;
   description: string;
   games: GameListItem[];

@@ -3,7 +3,7 @@ import { TileLayer, Marker, Popup, useMapEvents, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { getCityByGps } from "@/lib/api/server/city";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 const customIcon = new L.Icon({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
@@ -21,7 +21,7 @@ export default function MapContent({
   setPosition,
 }: {
   position: [number, number] | null;
-  setCity: (newCity: GameLocalisation | null) => void;
+  setCity: (newCity: CityListItem | null) => void;
   setPosition: (geopoint: [number, number] | null) => void;
 }) {
   const [marker, setMarker] = useState<[number, number]>([48.8566, 2.3522]); // Initialiser avec la prop position
@@ -51,9 +51,9 @@ export default function MapContent({
   }, [position]);
 
   const fetchCity = async (position: [number, number]) => {
-    const response: GameLocalisation = await getCityByGps(position);
-    if (response.id) {
-      setCity(response);
+    const response = await getCityByGps(position);
+    if (response?.data?.id) {
+      setCity(response.data);
     }
   };
 

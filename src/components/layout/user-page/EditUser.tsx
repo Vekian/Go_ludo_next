@@ -17,6 +17,7 @@ import { updateProfil } from "@/lib/api/server/user";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import { faCity } from "@fortawesome/free-solid-svg-icons";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 function EditUser({ user }: { user: User }) {
   const { data, update } = useSession();
@@ -24,6 +25,10 @@ function EditUser({ user }: { user: User }) {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [gender, setGender] = React.useState(user.gender);
+  const [city, setCity] = React.useState<CityListItem | null>(user?.city);
+  const [inputCity, setInputCity] = React.useState(
+    user.city?.name ?? undefined
+  );
   const [errors, setErrors] =
     React.useState<Record<string, string[] | undefined>>();
 
@@ -39,11 +44,16 @@ function EditUser({ user }: { user: User }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     formData.append("gender", gender);
+    if (city) {
+      formData.append("city", String(city.id));
+    }
+
     showSnackbar("Profil en cours de modification", "info");
 
     const response = await updateProfil(formData, Number(data?.user.id));
 
     if (!response.ok) {
+      console.log(response);
       if (response.errors) {
         setErrors(response.errors);
       }
@@ -70,6 +80,7 @@ function EditUser({ user }: { user: User }) {
       router.refresh();
     }
   };
+
   return (
     <div>
       <Dialog
@@ -172,7 +183,14 @@ function EditUser({ user }: { user: User }) {
               </div>
             </div>
             <div className="mt-5 w-full">
-              <InputSearchCity label="Ville" icon={faCity} />
+              <InputSearchCity
+                label="Ville"
+                icon={faCity}
+                onChange={(value) => setCity(value)}
+                city={city}
+                value={inputCity}
+                onInputChange={(value) => setInputCity(value)}
+              />
             </div>
             <div className="w-full flex flex-col mt-5">
               <label
