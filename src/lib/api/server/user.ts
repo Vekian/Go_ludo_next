@@ -45,6 +45,25 @@ export async function updateProfil(
   );
 }
 
+export async function updateMailProfil(
+  formData: FormData,
+  userId: number
+): Promise<ResponserServer<User>> {
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${userId}`;
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PATCH",
+    body: JSON.stringify(Object.fromEntries(formData.entries())),
+  });
+
+  return handleResponse(
+    response,
+    "Profil modifié avec succès",
+    "Impossible de modifier le profil, veuillez vérifier vos informations"
+  );
+}
+
 export async function sendLinkResetPassword(
   email: string
 ): Promise<ResponserServer> {

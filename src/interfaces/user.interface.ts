@@ -14,6 +14,7 @@ export interface User {
   avatar: string;
   description: string;
   games: GameListItem[];
+  token?: string;
 }
 
 export interface UserProfil {
