@@ -45,7 +45,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd webapps/go-ludo-backend
-            docker compose down
+            docker compose -p go_ludo_next down
             rm docker-compose.yml
             rm .env
             echo "${{ secrets.DOCKER_COMPOSE_FILE }}" >> docker-compose.yml
@@ -59,4 +59,4 @@ jobs:
             echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env
             docker pull ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
             docker network inspect go_ludo_network >/dev/null 2>&1 || docker network create go_ludo_network
-            docker compose up -d
+            docker compose -p go_ludo_next up -d
