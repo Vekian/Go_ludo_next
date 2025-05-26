@@ -8,9 +8,9 @@ services:
     environment:
       - NODE_ENV=production
     networks:
-      - go_ludo_front
+      - go_ludo_front_network
     env_file:
       - .env
 networks:
-  go_ludo_front:
+  go_ludo_front_network:
     driver: bridge

@@ -58,5 +58,5 @@ jobs:
             echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env
             echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env
             docker pull ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
-            docker network inspect go_ludo_network >/dev/null 2>&1 || docker network create go_ludo_network
+            docker network inspect go_ludo_front_network >/dev/null 2>&1 || docker network create go_ludo_front_network
             docker compose up -d
