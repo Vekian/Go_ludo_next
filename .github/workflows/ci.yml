@@ -9,6 +9,16 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
+    env:
+      IMAGE_HOSTNAME: ${{ secrets.IMAGE_HOSTNAME }}
+      NEXT_PUBLIC_API_SYMFONY_URL: ${{ secrets.SYMFONY_URL }}
+      NEXT_PUBLIC_URL: ${{ secrets.NEXT_URL }}
+      NEXTAUTH_URL: ${{ secrets.NEXT_URL }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_SECRET }}
+      KEY_SYMFONY_API: ${{ secrets.KEY_SYMFONY_API_PROD }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,16 +30,7 @@ jobs:
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker image
-        run: |
-          IMAGE_HOSTNAME="${{ secrets.IMAGE_HOSTNAME }}" \
-          NEXT_PUBLIC_API_SYMFONY_URL="${{ secrets.SYMFONY_URL }}" \
-          NEXT_PUBLIC_URL="${{ secrets.NEXT_URL }}" \
-          NEXTAUTH_URL="${{ secrets.NEXT_URL }}" \
-          NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}" \
-          GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_ID }}" \
-          GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_SECRET }}" \
-          KEY_SYMFONY_API="${{ secrets.KEY_SYMFONY_API_PROD }}" \
-          docker compose -f docker-compose-build.yml build nextjs
+        run: docker compose -f docker-compose-build.yml build nextjs
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
