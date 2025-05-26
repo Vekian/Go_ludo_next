@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_HOSTNAME: ${{ secrets.IMAGE_HOSTNAME }}
+      NEXT_PUBLIC_IMAGE_HOSTNAME: ${{ secrets.IMAGE_HOSTNAME }}
       NEXT_PUBLIC_API_SYMFONY_URL: ${{ secrets.SYMFONY_URL }}
       NEXT_PUBLIC_URL: ${{ secrets.NEXT_URL }}
       NEXTAUTH_URL: ${{ secrets.NEXT_URL }}
@@ -53,7 +53,7 @@ jobs:
             echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env
             echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env
             echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env
-            echo 'IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env
+            echo 'NEXT_PUBLIC_IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env
             echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env
             echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env
             echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env

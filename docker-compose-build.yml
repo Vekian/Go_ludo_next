@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        IMAGE_HOSTNAME: ${IMAGE_HOSTNAME}
+        NEXT_PUBLIC_IMAGE_HOSTNAME: ${NEXT_PUBLIC_IMAGE_HOSTNAME}
         NEXT_PUBLIC_API_SYMFONY_URL: ${NEXT_PUBLIC_API_SYMFONY_URL}
         NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
         NEXTAUTH_URL: ${NEXTAUTH_URL}
