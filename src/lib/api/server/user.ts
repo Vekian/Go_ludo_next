@@ -1,5 +1,5 @@
 "use server";
-import { User, UserProfil } from "@/interfaces";
+import { User, UserProfil, UserStatus } from "@/interfaces";
 import { handleAuth } from "../authServer";
 import { handleResponse, handleValidation, ResponserServer } from "../fetch";
 import { avatarUserSchema } from "../validation/image";
@@ -151,7 +151,7 @@ export async function resetPassword(
 
 export async function uploadAvatar(
   formData: FormData
-): Promise<ResponserServer> {
+): Promise<ResponserServer<UserStatus>> {
   const file = formData.get("avatar") as File | null;
 
   if (!file) {
@@ -170,7 +170,7 @@ export async function uploadAvatar(
   );
 
   if (!validatedData.ok) {
-    return validatedData;
+    return validatedData as ResponserServer<UserStatus>;
   }
   const headers = await handleAuth();
   headers.set("Accept", "application/json");

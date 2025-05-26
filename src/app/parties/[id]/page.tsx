@@ -4,8 +4,12 @@ import React from "react";
 import UnjoinedParty from "./UnjoinedParty";
 import PendingParty from "./PendingParty";
 
-export default async function page({ params }: { params: { id: number } }) {
-  const id = (await params).id;
+export default async function page({
+  params,
+}: {
+  params: Promise<{ id: number }>;
+}) {
+  const { id } = await params;
   const party: Party = await getParty(id);
 
   return (

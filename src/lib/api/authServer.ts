@@ -1,6 +1,6 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession, Session } from "next-auth";
+import { authOptions } from "./nextAuth";
 
 export async function handleAuth() {
   const headers = new Headers();

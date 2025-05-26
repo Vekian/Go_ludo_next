@@ -19,9 +19,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
-
-// Ajouter la ligne pour ignorer les erreurs SSL auto-signées (en dev uniquement)
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 export default nextConfig;

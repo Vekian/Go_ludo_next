@@ -9,7 +9,7 @@ import SimilarGames from "@/components/layout/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/server/game";
 import GameContent from "@/components/layout/gamePage/GameContent";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/api/nextAuth";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";

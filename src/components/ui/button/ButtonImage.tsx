@@ -23,8 +23,7 @@ function ButtonImage({
   const { showSnackbar } = useSnackbarContext();
   const { data: session, update } = useSession();
   const [uploading, setUploading] = useState(false);
-  const [errors, setErrors] =
-    useState<Record<string, string[] | undefined>>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,8 +38,8 @@ function ButtonImage({
       }
       showSnackbar("Impossible d'upload une nouvelle image", "error");
     } else {
-      if (session && response.avatar) {
-        const avatar = response.avatar;
+      if (session && response.data?.avatar) {
+        const avatar = response.data.avatar;
         const updatedSessionUser = {
           ...session.user,
           avatar: avatar,

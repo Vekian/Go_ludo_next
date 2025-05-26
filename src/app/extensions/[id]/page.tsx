@@ -14,7 +14,7 @@ import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
 import { getBaseUrl } from "@/lib/game";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/api/nextAuth";
 import ListGames from "@/components/list/ListGames";
 import ReviewsWrapper from "@/components/layout/gamePage/review/ReviewsWrapper";
 

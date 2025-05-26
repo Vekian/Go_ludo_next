@@ -4,7 +4,7 @@ import { Game, GameReview } from "@/interfaces";
 import ReviewModal from "./ReviewModal";
 import { getReviews } from "@/lib/api/server/review";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/api/nextAuth";
 import ReviewsPagination from "./ReviewsPagination";
 
 export default async function ReviewsWrapper({

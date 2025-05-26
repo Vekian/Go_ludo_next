@@ -1,6 +1,6 @@
 "use server";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "../nextAuth";
 import { getServerSession, User } from "next-auth";
 import { handleAuth } from "../authServer";
 import { handleResponse, ResponserServer } from "../fetch";
