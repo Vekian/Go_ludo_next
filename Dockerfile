@@ -3,8 +3,6 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-ARG IMAGE_HOSTNAME
-ENV IMAGE_HOSTNAME=$IMAGE_HOSTNAME
 # Copier les fichiers nécessaires
 COPY package.json yarn.lock ./
 
@@ -23,8 +21,6 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ARG IMAGE_HOSTNAME
-ENV IMAGE_HOSTNAME=$IMAGE_HOSTNAME
 
 # Copier les fichiers nécessaires au runtime
 COPY --from=builder /app/.next ./.next
