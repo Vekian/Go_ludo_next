@@ -9,16 +9,6 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    env:
-      NEXT_PUBLIC_IMAGE_HOSTNAME: ${{ secrets.IMAGE_HOSTNAME }}
-      NEXT_PUBLIC_API_SYMFONY_URL: ${{ secrets.SYMFONY_URL }}
-      NEXT_PUBLIC_URL: ${{ secrets.NEXT_URL }}
-      NEXTAUTH_URL: ${{ secrets.NEXT_URL }}
-      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_ID }}
-      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_SECRET }}
-      KEY_SYMFONY_API: ${{ secrets.KEY_SYMFONY_API_PROD }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,6 +18,17 @@ jobs:
 
       - name: Log in to Docker Hub # Using Access Token
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Create .env file
+        run: |
+          echo 'NEXT_PUBLIC_IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env.production.sample 
+          echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env.production.sample 
+          echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample 
+          echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample 
+          echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env.production.sample 
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env.production.sample 
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env.production.sample 
+          echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env.production.sample
 
       - name: Build Docker image
         run: docker compose -f docker-compose-build.yml build nextjs
@@ -46,17 +47,15 @@ jobs:
             cd webapps/go-ludo-frontend
             docker compose down
             rm docker-compose.yml
-            rm .env
-            docker rmi ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest || true
+            rm .env.production.sample
             echo "${{ secrets.DOCKER_COMPOSE_FILE }}" >> docker-compose.yml
-            echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env
-            echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env
-            echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env
-            echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env
-            echo 'NEXT_PUBLIC_IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env
-            echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env
-            echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env
-            echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env
+            echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env.production.sample
+            echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env.production.sample
+            echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample
+            echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample
+            echo 'NEXT_PUBLIC_IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env.production.sample
+            echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env.production.sample
+            echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env.production.sample
+            echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env.production.sample
             docker pull ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
-            docker network inspect go_ludo_front_network >/dev/null 2>&1 || docker network create go_ludo_front_network
             docker compose up -d

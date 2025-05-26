@@ -3,24 +3,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_IMAGE_HOSTNAME: ${NEXT_PUBLIC_IMAGE_HOSTNAME}
-        NEXT_PUBLIC_API_SYMFONY_URL: ${NEXT_PUBLIC_API_SYMFONY_URL}
-        NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
-        NEXTAUTH_URL: ${NEXTAUTH_URL}
-        NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
-        GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-        GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-        KEY_SYMFONY_API: ${KEY_SYMFONY_API}
     image: vekian/go_ludo_front:latest
     container_name: nextjs_go_ludo
     restart: unless-stopped
-    expose:
-      - "3200"
-    environment:
-      - NODE_ENV=production
-    networks:
-      - go_ludo_front
-networks:
-  go_ludo_front:
-    driver: bridge
+    ports:
+      - "3200:3000"

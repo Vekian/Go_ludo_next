@@ -5,12 +5,3 @@ services:
     restart: unless-stopped
     ports:
       - "3200:3000"
-    environment:
-      - NODE_ENV=production
-    networks:
-      - go_ludo_front_network
-    env_file:
-      - .env
-networks:
-  go_ludo_front_network:
-    driver: bridge

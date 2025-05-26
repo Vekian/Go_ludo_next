@@ -1,24 +1,12 @@
 # Étape de build
-FROM node:20-alpine AS builder
 
-ARG NEXT_PUBLIC_IMAGE_HOSTNAME
-ARG NEXT_PUBLIC_API_SYMFONY_URL
-ARG NEXT_PUBLIC_URL
-ARG NEXTAUTH_URL
-ARG NEXTAUTH_SECRET
-ARG GOOGLE_CLIENT_ID
-ARG GOOGLE_CLIENT_SECRET
-ARG KEY_SYMFONY_API
+FROM node:20-alpine AS base
 
-ENV NEXT_PUBLIC_IMAGE_HOSTNAME=$NEXT_PUBLIC_IMAGE_HOSTNAME
-ENV NEXT_PUBLIC_API_SYMFONY_URL=$NEXT_PUBLIC_API_SYMFONY_URL
-ENV NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-ENV KEY_SYMFONY_API=$KEY_SYMFONY_API
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copier les fichiers nécessaires
@@ -27,40 +15,35 @@ COPY package.json yarn.lock ./
 # Installer les dépendances
 RUN yarn install --frozen-lockfile
 
-# Copier le reste du projet
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+COPY .env.production.sample .env.production
 
 # Build Next.js en production
 RUN yarn build
 
 # Étape finale: image de runtime
-FROM node:20-alpine AS runner
-
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copier les fichiers nécessaires au runtime
-COPY --from=builder /app/.next ./.next
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/yarn.lock ./yarn.lock
 
-ENV NODE_ENV=production
-ENV NEXT_PUBLIC_IMAGE_HOSTNAME=$NEXT_PUBLIC_IMAGE_HOSTNAME
-ENV NEXT_PUBLIC_API_SYMFONY_URL=$NEXT_PUBLIC_API_SYMFONY_URL
-ENV NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-ENV GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID
-ENV GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
-ENV KEY_SYMFONY_API=$KEY_SYMFONY_API
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Installer uniquement les dépendances de production
-RUN yarn install --frozen-lockfile --production
 
-# Exposer le port
+USER nextjs
+
 EXPOSE 3000
 
-# Commande de démarrage
-CMD ["yarn", "start"]
+ENV PORT=3000
+
+CMD HOSTNAME="0.0.0.0" node server.js
