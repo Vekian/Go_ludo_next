@@ -22,7 +22,10 @@ export default function Header() {
       <div className={` order-1 flex items-center min-h-16`}>
         <div className="flex w-full justify-around">
           <div className={` order-1 flex items-center`}>
-            <SidemenuButton />
+            <div className="ms-6">
+              <SidemenuButton />
+            </div>
+            
             <Link href="/" className=" lg:block hidden">
               <Image
                 src="/images/logo.png"

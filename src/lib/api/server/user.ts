@@ -1,46 +1,52 @@
 "use server";
-import { z } from "zod";
+import { User, UserProfil, UserStatus } from "@/interfaces";
 import { handleAuth } from "../authServer";
-import { validateImage } from "../validation/image";
+import { handleResponse, handleValidation, ResponserServer } from "../fetch";
+import { avatarUserSchema } from "../validation/image";
+import { createUserSchema } from "../validation/user";
 
-const GenderEnum = z.enum(["Homme", "Femme"]);
-
-const schema = z.object({
-  username: z
-    .string()
-    .min(3, "Le pseudo doit faire au moins 3 caractères")
-    .max(15, "Le pseudo ne doit pas dépasser 15 caractères"),
-  firstname: z.string().max(50, "Le nom ne doit pas dépasser 50 caractères"),
-  lastname: z.string().max(50, "Le prénom ne doit pas dépasser 50 caractères"),
-  gender: GenderEnum,
-  description: z
-    .string()
-    .max(3000, "La description ne doit pas dépasser 3000 caractères"),
-  age: z.coerce
-    .number()
-    .min(1, "Pas d'écran lorsqu'on est si jeune")
-    .max(150, "Nul n'est aussi vieux"),
-});
-
-export async function getUser(id: string) {
+export async function getUser(
+  id: string
+): Promise<ResponserServer<UserProfil>> {
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${id}`
   );
-  return fetch(url, { headers }).then((response) => response.json());
+  const response = await fetch(url, { headers });
+
+  return handleResponse(response);
 }
 
-export async function updateProfil(formData: FormData, userId: number) {
-  const validatedFields = schema.safeParse(
-    Object.fromEntries(formData.entries())
-  );
+export async function updateUser(
+  formData: object,
+  userId: number
+): Promise<ResponserServer<User>> {
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${userId}`;
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PUT",
+    body: JSON.stringify(formData),
+  });
 
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de modifier le profil",
-      ok: false,
-    };
+  return handleResponse(
+    response,
+    "Profil modifié avec succès",
+    "Impossible de modifier le profil, veuillez vérifier vos informations"
+  );
+}
+
+export async function updateProfil(
+  formData: FormData,
+  userId: number
+): Promise<ResponserServer<User>> {
+  const validatedData = handleValidation(
+    Object.fromEntries(formData.entries()),
+    createUserSchema,
+    "Impossible de modifier le profil"
+  );
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<User>;
   }
 
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${userId}`;
@@ -48,26 +54,104 @@ export async function updateProfil(formData: FormData, userId: number) {
   const response = await fetch(url, {
     headers: headers,
     method: "PUT",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible de modifier le profil, veuillez vérifier vos informations",
-    };
-  }
-
-  const data = await response.json();
-  return {
-    ok: true,
-    message: "Profil modifié avec succès",
-    user: data,
-  };
+  return handleResponse(
+    response,
+    "Profil modifié avec succès",
+    "Impossible de modifier le profil, veuillez vérifier vos informations"
+  );
 }
 
-export async function uploadAvatar(formData: FormData) {
+export async function updateMailProfil(
+  formData: FormData,
+  userId: number
+): Promise<ResponserServer<User>> {
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${userId}`;
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PATCH",
+    body: JSON.stringify(Object.fromEntries(formData.entries())),
+  });
+
+  return handleResponse(
+    response,
+    "Profil modifié avec succès",
+    "Impossible de modifier le profil, veuillez vérifier vos informations"
+  );
+}
+
+export async function deleteUser(
+  idUser: number,
+  password: string
+): Promise<ResponserServer> {
+  const headers = await handleAuth();
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${idUser}?password=${password}`;
+  const response = await fetch(url, {
+    headers: headers,
+    method: "DELETE",
+  });
+
+  return handleResponse(
+    response,
+    "Profil supprimé avec succès",
+    "Impossible de supprimer le profil, veuillez vérifier vos informations"
+  );
+}
+
+export async function sendLinkResetPassword(
+  email: string
+): Promise<ResponserServer> {
+  const headers = await handleAuth();
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/reset-password/send`;
+  const response = await fetch(url, {
+    headers: headers,
+    method: "POST",
+    body: JSON.stringify({ email: email }),
+  });
+
+  return handleResponse(
+    response,
+    "Lien de réinitialisation de mot de passe envoyé par mail",
+    "Impossible d'envoyer le lien de réinitialisation de mot de passe"
+  );
+}
+
+export async function resetPassword(
+  resetToken: string,
+  formData: FormData
+): Promise<ResponserServer> {
+  if (!(formData.get("password") && formData.get("passwordConfirm"))) {
+    return {
+      ok: false,
+      message: "Impossible de modifier le mot de passe",
+      errors: {
+        passwordConfirm: ["Les mots de passes ne sont pas indentiques"],
+      },
+    };
+  }
+  const headers = await handleAuth();
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/reset-password/${resetToken}`;
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PUT",
+    body: JSON.stringify({
+      password: formData.get("password"),
+    }),
+  });
+
+  return handleResponse(
+    response,
+    "Mot de passe modifié avec succès",
+    "Impossible de modifier le mot de passe"
+  );
+}
+
+export async function uploadAvatar(
+  formData: FormData
+): Promise<ResponserServer<UserStatus>> {
   const file = formData.get("avatar") as File | null;
 
   if (!file) {
@@ -75,16 +159,18 @@ export async function uploadAvatar(formData: FormData) {
       ok: false,
       message: "Aucun fichier reçu.",
       errors: {
-        avatar: "Veuillez sélectionner une image",
+        avatar: ["Veuillez sélectionner une image"],
       },
     };
   }
-  const validationResult = validateImage(file);
-  if (!validationResult.success) {
-    return {
-      ok: false,
-      errors: validationResult.error.flatten().fieldErrors,
-    };
+  const validatedData = handleValidation(
+    { avatar: file },
+    avatarUserSchema,
+    "Impossible d'upload l'image'"
+  );
+
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<UserStatus>;
   }
   const headers = await handleAuth();
   headers.set("Accept", "application/json");
@@ -96,16 +182,9 @@ export async function uploadAvatar(formData: FormData) {
     body: formData,
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible d'upload l'image'",
-    };
-  }
-  const data = await response.json();
-  return {
-    ok: true,
-    message: "Image upload avec succès",
-    avatar: data.avatar,
-  };
+  return handleResponse(
+    response,
+    "Image upload avec succès",
+    "Impossible d'upload l'image'"
+  );
 }

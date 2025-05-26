@@ -1,6 +1,5 @@
 import React from "react";
 import FormGame from "@/components/form/FormGame";
-import { GameDetails } from "@/interfaces";
 import { getGame } from "@/lib/api/server/game";
 
 export default async function page({
@@ -10,8 +9,12 @@ export default async function page({
 }) {
   const id = (await params).id;
   const step = Number((await params).step);
-  const gameData: GameDetails = await getGame(id, "extension");
-  const game = gameData.game;
+  const gameData = await getGame(id, "base");
+
+  if (gameData.data === undefined || !gameData.ok) {
+    throw new Error("Game not found");
+  }
+  const game = gameData.data.game;
 
   return (
     <div className="lg:p-4 pt-10 flex flex-col gap-y-6">

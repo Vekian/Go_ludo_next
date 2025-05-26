@@ -41,7 +41,10 @@ function ProfilButton({ user }: { user: User }) {
         }
         sx={{
           textTransform: "none",
-          backgroundColor: theme.colors.primary[600], // bg-primary-600
+          backgroundColor: {
+            xs: "transparent",
+            md: theme.colors.primary[600],
+          },
           color: "white",
           "&:hover": {
             backgroundColor: theme.colors.primary[400],

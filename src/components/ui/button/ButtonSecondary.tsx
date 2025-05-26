@@ -7,14 +7,17 @@ function ButtonSecondary({
   color,
   onClick,
   icon,
+  type,
 }: {
   label: string;
   color: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   icon?: IconProp;
+  type?: "button" | "submit" | "reset" | undefined;
 }) {
   return (
     <button
+      type={type ? type : "button"}
       className={`hover:opacity-75 bg-white text-neutral-950 rounded-md font-semibold  px-3 py-1.5 `}
       style={{ border: `2px solid ${color}` }}
       onClick={onClick}

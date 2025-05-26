@@ -23,9 +23,8 @@ export default function MessageEdit({
 }) {
   const [open, setOpen] = React.useState(false);
   const [contentEdit, setContentEdit] = React.useState(message.content);
-  const [errors, setErrors] = React.useState<Record<string, string[]> | null>(
-    null
-  );
+  const [errors, setErrors] =
+    React.useState<Record<string, string[] | undefined>>();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -41,7 +40,7 @@ export default function MessageEdit({
       setErrors(response.errors);
     } else {
       setContent(contentEdit);
-      setErrors(null);
+      setErrors(undefined);
       setOpen(false);
     }
   };

@@ -21,7 +21,9 @@ export default function FormCreators({ game }: { game: Game }) {
   );
   const [job, setJob] = useState("");
   const [creatorsSelected, setCreatorsSelected] = useState<GameCreator[]>([]);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>(
+    {}
+  );
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
 
@@ -72,7 +74,7 @@ export default function FormCreators({ game }: { game: Game }) {
           creator: creator.creator.id,
           jobs: creator.creator.jobs,
         }));
-      setErrors(null);
+      setErrors({});
       gameCreators.forEach(async (gameCreator) => {
         const response = await addGameCreator(gameCreator);
         const creator = creatorsSelected.find(

@@ -10,7 +10,6 @@ import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import SelectClassic from "@/components/ui/input/SelectClassic";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import { GameCategory, GameListItem, Option } from "@/interfaces";
-import { ListPaginated } from "@/interfaces/paginator.interface";
 import { getGames } from "@/lib/api/server/game";
 import { theme } from "@/theme/theme";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -42,11 +41,11 @@ export default function FormGame({
   addGame: (game: GameListItem) => void;
   removeGame: (game: GameListItem) => void;
   gamesAdd: GameListItem[] | null;
-  errors: Record<string, string[]> | null;
+  errors: Record<string, string[] | undefined>;
 }) {
   const { showSnackbar } = useSnackbarContext();
   const [open, setOpen] = React.useState(false);
-  const [typeSearch, setTypeSearch] = useState<string>("global");
+  const [typeSearch, setTypeSearch] = useState<string>("all");
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState<Option | null>(null);
   const [mode, setMode] = useState<Option | null>(null);
@@ -100,9 +99,15 @@ export default function FormGame({
         value: mode.value,
       });
     }
-    const data: ListPaginated<GameListItem> = await getGames(params);
-    if (data) {
-      setGames(data.items);
+    if (typeSearch) {
+      params.push({
+        key: "type",
+        value: typeSearch,
+      });
+    }
+    const data = await getGames(params);
+    if (data.data) {
+      setGames(data.data.items);
     }
   };
 
@@ -195,7 +200,7 @@ export default function FormGame({
                   },
                 }}
               >
-                <MenuItem value={"global"}>Tout</MenuItem>
+                <MenuItem value={"all"}>Tout</MenuItem>
                 <MenuItem value={"collection"}>Dans ma collection</MenuItem>
               </Select>
             </FormControl>
@@ -345,6 +350,7 @@ export default function FormGame({
                   addGame={handleAddGame}
                   removeGame={handleRemoveGame}
                   gamesAdd={gamesAdd}
+                  added={false}
                 />
               </div>
             )}
@@ -378,6 +384,7 @@ export default function FormGame({
             removeGame={handleRemoveGame}
             addGame={handleAddGame}
             gamesAdd={games}
+            added={true}
           />
         )}
       </div>

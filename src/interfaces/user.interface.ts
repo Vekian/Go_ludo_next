@@ -1,6 +1,7 @@
 import { GameListItem } from "./game.interface";
+import { CityListItem } from "./localisation.interface";
 
-export interface UserProfil {
+export interface User {
   id: number;
   username: string;
   email: string;
@@ -9,7 +10,25 @@ export interface UserProfil {
   firstname: string;
   lastname: string;
   gender: string;
+  city: CityListItem;
   avatar: string;
   description: string;
   games: GameListItem[];
+  token?: string;
+  notifPartyMessage?: boolean;
+  notifPartyMember?: boolean;
+  notifGameRelease?: boolean;
+  notifPartyZone?: boolean;
+  confCollection?: number;
+}
+
+export interface UserProfil {
+  user: User;
+  games: GameListItem[];
+}
+
+export interface UserStatus {
+  id: number;
+  username: string;
+  avatar: string;
 }

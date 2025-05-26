@@ -7,20 +7,31 @@ import GameStats from "@/components/layout/gamePage/GameStats";
 import GameAbout from "@/components/layout/gamePage/GameAbout";
 import SimilarGames from "../../../components/layout/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/server/game";
-import { Game } from "@/interfaces";
 import GameContent from "@/components/layout/gamePage/GameContent";
-import ReviewsList from "@/components/layout/gamePage/review/ReviewsWrapper";
 import Link from "next/link";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
 import { getBaseUrl } from "@/lib/game";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/api/nextAuth";
+import ListGames from "@/components/list/ListGames";
+import ReviewsWrapper from "@/components/layout/gamePage/review/ReviewsWrapper";
 
-async function page({ params }: { params: Promise<{ id: number }> }) {
+async function page({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: number }>;
+  searchParams: Promise<Record<string, string | undefined>>;
+}) {
   const id = (await params).id;
-  const game: Game = await getGame(id, "extension");
+  const reviewsPage = (await searchParams).reviews;
+  const gameData = await getGame(id, "extension");
+  if (!gameData.data) {
+    throw new Error("Game not found");
+  }
+  const game = gameData.data.game;
   const session = await getServerSession(authOptions);
 
   return (
@@ -61,9 +72,17 @@ async function page({ params }: { params: Promise<{ id: number }> }) {
         <h2>Description</h2>
         <p>{game.description}</p>
       </div>
-      <ReviewsList game={game} />
+      <ReviewsWrapper game={game} reviewsPage={reviewsPage} />
+      {gameData.data.baseGames && gameData.data.baseGames.length > 0 && (
+        <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
+          <div>
+            <h2>Extensions</h2>
+            <ListGames games={gameData.data.baseGames} keyName="extension" />
+          </div>
+        </div>
+      )}
       <Suspense fallback={<p>Chargement...</p>}>
-        <SimilarGames gameData={game} />
+        <SimilarGames />
       </Suspense>
     </div>
   );

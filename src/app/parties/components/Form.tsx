@@ -2,87 +2,97 @@
 import React, { useState } from "react";
 import FormLocalisation from "./FormLocalisation";
 import FormGame from "./FormGame";
-import { GameCategory } from "@/interfaces";
+import { GameCategory, GameListItem } from "@/interfaces";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
-import { PartyCard } from "@/interfaces/party.interface";
 import { theme } from "@/theme/theme";
-import { searchParties } from "@/lib/api/server/party";
 import Link from "next/link";
-import { ListPaginated } from "@/interfaces/paginator.interface";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
+import { useRouter } from "next/navigation";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 const defaultFormData = {
-  city: null,
-  game: null,
-  theme: null,
-  mode: null,
-  playersMin: "2",
-  playersMax: "30",
+  city: undefined,
+  game: undefined,
+  category: undefined,
+  theme: undefined,
+  mode: undefined,
+  rating: undefined,
+  playersMin: undefined,
+  playersMax: undefined,
   zone: "20",
-  date: null,
-  startTime: null,
-  endTime: null,
+  date: undefined,
+  startTime: undefined,
+  endTime: undefined,
   age: "0",
-  max_duration: null,
+  duration: "0",
 };
 
 export default function Form({
   categories,
   themes,
   modes,
-  setParties,
+  params,
+  city,
+  game,
 }: {
   categories: GameCategory[];
   themes: GameCategory[];
   modes: GameCategory[];
-  setParties: (parties: ListPaginated<PartyCard> | null) => void;
+  params: Record<string, string | undefined>;
+  city: CityListItem | null;
+  game: GameListItem | null;
 }) {
+  const router = useRouter();
   const [formData, setFormData] =
-    useState<Record<string, string | null>>(defaultFormData);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+    useState<Record<string, string | undefined>>(params);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>(
+    {}
+  );
 
   const handleChange = (name: string, value: string | number | null) => {
     setFormData({
       ...formData,
-      [name]: value !== null ? String(value) : null,
+      [name]: value !== null ? String(value) : undefined,
     });
   };
 
-  const handleSubmitAll = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const formDataInstance = new FormData();
+  const handleSubmitAll = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formDataInstance = new FormData(event.currentTarget);
+    const params = new URLSearchParams();
+
+    for (const [key, value] of formDataInstance.entries()) {
+      if (value !== null && value !== "") {
+        params.set(key, String(value));
+      }
+    }
     Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null) {
-        formDataInstance.append(key, String(value));
+      if (value !== null && value !== "0") {
+        params.set(key, String(value));
       }
     });
-    console.log(formDataInstance);
-    /*     const response = await searchParties(formDataInstance);
 
-    if (!response.ok) {
-      if (response.errors) {
-        setErrors(response.errors);
-      }
-    } else {
-      if (response.data) {
-        setParties(response.data);
-        setErrors(null);
-      }
-    } */
+    router.push(`/parties?${params.toString()}`, {
+      scroll: false,
+    });
   };
+
   return (
-    <div>
+    <form onSubmit={handleSubmitAll}>
       <div className="flex gap-x-10 p-10 flex-wrap gap-y-3">
         <FormLocalisation
           handleChange={handleChange}
           errors={errors}
           formData={formData}
+          cityDefault={city}
         />
         <FormGame
           categories={categories}
           themes={themes}
           modes={modes}
           handleChange={handleChange}
+          formData={formData}
+          gameDefault={game}
         />
       </div>
       <div className="flex justify-center sm:px--10 gap-x-3">
@@ -92,7 +102,7 @@ export default function Form({
               color={theme.colors.primary[900]}
               label="Rechercher"
               addClass="px-16 py-2"
-              onClick={handleSubmitAll}
+              type="submit"
             />
           </div>
           <div className="px-3">
@@ -101,7 +111,7 @@ export default function Form({
               label="Réinitialiser"
               onClick={() => {
                 setFormData(defaultFormData);
-                setErrors(null);
+                setErrors({});
               }}
             />
           </div>
@@ -118,6 +128,6 @@ export default function Form({
           />
         </Link>
       </div>
-    </div>
+    </form>
   );
 }

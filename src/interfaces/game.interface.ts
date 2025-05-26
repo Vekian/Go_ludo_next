@@ -9,11 +9,6 @@ export interface GameListItem {
   owned?: boolean;
 }
 
-export interface GameLocalisation {
-  id: number;
-  name: string;
-  codePostal: string;
-}
 export interface GameSearch {
   id: number;
   name: string;
@@ -59,6 +54,7 @@ export interface ImageGame {
 export interface GameDetails {
   game: Game;
   extensions?: GameListItem[];
+  baseGames?: GameListItem[];
 }
 
 export interface GameCategories {

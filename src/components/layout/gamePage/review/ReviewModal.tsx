@@ -31,7 +31,7 @@ const ReviewModal = ({
   const [rating, setRating] = useState<number | null>(
     review ? review.rating : null
   );
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
 
   const handleChange = async (
     event: React.SyntheticEvent<Element, Event>,

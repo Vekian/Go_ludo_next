@@ -1,8 +1,8 @@
 "use client";
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import React from "react";
 import ButtonInput from "@/components/ui/button/ButtonInput";
-import { Button, SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -14,16 +14,23 @@ import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import { useSession } from "next-auth/react";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { updateProfil } from "@/lib/api/server/user";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
+import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
+import { faCity } from "@fortawesome/free-solid-svg-icons";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
-function EditUser({ user }: { user: UserProfil }) {
+function EditUser({ user }: { user: User }) {
   const { data, update } = useSession();
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [gender, setGender] = React.useState(user.gender);
-  const [errors, setErrors] = React.useState<Record<string, string[]> | null>(
-    null
+  const [city, setCity] = React.useState<CityListItem | null>(user?.city);
+  const [inputCity, setInputCity] = React.useState(
+    user.city?.name ?? undefined
   );
+  const [errors, setErrors] =
+    React.useState<Record<string, string[] | undefined>>();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,6 +44,10 @@ function EditUser({ user }: { user: UserProfil }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     formData.append("gender", gender);
+    if (city) {
+      formData.append("city", String(city.id));
+    }
+
     showSnackbar("Profil en cours de modification", "info");
 
     const response = await updateProfil(formData, Number(data?.user.id));
@@ -50,8 +61,8 @@ function EditUser({ user }: { user: UserProfil }) {
         "error"
       );
     } else {
-      if (data && update) {
-        const updatedUser = response.user;
+      if (data && update && response.data) {
+        const updatedUser = response.data;
         const updatedSessionUser = {
           ...updatedUser,
           name: updatedUser.username,
@@ -62,12 +73,13 @@ function EditUser({ user }: { user: UserProfil }) {
           user: updatedSessionUser,
         });
         showSnackbar("Profil modifié", "success");
-        setErrors(null);
+        setErrors(undefined);
       }
       handleClose(event);
       router.refresh();
     }
   };
+
   return (
     <div>
       <Dialog
@@ -169,6 +181,16 @@ function EditUser({ user }: { user: UserProfil }) {
                 )}
               </div>
             </div>
+            <div className="mt-5 w-full">
+              <InputSearchCity
+                label="Ville"
+                icon={faCity}
+                onChange={(value) => setCity(value)}
+                city={city}
+                value={inputCity}
+                onInputChange={(value) => setInputCity(value)}
+              />
+            </div>
             <div className="w-full flex flex-col mt-5">
               <label
                 htmlFor="description"
@@ -195,15 +217,11 @@ function EditUser({ user }: { user: UserProfil }) {
             label="Annuler"
             color={theme.colors.primary[800]}
           />
-          <Button
-            className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
+          <ButtonPrimary
+            color={theme.colors.primary[500]}
+            label="Modifier"
             type="submit"
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            Soumettre
-          </Button>
+          />
         </DialogActions>
       </Dialog>
       <ButtonInput

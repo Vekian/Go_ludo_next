@@ -4,26 +4,29 @@ import GameTag from "../tag/GameTag";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCalendarCheck,
+  faChartSimple,
   faCity,
+  faShoePrints,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { PartyCard } from "@/interfaces/party.interface";
 import Link from "next/link";
-import { Avatar } from "@mui/material";
+import { Avatar, Tooltip } from "@mui/material";
 import { getImg } from "@/lib/utils";
 import { formatDate } from "@/lib/date";
 
 export default function CardParty({ party }: { party: PartyCard }) {
   return (
     <Link href={`/parties/${party.id}`}>
-      <div className="flex justify-between px-6 bg-white hover:bg-secondary-50 rounded-lg p-3 w-full gap-x-6">
-        <div className="flex items-center h-full gap-x-6">
-          <div className="h-28 relative  w-32 ">
+      <div className="flex justify-between px-2 sm:px-6 bg-white hover:bg-secondary-50 rounded-lg p-3 w-full gap-x-6">
+        <div className="flex items-center h-full gap-x-6 sm:w-auto w-8/12">
+          <div className="h-28 relative  w-32 min-w-16 ">
             {party.games[0] && (
               <Image
                 alt="test"
                 src={`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${party.games[0].cover}`}
                 fill
+                sizes="128px"
                 className="object-contain"
               />
             )}
@@ -60,8 +63,8 @@ export default function CardParty({ party }: { party: PartyCard }) {
           </div>
         </div>
 
-        <div className="flex justify-end items-center">
-          <div className="flex flex-col items-center gap-y-2 xl:me-10 min-w-44">
+        <div className="flex justify-end items-center sm:w-auto w-2/12">
+          <div className="flex flex-col items-center gap-y-2 xl:me-10 min-w-24 sm:h-auto h-full">
             <div className="h-12  w-full flex justify-center  ">
               <Avatar
                 alt={party.author.username}
@@ -70,6 +73,32 @@ export default function CardParty({ party }: { party: PartyCard }) {
               />
             </div>
             <p>{party.author.username}</p>
+            {party.score && (
+              <Tooltip placement="bottom" title="Score de pertinence">
+                <div className="flex items-center">
+                  <p>{party.score}</p>
+                  <FontAwesomeIcon
+                    icon={faChartSimple}
+                    className={`ms-1 ${
+                      party.score > 75
+                        ? "text-secondary-600"
+                        : "text-primary-700"
+                    }`}
+                  />
+                </div>
+              </Tooltip>
+            )}
+            {party.distance !== null && (
+              <Tooltip
+                placement="bottom"
+                title="Distance calculée par rapport à la ville de référence"
+              >
+                <div className="flex items-center">
+                  <p>{party.distance} km</p>
+                  <FontAwesomeIcon icon={faShoePrints} className="ms-1 " />
+                </div>
+              </Tooltip>
+            )}
           </div>
         </div>
       </div>

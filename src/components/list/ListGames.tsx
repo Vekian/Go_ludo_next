@@ -2,7 +2,7 @@ import { GameListItem } from "@/interfaces";
 import React from "react";
 import CardGame from "../cards/CardGame";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/api/nextAuth";
 
 async function ListGames({
   games,

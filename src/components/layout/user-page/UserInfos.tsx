@@ -1,10 +1,10 @@
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import { faCity, faMars, faVenus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import EditUser from "./EditUser";
 import UserInfosMobile from "./UserInfosMobile";
-function UserInfos({ user }: { user: UserProfil }) {
+function UserInfos({ user, edit = true }: { user: User; edit?: boolean }) {
   return (
     <div
       id="onglet1"
@@ -21,13 +21,16 @@ function UserInfos({ user }: { user: UserProfil }) {
                   : "text-primary-700"
               } text-2xl`}
             />
-            <div className="ml-4">
-              <FontAwesomeIcon icon={faCity} className="mr-2" />
-              Roanne
-            </div>
+            {user.city && (
+              <div className="ml-4">
+                <FontAwesomeIcon icon={faCity} className="mr-2" />
+                {user.city.name}
+              </div>
+            )}
+
             <p className="ml-4">{user.age} ans</p>
           </div>
-          <EditUser user={user} />
+          {edit && <EditUser user={user} />}
         </div>
         <div className="flex mt-3">{user.description}</div>
         <div className="flex flex-wrap justify-between"></div>

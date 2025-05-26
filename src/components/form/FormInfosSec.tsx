@@ -17,7 +17,7 @@ import { getBaseUrl } from "@/lib/game";
 import dayjs from "dayjs";
 
 export default function FormInfosSec({ game }: { game: Game }) {
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
   const [contents, setContents] = useState<string[]>(
     game.content ? game.content : []
   );
@@ -52,7 +52,7 @@ export default function FormInfosSec({ game }: { game: Game }) {
       showSnackbar(response.message, "error");
       setLoading(false);
     } else {
-      setErrors(null);
+      setErrors(undefined);
       router.push(`/${getBaseUrl(game)}edit/${game.id}/4`);
       setLoading(false);
       showSnackbar(response.message, "success");

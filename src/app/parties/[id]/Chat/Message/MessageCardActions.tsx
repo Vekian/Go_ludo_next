@@ -18,7 +18,7 @@ export default function MessageCardActions({
       {author && (
         <>
           <MessageEdit message={message} setContent={setContent} />
-          <MessageDelete message={message} />
+          <MessageDelete message={message} setContent={setContent} />
         </>
       )}
     </div>

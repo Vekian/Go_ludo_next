@@ -21,7 +21,7 @@ import { getBaseUrl } from "@/lib/game";
 export default function FormImage({ game }: { game: Game }) {
   const [images, setImages] = useState<ImageGame[]>([]);
 
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
 
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();

@@ -1,90 +1,74 @@
 "use server";
-import { z } from "zod";
+import { Message } from "@/interfaces/party.interface";
 import { handleAuth } from "../authServer";
+import { handleResponse, handleValidation, ResponserServer } from "../fetch";
+import { messageCreateSchema, messageEditSchema } from "../validation/chat";
 
-const messageData = z.object({
-  party: z.coerce.number().min(1).optional(),
-  content: z.string().min(2, "Le message doit faire au moins 2 caractères"),
-});
+export async function sendMessage(
+  message: string,
+  partyId: number
+): Promise<ResponserServer<Message>> {
+  const dataValidated = handleValidation(
+    {
+      party: partyId,
+      content: message,
+    },
+    messageCreateSchema,
+    "Impossible d'envoyer le message, veuillez vérifier vos informations"
+  );
 
-export async function sendMessage(message: string, partyId: number) {
-  const validatedFields = messageData.safeParse({
-    content: message,
-    party: partyId,
-  });
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      ok: false,
-      message:
-        "Impossible d'envoyer le message, veuillez vérifier vos informations",
-    };
+  if (!dataValidated.ok && !dataValidated.data) {
+    return dataValidated as ResponserServer<Message>;
   }
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/message`;
-
   const headers = await handleAuth();
   const response = await fetch(url, {
     headers: headers,
     method: "POST",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(dataValidated.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible d'envoyer le message, veuillez vérifier vos informations",
-    };
-  }
-  const data = await response.json();
-  return {
-    ok: true,
-    message: "Message envoyé avec succès",
-    data: data,
-  };
+  return handleResponse(
+    response,
+    "Message envoyé avec succès",
+    "Impossible d'envoyer le message, veuillez vérifier vos informations"
+  );
 }
 
-export async function updateMessage(message: string, messageId: number) {
-  const validatedFields = messageData.safeParse({
-    content: message,
-  });
+export async function updateMessage(
+  message: string,
+  messageId: number
+): Promise<ResponserServer<Message>> {
+  const dataValidated = handleValidation(
+    {
+      content: message,
+    },
+    messageEditSchema,
+    "Impossible de modifier le message, veuillez vérifier vos informations"
+  );
 
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      ok: false,
-      message:
-        "Impossible de modifier le message, veuillez vérifier vos informations",
-    };
+  if (!dataValidated.ok) {
+    return dataValidated as ResponserServer<Message>;
   }
 
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/message/${messageId}`;
-
   const headers = await handleAuth();
   const response = await fetch(url, {
     headers: headers,
     method: "PUT",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(dataValidated.data),
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message:
-        "Impossible de modifier le message, veuillez vérifier vos informations",
-    };
-  }
-  const data = await response.json();
-
-  return {
-    ok: true,
-    message: "Message modifié avec succès",
-    data: data,
-  };
+  return handleResponse(
+    response,
+    "Message modifié avec succès",
+    "Impossible de modifier le message, veuillez vérifier vos informations"
+  );
 }
 
-export async function deleteMessage(messageId: number) {
+export async function deleteMessage(
+  messageId: number
+): Promise<ResponserServer> {
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/message/${messageId}`;
 
   const headers = await handleAuth();
@@ -93,15 +77,9 @@ export async function deleteMessage(messageId: number) {
     method: "DELETE",
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible de supprimer le message",
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Message supprimé avec succès",
-  };
+  return handleResponse(
+    response,
+    "Message supprimé avec succès",
+    "Impossible de supprimer le message"
+  );
 }

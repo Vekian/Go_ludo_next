@@ -1,4 +1,4 @@
-import { UserProfil } from "@/interfaces";
+import { UserStatus } from "@/interfaces";
 import { getImg } from "@/lib/utils";
 import { Avatar } from "@mui/material";
 import Link from "next/link";
@@ -7,7 +7,7 @@ import React from "react";
 export default function CardParticipant({
   participant,
 }: {
-  participant: UserProfil;
+  participant: UserStatus;
 }) {
   return (
     <Link href={`/users/${participant.id}`}>

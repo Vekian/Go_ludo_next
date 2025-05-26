@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import ButtonSecondary from "./ButtonSecondary";
-import { UserProfil } from "@/interfaces";
+import { User } from "@/interfaces";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { theme } from "@/theme/theme";
 import { uploadAvatar } from "@/lib/api/server/user";
@@ -17,13 +17,13 @@ function ButtonImage({
   id,
 }: {
   setSourceState: React.Dispatch<React.SetStateAction<string>>;
-  user: UserProfil;
+  user: User;
   id: string;
 }) {
   const { showSnackbar } = useSnackbarContext();
   const { data: session, update } = useSession();
   const [uploading, setUploading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,8 +38,8 @@ function ButtonImage({
       }
       showSnackbar("Impossible d'upload une nouvelle image", "error");
     } else {
-      if (session && response.avatar) {
-        const avatar = response.avatar;
+      if (session && response.data?.avatar) {
+        const avatar = response.data.avatar;
         const updatedSessionUser = {
           ...session.user,
           avatar: avatar,

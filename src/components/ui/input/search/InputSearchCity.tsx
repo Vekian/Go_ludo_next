@@ -1,13 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { theme } from "@/theme/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
-import { GameLocalisation, Param } from "@/interfaces";
+import { Param } from "@/interfaces";
 import { searchCities } from "@/lib/api/search";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 const InputSearchCity = ({
   label,
@@ -19,22 +20,35 @@ const InputSearchCity = ({
 }: {
   label: string;
   icon: IconDefinition;
-  onChange?: (newCityValue: GameLocalisation | null) => void;
-  city?: GameLocalisation | null;
+  onChange?: (newCityValue: CityListItem | null) => void;
+  city?: CityListItem | null;
   value?: string;
   onInputChange?: (value: string) => void;
 }) => {
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<GameLocalisation[]>([]);
+  const [options, setOptions] = useState<CityListItem[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const debounceTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (value !== undefined) {
-      handleOptions(value);
-    } else {
-      handleOptions(inputValue);
+    if (debounceTimeoutRef.current !== null) {
+      clearTimeout(debounceTimeoutRef.current);
     }
+
+    debounceTimeoutRef.current = window.setTimeout(() => {
+      if (value !== undefined) {
+        handleOptions(value);
+      } else {
+        handleOptions(inputValue);
+      }
+    }, 300);
+
+    return () => {
+      if (debounceTimeoutRef.current !== null) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
   }, [inputValue, value]);
 
   const handleOpen = () => {

@@ -7,7 +7,7 @@ function GameStats({ game }: { game: Game }) {
       id="onglet3"
       className="ongletContent z-10 inset-10 absolute opacity-0 translate-x-full transform"
     >
-      statistiques
+      Les statistiques ne sont pas encore disponibles pour le jeu {game.name}
     </div>
   );
 }

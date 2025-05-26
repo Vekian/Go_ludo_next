@@ -12,8 +12,10 @@ export default function CategoryFilter() {
   }, []);
 
   const fetchCategories = async () => {
-    const categoriesData: GameCategory[] = await getCategories("category");
-    setCategories(categoriesData);
+    const categoriesData = await getCategories("category");
+    if (categoriesData.data) {
+      setCategories(categoriesData.data);
+    }
   };
 
   return (

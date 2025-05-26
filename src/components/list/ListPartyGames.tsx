@@ -8,17 +8,19 @@ import ButtonSecondary from "../ui/button/ButtonSecondary";
 
 function ListPartyGames({
   games,
+  added,
   gamesAdd,
   addGame,
   removeGame,
 }: {
   games: GameListItem[];
+  added: boolean;
   gamesAdd?: GameListItem[] | null;
   addGame: (game: GameListItem) => void;
   removeGame: (game: GameListItem) => void;
 }) {
   const displayButton = (game: GameListItem) => {
-    if (gamesAdd && gamesAdd.some((g) => g.id === game.id)) {
+    if (added || (gamesAdd && gamesAdd.some((g) => g.id === game.id))) {
       return (
         <ButtonSecondary
           label="Retirer"
@@ -42,7 +44,7 @@ function ListPartyGames({
     <div className="container grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 xl:grid-cols-6 gap-5 mt-5">
       {games.map((game: GameListItem) => (
         <div key={`${game.id}list`}>
-          <CardGame game={game} />
+          <CardGame game={game} logged={false} />
           <div className="flex justify-center mt-3">{displayButton(game)}</div>
         </div>
       ))}

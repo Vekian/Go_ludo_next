@@ -33,8 +33,10 @@ export default function CategoryGameSelect({
   }, []);
 
   const fetchCategories = async () => {
-    const categoriesData: GameCategory[] = await getCategories(type);
-    setCategories(categoriesData);
+    const categoriesData = await getCategories(type);
+    if (categoriesData.data) {
+      setCategories(categoriesData.data);
+    }
   };
 
   const handleSelect = (

@@ -7,10 +7,9 @@ import GameStats from "@/components/layout/gamePage/GameStats";
 import GameAbout from "@/components/layout/gamePage/GameAbout";
 import SimilarGames from "@/components/layout/gamePage/SimilarGames";
 import { getGame } from "@/lib/api/server/game";
-import { GameDetails } from "@/interfaces";
 import GameContent from "@/components/layout/gamePage/GameContent";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/api/nextAuth";
 import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
@@ -30,8 +29,11 @@ async function page({
   const reviewsPage = (await searchParams).reviews;
 
   const session = await getServerSession(authOptions);
-  const gameData: GameDetails = await getGame(id, "base");
-  const game = gameData.game;
+  const gameData = await getGame(id, "base");
+  if (!gameData.data) {
+    throw new Error("Game not found");
+  }
+  const game = gameData.data.game;
 
   return (
     <div className="lg:p-4 pt-10">
@@ -75,11 +77,11 @@ async function page({
         <p>{game.description}</p>
       </div>
       <ReviewsWrapper game={game} reviewsPage={reviewsPage} />
-      {gameData.extensions && gameData.extensions.length > 0 && (
+      {gameData.data.extensions && gameData.data.extensions.length > 0 && (
         <div className="mt-4 sm:pl-10 sm:pr-10 px-1">
           <div>
             <h2>Extensions</h2>
-            <ListGames games={gameData.extensions} keyName="extension" />
+            <ListGames games={gameData.data.extensions} keyName="extension" />
           </div>
         </div>
       )}

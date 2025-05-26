@@ -20,7 +20,7 @@ function Rating({
   return (
     <div className="flex items-center">
       <div className="flex items-center justify-center rounded-full z-40 bg-primary-600 text-lg font-bold text-white h-10 w-10">
-        {value !== null ? value : "?"}
+        {value ? value : "?"}
       </div>
       <div className="-ml-3 z-10">
         <Stack spacing={1}>

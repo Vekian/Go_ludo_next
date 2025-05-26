@@ -1,43 +1,13 @@
 "use server";
-import { Param } from "@/interfaces";
+import { Game, GameDetails, GameListItem, Param } from "@/interfaces";
 import { handleAuth } from "../authServer";
-import { z } from "zod";
-import { validateImageGame } from "../validation/image";
+import { handleResponse, handleValidation, ResponserServer } from "../fetch";
+import { createGameSchema, updateGameSchema } from "../validation/game";
+import { ListPaginated } from "@/interfaces/paginator.interface";
 
-const createGameSchema = z.object({
-  ageMin: z.coerce.number(),
-  ageMax: z.coerce.number(),
-  playersMin: z.coerce.number(),
-  playersMax: z.coerce.number(),
-  playtimeMin: z.coerce.number(),
-  playtimeMax: z.coerce.number(),
-  language: z.string(),
-  categories: z
-    .array(z.coerce.number().min(1, "Catégorie invalide"))
-    .default([0]),
-  name: z
-    .string()
-    .min(4, "4 caractères minimum")
-    .max(300, "300 caractères maximum")
-    .default(""),
-
-  description: z
-    .string()
-    .min(4, "4 caractères minimum")
-    .max(5000, "5000 caractères maximum")
-    .default(""),
-});
-
-const updateGameSchema = z.object({
-  weight: z.coerce.number().nullable().optional(),
-  length: z.coerce.number().nullable().optional(),
-  height: z.coerce.number().nullable().optional(),
-  width: z.coerce.number().nullable().optional(),
-  content: z.array(z.string()),
-  publishedAt: z.union([z.coerce.date(), z.null()]).optional(),
-});
-
-export async function getGames(params: Param[] = []) {
+export async function getGames(
+  params: Param[] = []
+): Promise<ResponserServer<ListPaginated<GameListItem>>> {
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/base`
@@ -56,43 +26,60 @@ export async function getGames(params: Param[] = []) {
 
   const response = await fetch(url, { headers });
 
-  if (!response.ok) {
-    throw new Error("Impossible de charger les jeux");
-  }
-  const data = await response.json();
-  return data;
+  return handleResponse(response);
 }
 
-export async function getGamesRec() {
+export async function getGamesRec(): Promise<ResponserServer<GameListItem[]>> {
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/recommendations`
   );
 
   const response = await fetch(url, { headers });
-
-  if (!response.ok) {
-    throw new Error("Impossible de charger les jeux");
-  }
-  const data = await response.json();
-  return data;
+  return handleResponse(response);
 }
 
-export async function getGame(id: number, type: string) {
+export async function getGame(
+  id: number | null,
+  type: string | null
+): Promise<ResponserServer<GameDetails>> {
+  if (!id) {
+    return {
+      ok: false,
+      message: "Jeu invalide",
+    };
+  }
   const headers = await handleAuth();
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`
   );
   const response = await fetch(url, { headers });
 
-  if (!response.ok) {
-    throw new Error("Impossible de charger le jeu");
-  }
-  const data = await response.json();
-  return data;
+  return handleResponse(response);
 }
 
-export async function addGame(formData: FormData, type: string) {
+export async function getGameItem(
+  id: number | null
+): Promise<ResponserServer<GameListItem>> {
+  if (!id) {
+    return {
+      ok: false,
+      message: "Jeu invalide",
+    };
+  }
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/item/${id}`
+  );
+  const response = await fetch(url, { headers });
+
+  return handleResponse(response);
+}
+
+export async function addGame(
+  formData: FormData,
+  type: string
+): Promise<ResponserServer<Game>> {
   const rawData = Object.fromEntries(formData.entries());
   const categories = formData.getAll("categories[]");
 
@@ -103,14 +90,13 @@ export async function addGame(formData: FormData, type: string) {
     categories,
   };
 
-  const validatedFields = createGameSchema.safeParse(fixedData);
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de créer la fiche de jeu",
-      ok: false,
-    };
+  const validatedData = handleValidation(
+    fixedData,
+    createGameSchema,
+    "Impossible de créer la fiche de jeu"
+  );
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<Game>;
   }
 
   const headers = await handleAuth();
@@ -120,31 +106,17 @@ export async function addGame(formData: FormData, type: string) {
   const response = await fetch(url, {
     headers: headers,
     method: "POST",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
-  const data = await response.json();
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible de créer la fiche de jeu",
-      errors: {
-        general: data.message,
-      },
-    };
-  }
 
-  return {
-    ok: true,
-    message: "Fiche de jeu créée avec succès",
-    data: data,
-  };
+  return handleResponse(response);
 }
 
 export async function updateGame(
   formData: FormData,
   type: string,
   gameId: number
-) {
+): Promise<ResponserServer<Game>> {
   const rawData = Object.fromEntries(formData.entries());
   const categories = formData.getAll("categories[]");
 
@@ -155,14 +127,13 @@ export async function updateGame(
     categories,
   };
 
-  const validatedFields = createGameSchema.safeParse(fixedData);
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible de modifier la fiche de jeu",
-      ok: false,
-    };
+  const validatedData = handleValidation(
+    fixedData,
+    createGameSchema,
+    "Impossible de modifier la fiche de jeu"
+  );
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<Game>;
   }
 
   const headers = await handleAuth();
@@ -172,34 +143,21 @@ export async function updateGame(
   const response = await fetch(url, {
     headers: headers,
     method: "PUT",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
 
-  if (!response.ok) {
-    const data = await response.json();
-    return {
-      ok: false,
-      message: "Impossible de modifier la fiche de jeu",
-      errors: {
-        general: data.message,
-      },
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Fiche de jeu modifiée avec succès",
-    data: {
-      id: gameId,
-    },
-  };
+  return handleResponse(
+    response,
+    "Fiche de jeu modifiée avec succès",
+    "Impossible de modifier la fiche de jeu"
+  );
 }
 
 export async function updateGameInfosSec(
   formData: FormData,
   type: string,
   gameId: number
-) {
+): Promise<ResponserServer<Game>> {
   const rawData = Object.fromEntries(formData.entries());
   const cleanedRawData = Object.fromEntries(
     Object.entries(rawData).filter(([, value]) => {
@@ -215,14 +173,13 @@ export async function updateGameInfosSec(
     content,
   };
 
-  const validatedFields = updateGameSchema.safeParse(fixedData);
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Impossible d'ajouter les infos secondaires",
-      ok: false,
-    };
+  const validatedData = handleValidation(
+    fixedData,
+    updateGameSchema,
+    "Impossible de modifier la fiche de jeu"
+  );
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<Game>;
   }
 
   const headers = await handleAuth();
@@ -232,30 +189,20 @@ export async function updateGameInfosSec(
   const response = await fetch(url, {
     headers: headers,
     method: "PATCH",
-    body: JSON.stringify(validatedFields.data),
+    body: JSON.stringify(validatedData.data),
   });
 
-  if (!response.ok) {
-    const data = await response.json();
-    return {
-      ok: false,
-      message: "Impossible d'ajouter les infos secondaires",
-      errors: {
-        general: data.message,
-      },
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Infos secondaires ajoutées avec succès",
-    data: {
-      id: gameId,
-    },
-  };
+  return handleResponse(
+    response,
+    "Infos secondaires ajoutées avec succès",
+    "Impossible d'ajouter les infos secondaires"
+  );
 }
 
-export async function uploadImageGame(formData: FormData, gameId: number) {
+export async function uploadImageGame(
+  formData: FormData,
+  gameId: number
+): Promise<ResponserServer> {
   const file = formData.get("file") as File | null;
 
   if (!file) {
@@ -267,12 +214,13 @@ export async function uploadImageGame(formData: FormData, gameId: number) {
       },
     };
   }
-  const validationResult = validateImageGame(file);
-  if (!validationResult.success) {
-    return {
-      ok: false,
-      errors: validationResult.error.flatten().fieldErrors,
-    };
+  const validatedData = handleValidation(
+    { file: file },
+    updateGameSchema,
+    "Erreur lors de la validation de l'image"
+  );
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer;
   }
   const headers = await handleAuth();
   headers.set("Accept", "application/json");
@@ -284,21 +232,10 @@ export async function uploadImageGame(formData: FormData, gameId: number) {
     body: formData,
   });
 
-  if (!response.ok) {
-    const data = await response.json();
-    return {
-      ok: false,
-      message: data.message,
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Image upload avec succès",
-  };
+  return handleResponse(response, "Image upload avec succès");
 }
 
-export async function deleteImageGame(id: number) {
+export async function deleteImageGame(id: number): Promise<ResponserServer> {
   const headers = await handleAuth();
   headers.set("Accept", "application/json");
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/image/${id}`;
@@ -308,20 +245,14 @@ export async function deleteImageGame(id: number) {
     headers: headers,
   });
 
-  if (!response.ok) {
-    return {
-      ok: false,
-      message: "Impossible de supprimer l'image",
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Image effacée avec succès",
-  };
+  return handleResponse(
+    response,
+    "Image effacée avec succès",
+    "Impossible de supprimer l'image"
+  );
 }
 
-export async function coverImageGame(id: number) {
+export async function coverImageGame(id: number): Promise<ResponserServer> {
   const headers = await handleAuth();
   headers.set("Accept", "application/json");
   const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/image/${id}`;
@@ -331,16 +262,9 @@ export async function coverImageGame(id: number) {
     headers: headers,
   });
 
-  if (!response.ok) {
-    const data = await response.json();
-    return {
-      ok: false,
-      message: data.message,
-    };
-  }
-
-  return {
-    ok: true,
-    message: "Image mise en couverture",
-  };
+  return handleResponse(
+    response,
+    "Image mise en couverture",
+    "Impossible de mettre l'image en couverture"
+  );
 }

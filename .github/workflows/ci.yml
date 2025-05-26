@@ -1,0 +1,62 @@
+name: Build and Deploy Next.js Docker Image
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub # Using Access Token
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Create .env file
+        run: |
+          echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env
+          echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env
+          echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env
+          echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env
+          echo 'IMAGE_HOSTNAME=${{ secrets.NEXT_URL }}' >> .env
+          echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env
+          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env
+          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env
+
+      - name: Build Docker image
+        run: docker compose -f docker-compose.yml build --no-cache
+
+      - name: Push Docker image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
+
+      - name: Deploy to production server
+        if: success() && github.ref == 'refs/heads/master'
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd webapps/go-ludo-backend
+            docker compose down
+            rm docker-compose.yml
+            rm .env
+            echo "${{ secrets.DOCKER_COMPOSE_FILE }}" >> docker-compose.yml
+            echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env
+            echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env
+            echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env
+            echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env
+            echo 'IMAGE_HOSTNAME=${{ secrets.NEXT_URL }}' >> .env
+            echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env
+            echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env
+            echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env
+            docker pull ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
+            docker network inspect go_ludo_network >/dev/null 2>&1 || docker network create go_ludo_network
+            docker compose up -d

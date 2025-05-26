@@ -1,34 +1,38 @@
-# Utilise l'image officielle de Node.js en version 18
-FROM node:18.19.1 AS build
+# Étape de build
+FROM node:20-alpine AS builder
 
-# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier package.json et yarn.lock
+# Copier les fichiers nécessaires
 COPY package.json yarn.lock ./
 
-# Installer les dépendances avec Yarn
-RUN yarn install
+# Installer les dépendances
+RUN yarn install --frozen-lockfile
 
-# Copier tout le reste des fichiers du projet
+# Copier le reste du projet
 COPY . .
 
-# Construire le projet Next.js
+# Build Next.js en production
 RUN yarn build
 
-# Étape de production : utiliser une image plus légère
-FROM node:18.19.1-slim
+# Étape finale: image de runtime
+FROM node:20-alpine AS runner
 
-# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier uniquement les fichiers nécessaires (build et node_modules)
-COPY --from=build /app/.next ./.next
-COPY --from=build /app/node_modules /app/node_modules
-COPY --from=build /app/package.json /app/yarn.lock ./
+ENV NODE_ENV=production
 
-# Exposer le port sur lequel Next.js écoute
-EXPOSE 3000
+# Copier les fichiers nécessaires au runtime
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/yarn.lock ./yarn.lock
 
-# Démarrer l'application Next.js en mode production
+# Installer uniquement les dépendances de production
+RUN yarn install --frozen-lockfile --production
+
+# Exposer le port
+EXPOSE 3200
+
+# Commande de démarrage
 CMD ["yarn", "start"]

@@ -27,9 +27,9 @@ async function GamesList({
     ...toArray(params.theme),
     ...toArray(params.mode),
   ];
-  const gamesList: ListPaginated<GameListItem> = await fetchGames();
+  const gamesList = await fetchGames();
 
-  async function fetchGames() {
+  async function fetchGames(): Promise<ListPaginated<GameListItem>> {
     const allEmpty =
       !params.category &&
       !params.theme &&
@@ -38,8 +38,7 @@ async function GamesList({
       !params.time &&
       !params.page;
     if (!allEmpty) {
-      console.log(params);
-      const games = await getGames([
+      const response = await getGames([
         {
           key: "category[]",
           value: categoryParams,
@@ -57,13 +56,20 @@ async function GamesList({
           value: params.page,
         },
       ]);
-      return games;
+      if (response.ok && response.data) {
+        return response.data;
+      }
+      throw new Error("Erreur lors de la récupération des jeux");
     } else {
       const games = await getGamesRec();
+      if (!games.data) {
+        throw new Error("Erreur lors de la récupération des jeux");
+      }
       const listGames = {
-        items: games,
+        items: games.data,
         page: 1,
         totalPages: 1,
+        totalResults: games.data?.length ?? 0,
       };
       return listGames;
     }

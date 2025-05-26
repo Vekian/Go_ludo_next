@@ -1,6 +1,6 @@
 "use client";
 import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 import { TypeSelectionLocalisation } from "@/interfaces/localisation.interface";
 import { faCity } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
@@ -9,13 +9,13 @@ export default function SelectCity({
   city,
   setCity,
 }: {
-  city: GameLocalisation | null;
+  city: CityListItem | null;
   setCity: (
-    newCity: GameLocalisation | null,
+    newCity: CityListItem | null,
     localisation: TypeSelectionLocalisation
   ) => void;
 }) {
-  const handleCityChange = (city: GameLocalisation | null) => {
+  const handleCityChange = (city: CityListItem | null) => {
     setCity(city, { type: "city" });
   };
   return (

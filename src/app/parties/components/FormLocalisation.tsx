@@ -5,16 +5,13 @@ import InputSearchCity from "@/components/ui/input/search/InputSearchCity";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
 import ZoneSlider from "@/components/ui/slider/ZoneSlider";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { SelectChangeEvent } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import "dayjs/locale/fr";
-import SelectClassic from "@/components/ui/input/SelectClassic";
-import { theme } from "@/theme/theme";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
-import { GameLocalisation } from "@/interfaces";
+import { CityListItem } from "@/interfaces/localisation.interface";
 
 dayjs.locale("fr");
 
@@ -22,13 +19,17 @@ export default function FormLocalisation({
   handleChange,
   errors,
   formData,
+  cityDefault,
 }: {
   handleChange: (name: string, value: string | number | null) => void;
-  errors: Record<string, string[]> | null;
-  formData: Record<string, string | null | number>;
+  errors: Record<string, string[] | undefined>;
+  formData: Record<string, string | undefined>;
+  cityDefault: CityListItem | null;
 }) {
-  const [city, setCity] = React.useState<GameLocalisation | null>(null);
-  const [inputCity, setInputCity] = React.useState("");
+  const [city, setCity] = React.useState<CityListItem | null>(cityDefault);
+  const [inputCity, setInputCity] = React.useState(
+    cityDefault?.name ?? undefined
+  );
 
   useEffect(() => {
     if (!formData.city) {
@@ -44,24 +45,26 @@ export default function FormLocalisation({
     handleChange("zone", newSlideValue as number);
   };
 
+  const handleAgeChange = (event: Event, newSlideValue: number | number[]) => {
+    handleChange("age", newSlideValue as number);
+  };
+
   const handleRangeChange = (
     event: Event,
     newRangeValue: number | number[]
   ) => {
     if (Array.isArray(newRangeValue)) {
-      if (newRangeValue[0] != formData.playersMin) {
+      if (newRangeValue[0] != Number(formData.playersMin)) {
         handleChange("playersMin", newRangeValue[0]);
-      } else if (newRangeValue[1] != formData.playersMax) {
+      } else if (newRangeValue[1] != Number(formData.playersMax)) {
         handleChange("playersMax", newRangeValue[1]);
       }
     }
   };
 
-  const handleCityChange = (newCityValue: GameLocalisation | null) => {
+  const handleCityChange = (newCityValue: CityListItem | null) => {
     setCity(newCityValue);
-    if (newCityValue) {
-      handleChange("city", newCityValue.id);
-    }
+    handleChange("city", newCityValue?.id ?? null);
   };
 
   return (
@@ -82,42 +85,44 @@ export default function FormLocalisation({
             <p className="text-red-500 text-sm">{errors.city}</p>
           )}
         </div>
-        <div className="md:flex-1">
-          <div className="lg:w-2/3">
-            {" "}
-            <SelectClassic
-              value={formData.age as string}
-              color={theme.colors.primary[800]}
-              options={[
-                { value: "0", label: "N'importe quel âge" },
-                { value: "18", label: "18-24 ans" },
-                { value: "25", label: "25-34 ans" },
-                { value: "35", label: "35-44 ans" },
-                { value: "45", label: "45-54 ans" },
-                { value: "55", label: "55 ans et plus" },
-              ]}
-              onChange={(event: SelectChangeEvent<string>) => {
-                handleChange("age", event.target.value);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="mt-5 flex-wrap flex gap-x-10 gap-y-3">
         <div className="md:flex-1 w-full">
           <div className="flex justify-between">
             <h5 className="font-semibold">Dans un rayon de</h5>
-            <h5 className="font-semibold">{formData.zone} km</h5>
+            <h5 className="font-semibold">
+              {formData.zone ? Number(formData.zone) : 0} km
+            </h5>
           </div>
           <ZoneSlider
             valueLabelDisplay="auto"
             aria-label="pretto slider"
-            value={Number(formData.zone)}
+            value={formData.zone ? Number(formData.zone) : 0}
             onChange={handleSliderChange}
           />
           <div className="flex justify-between text-neutral-400 text-sm -mt-2">
             <p>0 km</p>
             <p>100 km</p>
+          </div>
+        </div>
+      </div>
+      <div className="mt-5 flex-wrap flex gap-x-10 gap-y-3">
+        <div className="md:flex-1">
+          <div className="lg:w-2/3">
+            <div className="flex justify-between">
+              <h5 className="font-semibold">Moyenne d&apos;âge</h5>
+              <h5 className="font-semibold">
+                {formData.age ? Number(formData.age) : 18} ans
+              </h5>
+            </div>
+            <ZoneSlider
+              valueLabelDisplay="auto"
+              aria-label="pretto slider"
+              value={formData.age ? Number(formData.age) : 18}
+              onChange={handleAgeChange}
+            />
+            <div className="flex justify-between text-neutral-400 text-sm -mt-2">
+              <p>18 ans</p>
+              <p>100 ans</p>
+            </div>
           </div>
         </div>
         <div className="md:flex-1 w-full">
@@ -132,7 +137,11 @@ export default function FormLocalisation({
             max={30}
             min={2}
             valueLabelDisplay="auto"
-            value={[Number(formData.playersMin), Number(formData.playersMax)]}
+            value={
+              formData.playersMax && formData.playersMin
+                ? [Number(formData.playersMin), Number(formData.playersMax)]
+                : undefined
+            }
             onChange={handleRangeChange}
             slots={{
               thumb: RangeThumb,
@@ -176,13 +185,8 @@ export default function FormLocalisation({
               <h5 className="font-semibold">De</h5>
               <PartyTimePicker
                 ampm={false}
-                value={formData.date ? dayjs(formData.startTime) : null}
-                onChange={(timeStart) => {
-                  if (timeStart) {
-                    handleChange("startTime", timeStart.format("HH:mm:ss"));
-                  }
-                }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
+                name="startTime"
               />
               {errors?.startTime && (
                 <p className="text-red-500 text-sm">{errors.startTime}</p>
@@ -192,12 +196,7 @@ export default function FormLocalisation({
               <h5 className="font-semibold">À</h5>
               <PartyTimePicker
                 ampm={false}
-                value={formData.date ? dayjs(formData.endTime) : null}
-                onChange={(timeEnd) => {
-                  if (timeEnd) {
-                    handleChange("endTime", timeEnd.format("HH:mm:ss"));
-                  }
-                }}
+                name="endTime"
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
               {errors?.endTime && (

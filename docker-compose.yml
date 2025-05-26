@@ -1,0 +1,19 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: vekian/go_ludo_front:latest
+    container_name: nextjs_go_ludo
+    restart: unless-stopped
+    expose:
+      - "3200"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - go_ludo_front
+    env_file:
+      - .env
+networks:
+  go_ludo_front:
+    driver: bridge
