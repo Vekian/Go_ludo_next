@@ -32,7 +32,7 @@ COPY --from=builder /app/yarn.lock ./yarn.lock
 RUN yarn install --frozen-lockfile --production
 
 # Exposer le port
-EXPOSE 3200
+EXPOSE 3000
 
 # Commande de démarrage
 CMD ["yarn", "start"]
