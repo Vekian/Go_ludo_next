@@ -26,7 +26,7 @@ function ButtonPrimary({
       style={{ backgroundColor: color }}
       onClick={onClick}
     >
-      <div className="h-3 flex items-center py-3">
+      <div className="h-3 flex items-center py-3 sm:text-md text-sm">
         {icon && (
           <FontAwesomeIcon
             icon={icon}
