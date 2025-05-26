@@ -13,6 +13,17 @@ declare module "@mui/material/styles" {
 }
 
 export const muiTheme = createTheme({
+  components: {
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontFamily: "var(--font-nunito)",
+          fontWeight: 600,
+          fontSize: "1rem",
+        },
+      },
+    },
+  },
   palette: {
     mode: "light",
     primary: {

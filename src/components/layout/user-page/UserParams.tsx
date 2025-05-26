@@ -88,7 +88,7 @@ function UserParams({ user }: { user: User }) {
   return (
     <div
       id="onglet2"
-      className="ongletContent  opacity-0 translate-x-full  transform absolute flex flex-col justify-between w-full"
+      className="ongletContent  opacity-0 translate-x-full  transform absolute flex flex-col justify-between w-full pt-2"
     >
       <form
         action=""

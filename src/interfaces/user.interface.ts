@@ -15,6 +15,10 @@ export interface User {
   description: string;
   games: GameListItem[];
   token?: string;
+  notifPartyMessage?: boolean;
+  notifPartyMember?: boolean;
+  notifGameRelease?: boolean;
+  notifPartyZone?: boolean;
 }
 
 export interface UserProfil {

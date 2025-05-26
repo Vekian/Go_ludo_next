@@ -17,6 +17,25 @@ export async function getUser(
   return handleResponse(response);
 }
 
+export async function updateUser(
+  formData: object,
+  userId: number
+): Promise<ResponserServer<User>> {
+  const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/user/${userId}`;
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PUT",
+    body: JSON.stringify(formData),
+  });
+
+  return handleResponse(
+    response,
+    "Profil modifié avec succès",
+    "Impossible de modifier le profil, veuillez vérifier vos informations"
+  );
+}
+
 export async function updateProfil(
   formData: FormData,
   userId: number
