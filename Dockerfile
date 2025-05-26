@@ -1,29 +1,38 @@
-FROM node:18-alpine as base
-RUN apk add --no-cache g++ make py3-pip libc6-compat
-WORKDIR /app
-COPY package*.json ./
-EXPOSE 3000
+# Étape de build
+FROM node:20-alpine AS builder
 
-FROM base as builder
 WORKDIR /app
+
+# Copier les fichiers nécessaires
+COPY package.json yarn.lock ./
+
+# Installer les dépendances
+RUN yarn install --frozen-lockfile
+
+# Copier le reste du projet
 COPY . .
-RUN npm run build
 
+# Build Next.js en production
+RUN yarn build
 
-FROM base as production
+# Étape finale: image de runtime
+FROM node:20-alpine AS runner
+
 WORKDIR /app
 
 ENV NODE_ENV=production
-RUN npm ci
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-USER nextjs
-
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
+# Copier les fichiers nécessaires au runtime
+COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/yarn.lock ./yarn.lock
 
-CMD npm start
+# Installer uniquement les dépendances de production
+RUN yarn install --frozen-lockfile --production
+
+# Exposer le port
+EXPOSE 3200
+
+# Commande de démarrage
+CMD ["yarn", "start"]
