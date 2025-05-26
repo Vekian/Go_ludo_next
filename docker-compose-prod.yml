@@ -3,8 +3,8 @@ services:
     image: vekian/go_ludo_front:latest
     container_name: nextjs_go_ludo
     restart: unless-stopped
-    expose:
-      - "3200"
+    ports:
+      - "3200:3000"
     environment:
       - NODE_ENV=production
     networks:
