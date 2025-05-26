@@ -19,6 +19,7 @@ export interface User {
   notifPartyMember?: boolean;
   notifGameRelease?: boolean;
   notifPartyZone?: boolean;
+  confCollection?: number;
 }
 
 export interface UserProfil {

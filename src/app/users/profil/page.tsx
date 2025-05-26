@@ -8,6 +8,7 @@ import UserParams from "@/components/layout/user-page/UserParams";
 import UserNotifs from "@/components/layout/user-page/UserNotifs";
 import ListGames from "@/components/list/ListGames";
 import { getUser } from "@/lib/api/server/user";
+import UserConf from "@/components/layout/user-page/UserConf";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
@@ -31,6 +32,7 @@ const Page = async () => {
           <UserInfos user={user.user} />
           <UserParams user={user.user} />
           <UserNotifs user={user.user} />
+          <UserConf user={user.user} />
         </UserContent>
       </div>
       <div>
