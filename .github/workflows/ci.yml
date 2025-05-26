@@ -19,19 +19,16 @@ jobs:
       - name: Log in to Docker Hub # Using Access Token
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Create .env file
-        run: |
-          echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env
-          echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env
-          echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env
-          echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env
-          echo 'IMAGE_HOSTNAME=${{ secrets.NEXT_URL }}' >> .env
-          echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env
-          echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env
-          echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env
-
       - name: Build Docker image
-        run: docker compose -f docker-compose-build.yml build
+        run: docker compose -f docker-compose-build.yml build \
+          --build-arg IMAGE_HOSTNAME="${{ secrets.IMAGE_HOSTNAME }}" \
+          --build-arg NEXT_PUBLIC_API_SYMFONY_URL="${{ secrets.SYMFONY_URL }}" \
+          --build-arg NEXT_PUBLIC_URL="${{ secrets.NEXT_URL }}" \
+          --build-arg NEXTAUTH_URL="${{ secrets.NEXT_URL }}" \
+          --build-arg NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}" \
+          --build-arg GOOGLE_CLIENT_ID="${{ secrets.GOOGLE_ID }}" \
+          --build-arg GOOGLE_CLIENT_SECRET="${{ secrets.GOOGLE_SECRET }}" \
+          --build-arg KEY_SYMFONY_API="${{ secrets.KEY_SYMFONY_API_PROD }}"
 
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest
