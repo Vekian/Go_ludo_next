@@ -3,5 +3,13 @@ services:
     image: vekian/go_ludo_front:latest
     container_name: nextjs_go_ludo
     restart: unless-stopped
+    networks:
+      - go_ludo_network
+
+    external: true
+
     ports:
       - "3200:3000"
+networks:
+  go_ludo_network:
+    driver: bridge
