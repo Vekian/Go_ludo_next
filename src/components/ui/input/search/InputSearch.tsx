@@ -11,8 +11,7 @@ import { GameListItem, Param } from "@/interfaces";
 import { InputAdornment } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ListPaginated } from "@/interfaces/paginator.interface";
-import { searchGames } from "@/lib/api/search";
+import { searchGames } from "@/lib/api/server/search";
 
 const InputSearch = ({ label }: { label: string }) => {
   const router = useRouter();
@@ -60,8 +59,11 @@ const InputSearch = ({ label }: { label: string }) => {
 
   async function loadOptions(params?: Param[]) {
     setLoading(true);
-    const gamesList: ListPaginated<GameListItem> = await searchGames(params);
-    setOptions([...gamesList.items]);
+    const gamesList = await searchGames(params);
+    if (gamesList.data) {
+      setOptions([...gamesList.data.items]);
+    }
+
     setLoading(false);
   }
 
