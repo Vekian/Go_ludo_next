@@ -2,7 +2,6 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   experimental: {
     serverActions: {
       bodySizeLimit: "2mb",
@@ -15,7 +14,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "go-ludo-backend.cda4.garage404.com",
+        hostname: process.env.IMAGE_HOSTNAME || "127.0.0.1",
         pathname: "/images/**",
       },
     ],

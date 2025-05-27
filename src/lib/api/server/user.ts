@@ -40,8 +40,13 @@ export async function updateProfil(
   formData: FormData,
   userId: number
 ): Promise<ResponserServer<User>> {
+  const cleanedData = Object.fromEntries(
+    Object.entries(Object.fromEntries(formData.entries())).map(
+      ([key, value]) => [key, value === "" ? null : value]
+    )
+  );
   const validatedData = handleValidation(
-    Object.fromEntries(formData.entries()),
+    cleanedData,
     createUserSchema,
     "Impossible de modifier le profil"
   );

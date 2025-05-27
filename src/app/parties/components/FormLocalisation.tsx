@@ -149,7 +149,7 @@ export default function FormLocalisation({
           />
         </div>
       </div>
-      <div className="flex gap-x-10 mt-5">
+      <div className="flex flex-wrap gap-y-3 gap-x-10 mt-5">
         <LocalizationProvider
           dateAdapter={AdapterDayjs}
           localeText={{
@@ -157,7 +157,7 @@ export default function FormLocalisation({
             okButtonLabel: "Valider", // Personnaliser le bouton OK
           }}
         >
-          <div className="flex-1">
+          <div className="md:flex-1">
             <h5 className="font-semibold">Disponibilités</h5>
             <PartyDatePicker
               value={formData.date ? dayjs(formData.date) : null}
@@ -180,7 +180,7 @@ export default function FormLocalisation({
               <p className="text-red-500 text-sm">{errors.date}</p>
             )}
           </div>
-          <div className="flex-1 flex gap-x-5">
+          <div className="md:flex-1 flex gap-x-5">
             <div className="flex-1">
               <h5 className="font-semibold">De</h5>
               <PartyTimePicker
