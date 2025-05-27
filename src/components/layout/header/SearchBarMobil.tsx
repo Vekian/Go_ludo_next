@@ -1,7 +1,6 @@
 import InputText from "@/components/ui/input/InputText";
 import { GameListItem, Param } from "@/interfaces";
-import { ListPaginated } from "@/interfaces/paginator.interface";
-import { searchGames } from "@/lib/api/search";
+import { searchGames } from "@/lib/api/server/search";
 import { getImg, getLinkGame } from "@/lib/utils";
 import { theme } from "@/theme/theme";
 import { faArrowLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -64,8 +63,10 @@ export default function SearchBarMobil() {
   }, [search]);
 
   async function loadOptions(params?: Param[]) {
-    const gamesList: ListPaginated<GameListItem> = await searchGames(params);
-    setOptions([...gamesList.items]);
+    const gamesList = await searchGames(params);
+    if (gamesList.data) {
+      setOptions([...gamesList.data.items]);
+    }
   }
 
   const handleClickOpen = () => {

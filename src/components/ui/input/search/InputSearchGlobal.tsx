@@ -7,8 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
 import { GameListItem, Param } from "@/interfaces";
-import { ListPaginated } from "@/interfaces/paginator.interface";
-import { searchGames, searchGlobal } from "@/lib/api/search";
+import { searchGames, searchGlobal } from "@/lib/api/server/search";
 
 const InputSearchGlobal = ({
   label,
@@ -81,10 +80,14 @@ const InputSearchGlobal = ({
     setLoading(true);
     if (global) {
       const games = await searchGlobal(params);
-      setOptions([...games]);
+      if (games.data) {
+        setOptions([...games.data]);
+      }
     } else {
-      const gamesList: ListPaginated<GameListItem> = await searchGames(params);
-      setOptions([...gamesList.items]);
+      const gamesList = await searchGames(params);
+      if (gamesList.data) {
+        setOptions([...gamesList.data.items]);
+      }
     }
 
     setLoading(false);

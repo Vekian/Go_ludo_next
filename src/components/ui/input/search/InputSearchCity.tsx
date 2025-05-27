@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { CircularProgress, InputAdornment } from "@mui/material";
 import { Param } from "@/interfaces";
-import { searchCities } from "@/lib/api/search";
+import { searchCities } from "@/lib/api/server/search";
 import { CityListItem } from "@/interfaces/localisation.interface";
 
 const InputSearchCity = ({
@@ -78,7 +78,10 @@ const InputSearchCity = ({
   async function loadOptions(params?: Param[]) {
     setLoading(true);
     const cities = await searchCities(params);
-    setOptions([...cities]);
+    if (cities.data) {
+      setOptions([...cities.data]);
+    }
+
     setLoading(false);
   }
 
