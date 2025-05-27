@@ -112,7 +112,7 @@ function EditUser({ user }: { user: User }) {
             )}
           </div>
           <div className="mt-5">
-            <div className="flex">
+            <div className="flex flex-wrap gap-x-5">
               <div className="flex flex-col">
                 <label
                   htmlFor="firstname"
@@ -131,7 +131,7 @@ function EditUser({ user }: { user: User }) {
                   <p className="text-red-500">{errors.firstname[0]}</p>
                 )}
               </div>
-              <div className="flex flex-col ml-5">
+              <div className="flex flex-col">
                 <label
                   htmlFor="lastname"
                   className="text-primary-950 font-semibold"
@@ -150,7 +150,7 @@ function EditUser({ user }: { user: User }) {
                 )}
               </div>
             </div>
-            <div className="mt-5 flex">
+            <div className="mt-5 flex flex-wrap gap-y-3 gap-x-5">
               <div className="flex flex-col">
                 <label htmlFor="age" className="text-primary-950 font-semibold">
                   Age:
@@ -164,7 +164,7 @@ function EditUser({ user }: { user: User }) {
                 />
                 {errors?.age && <p className="text-red-500">{errors.age[0]}</p>}
               </div>
-              <div className="flex flex-col justify-end w-full">
+              <div className="flex flex-col justify-end">
                 <SelectClassic
                   value={gender}
                   options={[

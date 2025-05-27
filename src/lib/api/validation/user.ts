@@ -10,13 +10,13 @@ export const createUserSchema = z.object({
   firstname: z
     .string()
     .max(50, "Le nom ne doit pas dépasser 50 caractères")
-    .nullable()
-    .optional(),
+    .optional()
+    .nullable(),
   lastname: z
     .string()
     .max(50, "Le prénom ne doit pas dépasser 50 caractères")
-    .nullable()
-    .optional(),
+    .optional()
+    .nullable(),
   gender: GenderEnum,
   city: z.coerce
     .number()

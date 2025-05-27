@@ -83,7 +83,8 @@ const InputSearch = ({ label }: { label: string }) => {
     fontFamily: "nunito",
     fontWeight: 700,
     fontSize: "17px",
-    marginLeft: "50px",
+    paddingLeft: "30px",
+    paddingRight: "20px",
   };
 
   return (

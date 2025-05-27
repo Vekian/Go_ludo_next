@@ -204,7 +204,7 @@ export default function FormGame({
                 <MenuItem value={"collection"}>Dans ma collection</MenuItem>
               </Select>
             </FormControl>
-            <div className="flex items-center gap-x-6 justify-between">
+            <div className="flex flex-wrap gap-y-3 items-center gap-x-6 justify-between">
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputText
                   type="text"
@@ -264,8 +264,8 @@ export default function FormGame({
                 />
               </div>
             </div>
-            <div className="flex  items-end gap-x-6 justify-between">
-              <div className="w-1/4">
+            <div className="flex flex-wrap gap-y-3 items-end gap-x-6 justify-between">
+              <div className="md:w-1/4 w-full">
                 <label
                   htmlFor="players"
                   className="text-primary-950 font-semibold"
@@ -283,7 +283,7 @@ export default function FormGame({
                   }}
                 />
               </div>
-              <div className="w-1/4">
+              <div className="md:w-1/4 w-full">
                 <label
                   htmlFor="players"
                   className="text-primary-950 font-semibold"
