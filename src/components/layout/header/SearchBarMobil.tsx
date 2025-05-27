@@ -1,5 +1,5 @@
 import InputText from "@/components/ui/input/InputText";
-import { GameListItem } from "@/interfaces";
+import { GameListItem, Param } from "@/interfaces";
 import { ListPaginated } from "@/interfaces/paginator.interface";
 import { searchGames } from "@/lib/api/search";
 import { getImg, getLinkGame } from "@/lib/utils";
@@ -21,7 +21,7 @@ import {
 import { TransitionProps } from "@mui/material/transitions";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -34,21 +34,37 @@ const Transition = React.forwardRef(function Transition(
 
 export default function SearchBarMobil() {
   const [open, setOpen] = React.useState(false);
-  const [search, setSearch] = React.useState<string | null>(null);
+  const [search, setSearch] = React.useState<string | null>("");
   const [options, setOptions] = useState<GameListItem[]>([]);
+  const debounceTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (search) {
-      loadOptions(search);
-    } else {
-      setOptions([]);
+    if (debounceTimeoutRef.current !== null) {
+      clearTimeout(debounceTimeoutRef.current);
     }
+
+    debounceTimeoutRef.current = window.setTimeout(() => {
+      if (search && search.length > 2) {
+        loadOptions([
+          {
+            key: "search",
+            value: search,
+          },
+        ]);
+      } else if (search === "") {
+        loadOptions();
+      }
+    }, 300);
+
+    return () => {
+      if (debounceTimeoutRef.current !== null) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+    };
   }, [search]);
 
-  async function loadOptions(search: string) {
-    const gamesList: ListPaginated<GameListItem> = await searchGames([
-      { key: "search", value: search },
-    ]);
+  async function loadOptions(params?: Param[]) {
+    const gamesList: ListPaginated<GameListItem> = await searchGames(params);
     setOptions([...gamesList.items]);
   }
 
