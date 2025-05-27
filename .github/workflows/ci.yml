@@ -21,7 +21,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo 'NEXT_PUBLIC_IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env.production.sample 
+          echo 'IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env.production.sample 
           echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env.production.sample 
           echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample 
           echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample 
@@ -53,7 +53,7 @@ jobs:
             echo 'NEXT_PUBLIC_API_SYMFONY_URL=${{ secrets.SYMFONY_URL }}' >> .env.production.sample
             echo 'NEXT_PUBLIC_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample
             echo 'NEXTAUTH_URL=${{ secrets.NEXT_URL }}' >> .env.production.sample
-            echo 'NEXT_PUBLIC_IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env.production.sample
+            echo 'IMAGE_HOSTNAME=${{ secrets.IMAGE_HOSTNAME }}' >> .env.production.sample
             echo 'NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}' >> .env.production.sample
             echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env.production.sample
             echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env.production.sample
