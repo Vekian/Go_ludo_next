@@ -57,6 +57,7 @@ export async function handleResponse<T>(
     };
   }
   const data = await response.json();
+  console.error(data);
   return {
     ok: true,
     message: successMess ?? "Requête effectuée avec succès",
