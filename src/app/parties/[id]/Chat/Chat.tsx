@@ -5,9 +5,7 @@ import InputChat from "./InputChat";
 import { Message, Party } from "@/interfaces/party.interface";
 
 export default function Chat({ party }: { party: Party }) {
-  const [messages, setMessages] = useState<Message[] | undefined>(
-    party.messages
-  );
+  const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -16,6 +14,23 @@ export default function Chat({ party }: { party: Party }) {
       chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+
+  useEffect(() => {
+    const url = `${process.env.NEXT_PUBLIC_URL}/.well-known/mercure`;
+    const topic = encodeURIComponent(
+      `${process.env.NEXT_PUBLIC_URL}/messages/${party.id}`
+    );
+    const eventSource = new EventSource(`${url}?topic=${topic}`);
+
+    eventSource.onmessage = (event) => {
+      const message: Message = JSON.parse(event.data);
+      setMessages((prev) => [...prev, message]);
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   const addMessage = (message: Message) => {
     if (messages) {
