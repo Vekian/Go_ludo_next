@@ -18,8 +18,13 @@ export async function getReviews(
 }
 
 export async function addReview(formData: FormData): Promise<ResponserServer> {
+  const cleanedData = Object.fromEntries(
+    Object.entries(Object.fromEntries(formData.entries())).map(
+      ([key, value]) => [key, value === "" ? null : value]
+    )
+  );
   const validatedData = handleValidation(
-    Object.fromEntries(formData.entries()),
+    cleanedData,
     createReviewSchema,
     "Impossible de valider l'avis"
   );
@@ -49,8 +54,13 @@ export async function updateReview(
   formData: FormData,
   reviewId: number
 ): Promise<ResponserServer> {
+  const cleanedData = Object.fromEntries(
+    Object.entries(Object.fromEntries(formData.entries())).map(
+      ([key, value]) => [key, value === "" ? null : value]
+    )
+  );
   const validatedData = handleValidation(
-    Object.fromEntries(formData.entries()),
+    cleanedData,
     createReviewSchema,
     "Impossible de modifier l'avis"
   );

@@ -47,7 +47,7 @@ export default function PasswordForgotModal() {
   }
   return (
     <React.Fragment>
-      <ButtonPrimary
+      <ButtonSecondary
         label="Mot de passe oublié"
         color={theme.colors.primary[900]}
         onClick={handleClickOpen}

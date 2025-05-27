@@ -13,6 +13,7 @@ import ButtonSecondary from "../ui/button/ButtonSecondary";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
 import InputText from "../ui/input/InputText";
 import PasswordForgotModal from "./PasswordForgotModal";
+import GoogleSignInButton from "../ui/button/GoogleSignInButton";
 
 function LogInModal() {
   const [open, setOpen] = React.useState(false);
@@ -95,17 +96,9 @@ function LogInModal() {
             <div>
               <p>Ou</p>
             </div>
-            <button
-              type="button"
-              onClick={() => signIn("google")}
-              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded flex items-center"
-            >
-              <svg className="h-5 w-5 mr-2" viewBox="0 0 488 512">
-                {/* icône Google SVG */}
-                <path fill="currentColor" d="..." />
-              </svg>
-              Se connecter avec Google
-            </button>
+            <div>
+              <GoogleSignInButton />
+            </div>
           </DialogContent>
         )}
 
