@@ -178,7 +178,7 @@ const InputSearchCity = ({
                     style={{
                       color: theme.colors.primary[900],
                       marginLeft: 12,
-                      marginRight: 0,
+                      marginRight: -10,
                       width: 20,
                     }}
                   />
