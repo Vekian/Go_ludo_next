@@ -20,7 +20,6 @@ export async function searchGames(
         url.searchParams.append(param.key, param.value);
       }
     });
-  console.error(url);
   const response = await fetch(url, { headers });
 
   return handleResponse(response);
