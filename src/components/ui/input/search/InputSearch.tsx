@@ -176,7 +176,7 @@ const InputSearch = ({ label }: { label: string }) => {
                     style={{
                       color: theme.colors.primary[900],
                       marginLeft: 12,
-                      marginRight: -10,
+                      marginRight: -20,
                       width: 20,
                     }}
                   />
