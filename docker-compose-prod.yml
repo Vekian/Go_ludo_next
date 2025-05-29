@@ -10,4 +10,4 @@ services:
       - "3200:3000"
 networks:
   go_ludo_network:
-    driver: bridge
+    external: true
