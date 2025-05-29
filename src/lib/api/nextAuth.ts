@@ -60,6 +60,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  debug: true,
   callbacks: {
     async jwt({
       token,
@@ -88,18 +89,18 @@ export const authOptions: NextAuthOptions = {
       }
       if (account?.provider === "google") {
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/google/login`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${account.id_token}`,
-              },
-            }
-          );
+          const url = `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/google/login`;
+          const res = await fetch(url, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${account.id_token}`,
+            },
+          });
 
           if (!res.ok) {
+            const data = await res.json();
+            console.error(data);
             throw new Error("Erreur connexion Google API Symfony");
           }
 

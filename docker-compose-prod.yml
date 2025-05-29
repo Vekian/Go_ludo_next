@@ -6,8 +6,6 @@ services:
     networks:
       - go_ludo_network
 
-    external: true
-
     ports:
       - "3200:3000"
 networks:
