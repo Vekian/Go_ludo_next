@@ -105,8 +105,10 @@ export const authOptions: NextAuthOptions = {
           }
 
           const data = await res.json();
+          if (!data.refresh_token && !data.user) {
+            throw new Error("Pas de token trouvé");
+          }
 
-          // On récupère le token et refresh_token Symfony et les met dans token
           return {
             ...token,
             refreshToken: data.refresh_token,
