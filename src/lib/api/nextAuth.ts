@@ -60,7 +60,6 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  debug: true,
   callbacks: {
     async jwt({
       token,
@@ -100,13 +99,16 @@ export const authOptions: NextAuthOptions = {
 
           if (!res.ok) {
             const data = await res.json();
-            console.error(data);
+            console.error("Erreur Symfony Google login :", data);
             throw new Error("Erreur connexion Google API Symfony");
           }
 
           const data = await res.json();
-          if (!data.refresh_token && !data.user) {
-            throw new Error("Pas de token trouvé");
+
+          // On valide bien qu'on a un token, sinon on stoppe aussi
+          if (!data.token || !data.refresh_token) {
+            console.error("Tokens manquants dans la réponse Symfony");
+            throw new Error("Tokens manquants dans la réponse Symfony");
           }
 
           return {
@@ -118,15 +120,14 @@ export const authOptions: NextAuthOptions = {
               email: data.user.email,
               roles: data.user.roles,
               name: data.user.username,
+              avatar: data.user.avatar,
               token: data.token,
             },
           };
         } catch (err) {
           console.error("Erreur login Google Symfony :", err);
-          return {
-            ...token,
-            error: "GoogleAuthError",
-          };
+          // 👇 On stoppe le process d'auth en lançant une erreur
+          throw err;
         }
       }
       if (user) {
