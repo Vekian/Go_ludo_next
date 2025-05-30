@@ -107,6 +107,8 @@ export interface GameReview {
   reviewComments: ReviewComment[];
   createdAt: string;
   updatedAt: string;
+  rulesDifficulty: number;
+  setupTime: number;
 }
 
 export interface ReviewComment {

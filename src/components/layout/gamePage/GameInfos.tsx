@@ -90,7 +90,6 @@ function GameInfos({ game }: { game: Game }) {
       <div className="flex justify-between">
         {game.extensions?.length && (
           <h5 className="flex-1">
-            {" "}
             {game.extensions.length} extension
             {game.extensions.length > 1 && "s"}
           </h5>

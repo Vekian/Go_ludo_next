@@ -6,6 +6,18 @@ export const createReviewSchema = z.object({
     .max(3000, "L'avis ne doit pas dépasser 3000 caractères")
     .optional()
     .nullable(),
+  rulesDifficulty: z.coerce
+    .number()
+    .min(0)
+    .max(100, "100 maxi")
+    .optional()
+    .nullable(),
+  setupTime: z.coerce
+    .number()
+    .min(0)
+    .max(100, "100 maxi")
+    .optional()
+    .nullable(),
   rating: z.preprocess(
     (val) => (val === "" || val === null ? undefined : Number(val)), // Convertit en `number` sauf si vide/null
     z

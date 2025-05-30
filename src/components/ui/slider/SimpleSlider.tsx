@@ -1,9 +1,19 @@
 "use client";
 import { Box, Slider } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { theme } from "@/theme/theme";
 
-function SimpleSlider({ value }: { value: number }) {
+export default function SimpleSlider({
+  value,
+  onChange,
+}: {
+  value: number | null;
+  onChange?: (value: number) => void;
+}) {
+  const [color, setColor] = useState<string>("");
+  useEffect(() => {
+    setColor(calculateColor(value ?? 0));
+  }, [value]);
   const firstColor = theme.colors.secondary[500];
   const secondColor = theme.colors.primary[700];
 
@@ -33,8 +43,13 @@ function SimpleSlider({ value }: { value: number }) {
   return (
     <Box sx={{ width: 150 }}>
       <Slider
-        defaultValue={value}
-        disabled
+        value={value ?? 0}
+        disabled={onChange ? false : true}
+        onChange={(_, value) => {
+          if (onChange) {
+            onChange(value as number);
+          }
+        }}
         sx={{
           // La couleur du slider avec un dégradé
           "& .MuiSlider-track": {
@@ -47,7 +62,7 @@ function SimpleSlider({ value }: { value: number }) {
             opacity: 1,
           },
           "& .MuiSlider-thumb": {
-            background: calculateColor(value),
+            background: color,
             width: 8, // Largeur de la barre
             height: 30,
             borderRadius: 1,
@@ -57,5 +72,3 @@ function SimpleSlider({ value }: { value: number }) {
     </Box>
   );
 }
-
-export default SimpleSlider;

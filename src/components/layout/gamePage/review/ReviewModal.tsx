@@ -16,6 +16,8 @@ import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
 import { addReview, updateReview } from "@/lib/api/server/review";
 import dynamic from "next/dynamic";
+import SimpleSlider from "@/components/ui/slider/SimpleSlider";
+import FormError from "@/components/ui/error/FormError";
 
 const ReviewModal = ({
   gameId,
@@ -27,6 +29,12 @@ const ReviewModal = ({
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [complexity, setComplexity] = React.useState<number | null>(
+    review?.rulesDifficulty ?? null
+  );
+  const [setupTime, setSetupTime] = React.useState<number | null>(
+    review?.setupTime ?? null
+  );
   const [rating, setRating] = useState<number | null>(
     review ? review.rating : null
   );
@@ -46,6 +54,12 @@ const ReviewModal = ({
     const formData = new FormData(form);
     formData.set("rating", String(rating ?? ""));
     formData.set("game", String(gameId));
+    if (complexity) {
+      formData.set("rulesDifficulty", String(complexity));
+    }
+    if (setupTime) {
+      formData.set("setupTime", String(setupTime));
+    }
     sendReview(formData);
   };
 
@@ -118,7 +132,7 @@ const ReviewModal = ({
             <div className="flex flex-col items-end">
               <Rating readOnly={false} value={rating} onChange={handleChange} />
               {errors?.rating && (
-                <p className="text-red-500">{errors.rating[0]}</p>
+                <FormError errors={errors.rating} name="rating" />
               )}
             </div>
 
@@ -133,8 +147,45 @@ const ReviewModal = ({
               defaultValue={review?.content}
             />
             {errors?.content && (
-              <p className="text-red-500">{errors.content[0]}</p>
+              <FormError errors={errors.content} name="content" />
             )}
+            <div className="flex flex-wrap justify-between mt-3">
+              <div>
+                <label
+                  htmlFor="complexity"
+                  className="text-primary-950 font-semibold"
+                >
+                  Complexité des règles
+                </label>
+                <SimpleSlider value={complexity} onChange={setComplexity} />
+                <div className="flex justify-between -mt-2 ">
+                  <small className="text-secondary-600">simple</small>
+                  <small className="text-primary-600">complexe</small>
+                </div>
+                {errors?.rulesDifficulty && (
+                  <FormError
+                    errors={errors.rulesDifficulty}
+                    name="rulesDifficulty"
+                  />
+                )}
+              </div>
+              <div>
+                <label
+                  htmlFor="setupTime"
+                  className="text-primary-950 font-semibold"
+                >
+                  Temps de mise en place
+                </label>
+                <SimpleSlider value={setupTime} onChange={setSetupTime} />
+                <div className="flex justify-between -mt-2 ">
+                  <small className="text-secondary-600">rapide</small>
+                  <small className="text-primary-600">longue</small>
+                </div>
+                {errors?.setupTime && (
+                  <FormError errors={errors.setupTime} name="setupTime" />
+                )}
+              </div>
+            </div>
           </div>
         </DialogContent>
         <DialogActions>
