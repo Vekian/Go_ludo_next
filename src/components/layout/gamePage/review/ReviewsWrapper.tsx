@@ -24,11 +24,22 @@ export default async function ReviewsWrapper({
     throw new Error("No reviews found");
   }
 
+  const totalReviews = reviewList.data.accountReview?.content
+    ? reviewList.data.totalResults + 1
+    : reviewList.data.totalResults;
+
   return (
     <div className="mt-4 pl-10 pr-10">
       <div className="flex items-center justify-center relative mb-5 mt-10 flex-wrap">
-        <div className="flex lg:absolute lg:left-0 sm:flex-1 lg:w-auto w-full justify-center">
-          <h3>{reviewList.data.totalResults} avis</h3>
+        <div className="flex lg:absolute lg:left-0 sm:flex-1 lg:w-auto w-full justify-center gap-x-3">
+          <h3>
+            {reviewList.data.countRatings} note
+            {reviewList.data.countRatings > 1 && "s"}
+          </h3>
+          <h3>
+            {totalReviews} critique
+            {totalReviews > 1 && "s"}
+          </h3>
         </div>
         {!reviewList.data.accountReview && session && (
           <ReviewModal gameId={game.id} />

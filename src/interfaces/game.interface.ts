@@ -115,6 +115,7 @@ export interface UserReview {
 export interface ReviewList {
   items: GameReview[];
   accountReview: GameReview | null;
+  countRatings: number;
   totalPages: number;
   totalResults: number;
   page: number;
