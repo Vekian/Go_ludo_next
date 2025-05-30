@@ -1,6 +1,5 @@
 "use client";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -145,28 +144,26 @@ const ReviewModal = ({
             label="Annuler"
             color={theme.colors.primary[800]}
           />
-          <Button
-            className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
+          <ButtonPrimary
+            label="Soumettre"
+            color={theme.colors.primary[500]}
             type="submit"
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            Soumettre
-          </Button>
+          />
         </DialogActions>
       </Dialog>
       <div className="flex items-center flex-wrap justify-center gap-y-3">
         <div className="w-full sm:w-auto flex justify-center">
           <ButtonPrimary
-            label={review ? "Éditer" : "Ajouter un avis"}
+            label={review ? "" : "Ajouter un avis"}
             color={theme.colors.primary[500]}
             onClick={handleClickOpen}
             icon={faPenToSquare}
           />
         </div>
 
-        <div className="sm:ml-20 sm:order-last order-first">
+        <div
+          className={`sm:ml-20 sm:order-last order-first ${review && "hidden"}`}
+        >
           <Rating onChange={sendOnlyRating} readOnly={false} value={rating} />
         </div>
       </div>

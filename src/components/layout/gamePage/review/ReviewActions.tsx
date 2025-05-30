@@ -22,10 +22,10 @@ function ReviewActions({ review }: { review: GameReview }) {
     }
   }
   return (
-    <div className="flex items-center gap-x-3">
+    <div className="flex flex-wrap items-center gap-x-3">
       <ButtonPrimary
         onClick={handleDelete}
-        label="Supprimer"
+        label=""
         color={theme.colors.primary[700]}
         icon={faTrash}
       />

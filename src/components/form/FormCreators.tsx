@@ -119,7 +119,7 @@ export default function FormCreators({ game }: { game: Game }) {
       <div className="flex flex-col bg-white rounded-lg flex-wrap p-10  gap-y-12">
         <div className="flex flex-col gap-y-6">
           <div className="flex gap-x-6 items-start">
-            <div className="w-1/3">
+            <div className="lg:w-1/4 w-full">
               <CreatorSelect
                 setCreatorSelected={(creator: Creator | null) => {
                   if (creator) {
@@ -168,9 +168,9 @@ export default function FormCreators({ game }: { game: Game }) {
           </div>
           <div className="flex flex-wrap gap-y-3">
             {Object.values(CreatorJob).map((job) => (
-              <div className="w-1/4 flex flex-col gap-y-3 " key={job}>
+              <div className="md:w-1/4 w-full flex flex-col gap-y-3 " key={job}>
                 <h4>{jobNames[job]}s</h4>
-                <div className="flex justify-start">
+                <div className="flex flex-wrap justify-start">
                   {creatorsSelected &&
                     creatorsSelected
                       .filter((creator) => creator.creator.jobs.includes(job))
