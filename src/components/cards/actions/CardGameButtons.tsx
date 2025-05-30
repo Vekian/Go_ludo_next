@@ -2,7 +2,7 @@
 import { faDice, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { useSnackbarContext } from "../provider/SnackbarProvider";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { GameListItem } from "@/interfaces";
 import { Tooltip } from "@mui/material";
 import {

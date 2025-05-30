@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { GameReview } from "@/interfaces";
 import { getImg } from "@/lib/utils";
-import ReviewActions from "./ReviewActions";
+import ReviewActions from "./actions/ReviewActions";
 import { Avatar } from "@mui/material";
-import ReviewRating from "./ReviewRating";
-import ReviewComments from "./ReviewComments";
+import ReviewRating from "../layout/gamePage/review/ReviewRating";
+import ReviewComments from "../layout/gamePage/review/ReviewComments";
+import { getDateFormated } from "@/lib/date";
 
-function Review({
+export default function ReviewCard({
   review,
   owner = false,
 }: {
@@ -17,7 +18,7 @@ function Review({
 }) {
   return (
     <div>
-      <div className="bg-white rounded-lg pt-5 pb-5 pl-10 pr-10">
+      <div className="bg-white rounded-lg py-5 px-5 md:px-10">
         <div className="flex flex-wrap justify-between gap-y-3 ">
           <div className="flex flex-wrap items-center gap-y-3 sm:order-first order-last">
             <Avatar
@@ -30,13 +31,13 @@ function Review({
             />
             <div className="ml-8">
               <h3>{review.account.username}</h3>
-              <h5>Il y a 6 semaines</h5>
+              <h5>{getDateFormated(review.createdAt, review.updatedAt)}</h5>
             </div>
             <div className="md:ml-20 ml-5">
               <ReviewRating owner={owner} review={review} />
             </div>
           </div>
-          <div className="flex items-center gap-x-4 justify-end w-full sm:justify-center sm:w-auto ">
+          <div className="flex items-center gap-x-4 justify-end w-full sm:justify-center sm:w-auto md:mb-0 -mb-5">
             {owner && <ReviewActions review={review} />}
             <FontAwesomeIcon icon={faFlag} fontSize={26} />
           </div>
@@ -47,5 +48,3 @@ function Review({
     </div>
   );
 }
-
-export default Review;

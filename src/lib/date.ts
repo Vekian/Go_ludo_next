@@ -5,16 +5,6 @@ import "dayjs/locale/fr";
 dayjs.extend(relativeTime);
 dayjs.locale("fr");
 
-export function getDurationFromTimestamp(timestamp: string): string {
-  const date = new Date(timestamp);
-  const hours = date.getHours().toString().padStart(2, "0"); // Formate en 2 chiffres
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-
-  const time = `${hours}h${minutes}`;
-
-  return time;
-}
-
 export function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
 
@@ -25,6 +15,13 @@ export function formatDate(isoDate: string): string {
 
   // Retourner la chaîne formatée
   return `${jour} ${mois} ${annee}`;
+}
+
+export function getDateFormated(createdAt: string, updatedAt: string) {
+  const date = updatedAt;
+  const updated = updatedAt === createdAt ? false : true;
+  const formatedDate = getRelativeTime(date, !updated);
+  return `${updated ? "Modifié" : ""} ${formatedDate}`;
 }
 
 export function getRelativeTime(date: string, uppercase: boolean = true) {

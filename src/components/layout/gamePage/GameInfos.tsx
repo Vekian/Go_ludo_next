@@ -32,7 +32,7 @@ function GameInfos({ game }: { game: Game }) {
           {formatGameDuration(Number(game.playtimeMax))}
         </h5>
       </div>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap sm:justify-center">
         <div className="xl:w-1/3 xs:w-1/2 w-full">
           <h5 className="mb-3">Mise en place</h5>
           <SimpleSlider value={20} />

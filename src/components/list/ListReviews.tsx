@@ -4,7 +4,7 @@ import { ReviewList } from "@/interfaces";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function ReviewsPagination({
+export default function ListReviews({
   reviewList,
 }: {
   reviewList: ReviewList;

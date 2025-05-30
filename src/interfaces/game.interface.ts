@@ -105,12 +105,16 @@ export interface GameReview {
   account: UserReview;
   game: GameListItem;
   reviewComments: ReviewComment[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ReviewComment {
   id: number;
   content: string;
   account: UserReview;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserReview {

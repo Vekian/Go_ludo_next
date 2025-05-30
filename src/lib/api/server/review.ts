@@ -59,6 +59,7 @@ export async function updateReview(
       ([key, value]) => [key, value === "" ? null : value]
     )
   );
+
   const validatedData = handleValidation(
     cleanedData,
     createReviewSchema,

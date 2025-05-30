@@ -28,6 +28,7 @@ export default function ReviewRating({
       sendReview(formData);
     }
   };
+  console.log(review);
 
   const sendReview = async (formData: FormData) => {
     showSnackbar("Avis en cours de modfication", "info");

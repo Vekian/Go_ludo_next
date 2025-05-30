@@ -12,8 +12,11 @@ import { theme } from "@/theme/theme";
 import CustomCircularLoader from "../ui/loader/CustomCircularLoader";
 import ButtonSecondary from "../ui/button/ButtonSecondary";
 import { useRouter } from "next/navigation";
-import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
-import { addReviewComment } from "@/lib/api/server/reviewComment";
+import { faCommentDots, faPen } from "@fortawesome/free-solid-svg-icons";
+import {
+  addReviewComment,
+  updateReviewComment,
+} from "@/lib/api/server/reviewComment";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import FormError from "../ui/error/FormError";
 
@@ -37,11 +40,39 @@ export default function CommentModal({
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const form = e.currentTarget as HTMLFormElement;
+
+    const formData = new FormData(form);
+
+    let response = null;
+    if (!comment) {
+      response = await addReviewComment(formData);
+    } else {
+      response = await updateReviewComment(formData, comment.id);
+    }
+
+    if (!response.ok) {
+      if (response.errors) {
+        setErrors(response.errors);
+      }
+      showSnackbar(response.message, "error");
+    } else {
+      showSnackbar(response.message, "success");
+      handleClose();
+      setLoading(false);
+      router.refresh();
+    }
+    setLoading(false);
+  };
   return (
     <React.Fragment>
       <ButtonPrimary
-        icon={faCommentDots}
-        label="Commenter"
+        icon={comment ? faPen : faCommentDots}
+        label={`${comment ? "" : "Commenter"}`}
         color={theme.colors.primary[600]}
         onClick={handleClickOpen}
       />
@@ -52,28 +83,7 @@ export default function CommentModal({
         fullWidth
         PaperProps={{
           component: "form",
-          onSubmit: async (e: React.FormEvent) => {
-            e.preventDefault();
-            setLoading(true);
-            const form = e.currentTarget as HTMLFormElement;
-
-            const formData = new FormData(form);
-
-            const response = await addReviewComment(formData);
-
-            if (!response.ok) {
-              if (response.errors) {
-                setErrors(response.errors);
-              }
-              showSnackbar(response.message, "error");
-            } else {
-              showSnackbar(response.message, "success");
-              handleClose();
-              setLoading(false);
-              router.refresh();
-            }
-            setLoading(false);
-          },
+          onSubmit: handleSubmit,
         }}
       >
         <DialogTitle>Écrire un commentaire</DialogTitle>

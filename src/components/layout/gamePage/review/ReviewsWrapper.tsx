@@ -1,11 +1,12 @@
-import Review from "@/components/layout/gamePage/review/Review";
+import Review from "@/components/cards/ReviewCard";
 import React from "react";
 import { Game, GameReview } from "@/interfaces";
 import ReviewModal from "./ReviewModal";
 import { getReviews } from "@/lib/api/server/review";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/api/nextAuth";
-import ReviewsPagination from "./ReviewsPagination";
+import ReviewCard from "@/components/cards/ReviewCard";
+import ListReviews from "../../../list/ListReviews";
 
 export default async function ReviewsWrapper({
   game,
@@ -29,7 +30,7 @@ export default async function ReviewsWrapper({
     : reviewList.data.totalResults;
 
   return (
-    <div className="mt-4 pl-10 pr-10">
+    <div className="mt-4 px-1 md:px-10">
       <div className="flex items-center justify-center relative mb-5 mt-10 flex-wrap">
         <div className="flex lg:absolute lg:left-0 sm:flex-1 lg:w-auto w-full justify-center gap-x-3">
           <h3>
@@ -50,11 +51,11 @@ export default async function ReviewsWrapper({
           <Review review={reviewList.data.accountReview} owner={true} />
         )}
         {reviewList.data.items.map((review: GameReview) => (
-          <Review key={review.id} review={review} />
+          <ReviewCard key={review.id} review={review} />
         ))}
       </div>
 
-      <ReviewsPagination reviewList={reviewList.data} />
+      <ListReviews reviewList={reviewList.data} />
     </div>
   );
 }

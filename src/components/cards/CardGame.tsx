@@ -3,7 +3,7 @@ import React from "react";
 import Rating from "@/components/ui/rating/Rating";
 import { GameListItem } from "@/interfaces";
 import Link from "next/link";
-import CardGameButtons from "./CardGameButtons";
+import CardGameButtons from "./actions/CardGameButtons";
 
 function CardGame({ game, logged }: { game: GameListItem; logged: boolean }) {
   return (
