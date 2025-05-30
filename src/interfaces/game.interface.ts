@@ -104,6 +104,13 @@ export interface GameReview {
   rating: number;
   account: UserReview;
   game: GameListItem;
+  reviewComments: ReviewComment[];
+}
+
+export interface ReviewComment {
+  id: number;
+  content: string;
+  account: UserReview;
 }
 
 export interface UserReview {
@@ -119,4 +126,10 @@ export interface ReviewList {
   totalPages: number;
   totalResults: number;
   page: number;
+}
+
+export interface ReviewComment {
+  id: number;
+  content: string;
+  account: UserReview;
 }

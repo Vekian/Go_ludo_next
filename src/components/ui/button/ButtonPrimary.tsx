@@ -9,6 +9,7 @@ function ButtonPrimary({
   icon,
   addClass,
   type,
+  disabled = false,
 }: {
   label: string;
   color: string;
@@ -16,10 +17,12 @@ function ButtonPrimary({
   icon?: IconProp;
   addClass?: string;
   type?: "button" | "submit" | "reset" | undefined;
+  disabled?: boolean;
 }) {
   return (
     <button
       type={type ? type : "button"}
+      disabled={disabled}
       className={` hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 ${
         addClass ?? ""
       } `}
