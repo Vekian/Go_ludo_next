@@ -86,7 +86,10 @@ export default function ListParties({
               paddingLeft: 6,
             }}
           >
-            <Link href={"/parties/joined"}>
+            <Link
+              href={"/parties/joined"}
+              onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
+            >
               <ListItem component="li">
                 <ListItemButton sx={{ py: 0 }}>
                   <ListItemText primary="Vos parties en cours" />
@@ -94,7 +97,10 @@ export default function ListParties({
               </ListItem>
             </Link>
 
-            <Link href={"/parties/closed"}>
+            <Link
+              href={"/parties/closed"}
+              onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
+            >
               <ListItem component="li">
                 <ListItemButton sx={{ py: 0 }}>
                   <ListItemText primary="Vos parties terminées" />

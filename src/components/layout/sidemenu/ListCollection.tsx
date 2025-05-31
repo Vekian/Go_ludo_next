@@ -95,7 +95,12 @@ export default function ListCollection({
             </ListItem>
             {data && data.user.id && (
               <ListItem component="li">
-                <Link href={"/users/profil"}>
+                <Link
+                  href={"/users/profil"}
+                  onClick={() =>
+                    isMobile && isMobileMenuOpen && toggleMobileMenu()
+                  }
+                >
                   <ListItemButton sx={{ py: 0 }}>
                     <ListItemText primary="Votre collection" />
                   </ListItemButton>
@@ -105,7 +110,12 @@ export default function ListCollection({
 
             {data && data.user.roles.includes("ROLE_ADMIN") && (
               <ListItem component="li">
-                <Link href={"/games/create"}>
+                <Link
+                  href={"/games/create"}
+                  onClick={() =>
+                    isMobile && isMobileMenuOpen && toggleMobileMenu()
+                  }
+                >
                   <ListItemButton sx={{ py: 0 }}>
                     <ListItemText primary="Ajouter une fiche de jeu" />
                   </ListItemButton>
