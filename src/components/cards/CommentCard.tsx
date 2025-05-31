@@ -18,7 +18,7 @@ export default function CommentCard({
     <div>
       <div className="bg-white rounded-lg pt-5 pb-5 px-5 md:px-10">
         <div className="flex flex-wrap justify-between gap-y-3 ">
-          <div className="flex flex-wrap items-center gap-y-3 sm:order-first order-last">
+          <div className="flex items-center gap-y-3 sm:order-first order-last">
             <Avatar
               alt={comment.account.username}
               src={getImg(comment.account.avatar)}
