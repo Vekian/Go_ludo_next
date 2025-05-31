@@ -12,8 +12,8 @@ export default function ReviewComments({ review }: { review: GameReview }) {
 
   return (
     <div>
-      <div className="bg-white rounded-b-lg  pt-5 pb-5 pl-10 pr-10 -mt-6">
-        <div className="flex flex-wrap gap-y-3 gap-x-3">
+      <div className="bg-white rounded-b-lg  pt-5 pb-5 px-3 md:px-10 -mt-6">
+        <div className="flex flex-wrap gap-y-3 gap-x-3 justify-end">
           <ButtonPrimary
             icon={faComments}
             label={`${review.reviewComments.length} commentaire${

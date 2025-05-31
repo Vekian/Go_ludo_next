@@ -32,15 +32,31 @@ function GameInfos({ game }: { game: Game }) {
           {formatGameDuration(Number(game.playtimeMax))}
         </h5>
       </div>
-      <div className="flex flex-wrap sm:justify-center">
-        <div className="xl:w-1/3 xs:w-1/2 w-full">
-          <h5 className="mb-3">Mise en place</h5>
-          <SimpleSlider value={20} />
-        </div>
-        <div className="xl:w-2/3 xs:w-1/2 w-full">
-          <h5 className="mb-3">Complexité des règles</h5>
-          <SimpleSlider value={80} />
-        </div>
+      <div className="flex gap-x-12 flex-wrap ">
+        {game.rulesDifficulty && (
+          <div className="flex-1">
+            <p className="text-primary-950 font-semibold">
+              Complexité des règles
+            </p>
+            <SimpleSlider value={game.rulesDifficulty} />
+            <div className="flex justify-between -mt-2 ">
+              <small className="text-secondary-600">simple</small>
+              <small className="text-primary-600">complexe</small>
+            </div>
+          </div>
+        )}
+        {game.setupTime && (
+          <div className="flex-1 flex flex-col ">
+            <p className="text-primary-950 font-semibold">
+              Temps de mise en place
+            </p>
+            <SimpleSlider value={game.setupTime} />
+            <div className="flex justify-between -mt-2 ">
+              <small className="text-secondary-600">rapide</small>
+              <small className="text-primary-600">longue</small>
+            </div>
+          </div>
+        )}
       </div>
       <div className="flex flex-wrap justify-between gap-y-3">
         {game.categories.categories &&

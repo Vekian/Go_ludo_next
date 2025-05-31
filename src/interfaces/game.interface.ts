@@ -43,6 +43,8 @@ export interface Game {
   awards: GameAward[];
   extensions?: GameListItem[];
   content?: string[];
+  rulesDifficulty?: number;
+  setupTime?: number;
 }
 
 export interface ImageGame {

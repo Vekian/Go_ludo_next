@@ -8,6 +8,7 @@ import { Avatar } from "@mui/material";
 import ReviewRating from "../layout/gamePage/review/ReviewRating";
 import ReviewComments from "../layout/gamePage/review/ReviewComments";
 import { getDateFormated } from "@/lib/date";
+import SimpleSlider from "../ui/slider/SimpleSlider";
 
 export default function ReviewCard({
   review,
@@ -43,6 +44,34 @@ export default function ReviewCard({
           </div>
         </div>
         <p className="mt-5">{review.content}</p>
+        <div className="flex justify-start">
+          <div className="flex gap-x-12 flex-wrap md:w-1/2 w-full">
+            {review.rulesDifficulty && (
+              <div className="flex-1">
+                <p className="text-primary-950 font-semibold">
+                  Complexité des règles
+                </p>
+                <SimpleSlider value={review.rulesDifficulty} />
+                <div className="flex justify-between -mt-2 ">
+                  <small className="text-secondary-600">simple</small>
+                  <small className="text-primary-600">complexe</small>
+                </div>
+              </div>
+            )}
+            {review.setupTime && (
+              <div className="flex-1 flex flex-col ">
+                <p className="text-primary-950 font-semibold">
+                  Temps de mise en place
+                </p>
+                <SimpleSlider value={review.setupTime} />
+                <div className="flex justify-between -mt-2 ">
+                  <small className="text-secondary-600">rapide</small>
+                  <small className="text-primary-600">longue</small>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
       <ReviewComments review={review} />
     </div>

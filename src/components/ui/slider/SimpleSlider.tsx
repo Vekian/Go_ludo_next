@@ -1,5 +1,5 @@
 "use client";
-import { Box, Slider } from "@mui/material";
+import { Slider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { theme } from "@/theme/theme";
 
@@ -41,9 +41,12 @@ export default function SimpleSlider({
     return `rgba(${interpolatedColor.join(",")}, 1)`;
   };
   return (
-    <Box sx={{ width: 150 }}>
+    <div>
       <Slider
+        valueLabelDisplay="auto"
         value={value ?? 0}
+        min={0}
+        max={100}
         disabled={onChange ? false : true}
         onChange={(_, value) => {
           if (onChange) {
@@ -69,6 +72,6 @@ export default function SimpleSlider({
           },
         }}
       />
-    </Box>
+    </div>
   );
 }

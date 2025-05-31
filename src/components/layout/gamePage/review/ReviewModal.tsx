@@ -12,7 +12,7 @@ import Rating from "@/components/ui/rating/Rating";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import { GameReview } from "@/interfaces";
 import { useRouter } from "next/navigation";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "@/theme/theme";
 import { addReview, updateReview } from "@/lib/api/server/review";
 import dynamic from "next/dynamic";
@@ -150,39 +150,59 @@ const ReviewModal = ({
               <FormError errors={errors.content} name="content" />
             )}
             <div className="flex flex-wrap justify-between mt-3">
-              <div>
-                <label
-                  htmlFor="complexity"
-                  className="text-primary-950 font-semibold"
-                >
-                  Complexité des règles
-                </label>
-                <SimpleSlider value={complexity} onChange={setComplexity} />
-                <div className="flex justify-between -mt-2 ">
-                  <small className="text-secondary-600">simple</small>
-                  <small className="text-primary-600">complexe</small>
+              <div className="flex gap-x-3 items-center">
+                <div>
+                  <label
+                    htmlFor="complexity"
+                    className="text-primary-950 font-semibold"
+                  >
+                    Complexité des règles
+                  </label>
+                  <SimpleSlider value={complexity} onChange={setComplexity} />
+                  <div className="flex justify-between -mt-2 ">
+                    <small className="text-secondary-600">simple</small>
+                    <small className="text-primary-600">complexe</small>
+                  </div>
+                  {errors?.rulesDifficulty && (
+                    <FormError
+                      errors={errors.rulesDifficulty}
+                      name="rulesDifficulty"
+                    />
+                  )}
                 </div>
-                {errors?.rulesDifficulty && (
-                  <FormError
-                    errors={errors.rulesDifficulty}
-                    name="rulesDifficulty"
+                {complexity && (
+                  <ButtonPrimary
+                    label=""
+                    color={theme.colors.primary[700]}
+                    icon={faXmark}
+                    onClick={() => setComplexity(null)}
                   />
                 )}
               </div>
-              <div>
-                <label
-                  htmlFor="setupTime"
-                  className="text-primary-950 font-semibold"
-                >
-                  Temps de mise en place
-                </label>
-                <SimpleSlider value={setupTime} onChange={setSetupTime} />
-                <div className="flex justify-between -mt-2 ">
-                  <small className="text-secondary-600">rapide</small>
-                  <small className="text-primary-600">longue</small>
+              <div className="flex gap-x-3 items-center">
+                <div>
+                  <label
+                    htmlFor="setupTime"
+                    className="text-primary-950 font-semibold"
+                  >
+                    Temps de mise en place
+                  </label>
+                  <SimpleSlider value={setupTime} onChange={setSetupTime} />
+                  <div className="flex justify-between -mt-2 ">
+                    <small className="text-secondary-600">rapide</small>
+                    <small className="text-primary-600">longue</small>
+                  </div>
+                  {errors?.setupTime && (
+                    <FormError errors={errors.setupTime} name="setupTime" />
+                  )}
                 </div>
-                {errors?.setupTime && (
-                  <FormError errors={errors.setupTime} name="setupTime" />
+                {setupTime && (
+                  <ButtonPrimary
+                    label=""
+                    color={theme.colors.primary[700]}
+                    icon={faXmark}
+                    onClick={() => setSetupTime(null)}
+                  />
                 )}
               </div>
             </div>
