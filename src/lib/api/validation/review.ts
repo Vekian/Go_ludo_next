@@ -25,8 +25,8 @@ export const createReviewSchema = z.object({
         required_error: "La note est requise.",
         invalid_type_error: "La note doit être un nombre.",
       })
-      .min(1, "La note doit être entre 1 et 5.")
-      .max(5, "La note doit être entre 1 et 5.")
+      .min(0, "La note doit être entre 0 et 5.")
+      .max(5, "La note doit être entre 0 et 5.")
   ),
   game: z.coerce.number().min(1),
 });
