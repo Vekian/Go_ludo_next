@@ -9,7 +9,7 @@ function MainContent() {
   return (
     <div className="flex flex-wrap">
       <div className="xl:w-2/3 w-full px-1">
-        <Carousel imgs={imgs} height={300} width={1000} />
+        <Carousel imgs={imgs} />
       </div>
       <Form />
     </div>

@@ -7,14 +7,10 @@ import Image from "next/image";
 
 function Carousel({
   imgs,
-  width,
-  height,
   thumbs = false,
   autoPlay = true,
 }: {
   imgs: string[];
-  width: number;
-  height: number;
   thumbs?: boolean;
   autoPlay?: boolean;
 }) {
@@ -47,13 +43,7 @@ function Carousel({
     >
       {imgs.map((img, index) => (
         <div key={`img${index}`} className="flex justify-center">
-          <div
-            style={{
-              position: "relative",
-              height: `${height}px`,
-              width: `${width}px`,
-            }}
-          >
+          <div className="relative w-full lg:h-80 md:h-60  h-40">
             <Image
               alt="Carousel"
               src={`${url}${img}`}

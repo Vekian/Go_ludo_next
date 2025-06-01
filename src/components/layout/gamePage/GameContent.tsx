@@ -26,7 +26,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
   return (
     <div className="p-5">
       <TabsCustom>
-        <div className="flex-1" onClick={() => handleClick(1)}>
+        <div className="flex-1 pt-5" onClick={() => handleClick(1)}>
           <Onglet
             label="Infos de jeu"
             color={theme.colors.primary[500]}
@@ -34,7 +34,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
             active={onglet === 1 ? true : false}
           />
         </div>
-        <div className="flex-1" onClick={() => handleClick(2)}>
+        <div className="flex-1 pt-5" onClick={() => handleClick(2)}>
           <Onglet
             label="Infos techniques"
             color={theme.colors.secondary[500]}
@@ -42,7 +42,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
             active={onglet === 2 ? true : false}
           />
         </div>
-        <div className="flex-1" onClick={() => handleClick(3)}>
+        <div className="flex-1 pt-5" onClick={() => handleClick(3)}>
           <Onglet
             label="Statistiques"
             color={theme.colors.primary[800]}
@@ -50,7 +50,7 @@ function GameContent({ children }: { children: React.ReactNode }) {
             active={onglet === 3 ? true : false}
           />
         </div>
-        <div className="flex-1" onClick={() => handleClick(4)}>
+        <div className="flex-1 pt-5" onClick={() => handleClick(4)}>
           <Onglet
             label="À propos"
             color={theme.colors.neutral[500]}

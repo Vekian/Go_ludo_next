@@ -1,12 +1,8 @@
 "use client";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import ButtonPrimary from "../ui/button/ButtonPrimary";
-import { theme } from "@/theme/theme";
 import { Game } from "@/interfaces";
-import { useRouter } from "next/navigation";
-import { getBaseUrl } from "@/lib/game";
+import TabsCustom from "../ui/tab/TabsCustom";
+import BreadCrumbElm from "./BreadCrumbElm";
 
 export default function BreadCrumb({
   step,
@@ -15,52 +11,33 @@ export default function BreadCrumb({
   step: number;
   game: Game;
 }) {
-  const router = useRouter();
-
-  const setStep = (step: number) => {
-    router.push(`/${getBaseUrl(game)}edit/${game.id}/${step}`);
-  };
   return (
-    <div className="flex justify-center gap-y-4 flex-wrap gap-x-3">
-      <div className="flex gap-x-2 items-center">
-        <ButtonPrimary
-          label="Infos principales"
-          color={
-            step === 1 ? theme.colors.primary[500] : theme.colors.primary[900]
-          }
-          onClick={() => setStep(1)}
-        />
-      </div>
-      <div className="flex gap-x-2 items-center">
-        <FontAwesomeIcon icon={faChevronRight} />
-        <ButtonPrimary
-          label="Images du jeu"
-          color={
-            step === 2 ? theme.colors.primary[500] : theme.colors.primary[900]
-          }
-          onClick={() => setStep(2)}
-        />
-      </div>
-      <div className="flex gap-x-2 items-center">
-        <FontAwesomeIcon icon={faChevronRight} />
-        <ButtonPrimary
-          label="Infos secondaires"
-          color={
-            step === 3 ? theme.colors.primary[500] : theme.colors.primary[900]
-          }
-          onClick={() => setStep(3)}
-        />
-      </div>
-      <div className="flex gap-x-2 items-center">
-        <FontAwesomeIcon icon={faChevronRight} />
-        <ButtonPrimary
-          label="Créateurs"
-          color={
-            step === 4 ? theme.colors.primary[500] : theme.colors.primary[900]
-          }
-          onClick={() => setStep(4)}
-        />
-      </div>
-    </div>
+    <TabsCustom>
+      <BreadCrumbElm
+        step={1}
+        game={game}
+        label="Infos principales"
+        first
+        active={step === 1}
+      />
+      <BreadCrumbElm
+        step={2}
+        game={game}
+        label="Images du jeu"
+        active={step === 2}
+      />
+      <BreadCrumbElm
+        step={3}
+        game={game}
+        label="Infos secondaires"
+        active={step === 3}
+      />
+      <BreadCrumbElm
+        step={4}
+        game={game}
+        label="Créateurs"
+        active={step === 4}
+      />
+    </TabsCustom>
   );
 }
