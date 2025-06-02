@@ -8,6 +8,10 @@ export default function Chat({ party }: { party: Party }) {
   const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
+  const eventSource = new EventSource(`${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/.well-known/mercure?topic=/party/${party.id}/messages&authorization=${party.token}`);
+  eventSource.onmessage = (event) => {
+    console.log('New message:', event.data);
+  };
   useEffect(() => {
     // Scrolle en bas à chaque mise à jour des messages
     if (chatEndRef?.current) {

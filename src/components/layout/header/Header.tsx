@@ -8,8 +8,8 @@ import SidemenuButton from "./SidemenuButton";
 import { AppBar } from "@mui/material";
 import { theme } from "@/theme/theme";
 import SearchBarMobil from "./SearchBarMobil";
-
 export default function Header() {
+
   return (
     <AppBar
       position="fixed"
@@ -25,7 +25,6 @@ export default function Header() {
             <div className="ms-6">
               <SidemenuButton />
             </div>
-            
             <Link href="/" className=" lg:block hidden">
               <Image
                 src="/images/logo.png"

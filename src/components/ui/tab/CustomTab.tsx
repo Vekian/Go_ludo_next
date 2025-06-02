@@ -11,7 +11,7 @@ const CustomTab = forwardRef<HTMLDivElement, CustomTabProps>(
     return (
       <div
         ref={ref}
-        className={`${classChild} w-full flex justify-center cursor-pointer`}
+        className={`${classChild} w-full flex justify-center`}
         style={{ userSelect: "none" }}
         onClick={onClick}
       >

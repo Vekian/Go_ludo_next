@@ -38,6 +38,7 @@ export interface Party {
   createdAt: string;
   ageMax: number;
   ageMin: number;
+  token: string;
 }
 
 export interface Message {
