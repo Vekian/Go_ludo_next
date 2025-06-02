@@ -29,6 +29,7 @@ jobs:
           echo 'GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_ID }}' >> .env.production.sample 
           echo 'GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_SECRET }}' >> .env.production.sample 
           echo 'KEY_SYMFONY_API=${{ secrets.KEY_SYMFONY_API_PROD }}' >> .env.production.sample
+          echo 'NEXT_PUBLIC_MERCURE_URL=${{ secrets.MERCURE_URL }}' >> .env.production.sample
 
       - name: Build Docker image
         run: docker compose -f docker-compose-build.yml build nextjs
