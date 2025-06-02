@@ -3,14 +3,20 @@ import React, { useEffect, useRef, useState } from "react";
 import ListMessages from "./ListMessages";
 import InputChat from "./InputChat";
 import { Message, Party } from "@/interfaces/party.interface";
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 export default function Chat({ party }: { party: Party }) {
   const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
-  const eventSource = new EventSource(
-    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/.well-known/mercure?topic=/party/${party.id}/messages&authorization=${party.token}`
-  );
+  const eventSource = new EventSourcePolyfill(
+   `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/.well-known/mercure?topic=/party/${party.id}/messages`,
+  {
+    headers: {
+      Authorization: `Bearer ${party.token}`,
+    },
+  }
+);
   eventSource.onmessage = (event) => {
     console.log("New message:", event.data);
   };

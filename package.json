@@ -21,6 +21,7 @@
     "@mui/material-nextjs": "^7.0.2",
     "@mui/x-date-pickers": "^7.25.0",
     "dayjs": "^1.11.13",
+    "event-source-polyfill": "^1.0.31",
     "leaflet": "^1.9.4",
     "next": "^15.1.6",
     "next-auth": "^4.24.11",
