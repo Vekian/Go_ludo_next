@@ -9,6 +9,8 @@ export default function Chat({ party }: { party: Party }) {
   const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
+  console.log(party)
+
   const eventSource = new EventSourcePolyfill(
    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/.well-known/mercure?topic=/party/${party.id}/messages`,
   {
