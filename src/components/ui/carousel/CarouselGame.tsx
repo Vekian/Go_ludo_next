@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a lo
 import { Carousel as ReactCarousel } from "react-responsive-carousel";
 import Image from "next/image";
 
-function Carousel({
+export default function CarouselGame({
   imgs,
   thumbs = false,
   autoPlay = true,
@@ -29,7 +29,7 @@ function Carousel({
         imgs.map(
           (img, idx) =>
             thumbs && (
-              <div key={idx} className="w-full h-20 relative">
+              <div key={idx} className={`w-full h-20 relative`}>
                 <Image
                   src={`${url}${img}`}
                   layout="fill"
@@ -43,16 +43,14 @@ function Carousel({
     >
       {imgs.map((img, index) => (
         <div key={`img${index}`} className="flex justify-center">
-          <div className="relative w-full lg:h-80 md:h-60  h-40">
+          <div className="relative h-96 w-auto">
             <Image
               alt="Carousel"
               src={`${url}${img}`}
-              fill
-              style={{
-                objectFit: "cover",
-                borderRadius: "10px",
-                textAlign: "center", // cover, contain, none
-              }}
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="h-full w-auto object-cover rounded-[10px]"
             />
           </div>
         </div>
@@ -60,5 +58,3 @@ function Carousel({
     </ReactCarousel>
   );
 }
-
-export default Carousel;

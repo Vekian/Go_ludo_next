@@ -1,6 +1,6 @@
 import React from "react";
-import Carousel from "@/components/ui/carousel/Carousel";
 import Form from "./Form";
+import CarouselBanniere from "@/components/ui/carousel/CarouselBanniere";
 function MainContent() {
   const imgs: string[] = [
     "/images/banniere/banniere.webp",
@@ -9,7 +9,7 @@ function MainContent() {
   return (
     <div className="flex flex-wrap">
       <div className="xl:w-2/3 w-full px-1">
-        <Carousel imgs={imgs} />
+        <CarouselBanniere imgs={imgs} />
       </div>
       <Form />
     </div>

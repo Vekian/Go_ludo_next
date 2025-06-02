@@ -1,5 +1,4 @@
 import React, { Suspense } from "react";
-import Carousel from "@/components/ui/carousel/Carousel";
 import Rating from "@/components/ui/rating/Rating";
 import GameInfos from "@/components/layout/gamePage/GameInfos";
 import GameTech from "@/components/layout/gamePage/GameTech";
@@ -17,6 +16,7 @@ import Link from "next/link";
 import { getBaseUrl } from "@/lib/game";
 import ListGames from "@/components/list/ListGames";
 import ReviewsWrapper from "@/components/layout/gamePage/review/ReviewsWrapper";
+import CarouselGame from "@/components/ui/carousel/CarouselGame";
 
 async function page({
   params,
@@ -39,12 +39,10 @@ async function page({
     <div className="lg:p-4 pt-10">
       <div className="flex bg-white rounded-lg flex-wrap">
         <div className="xl:w-1/3 w-full pt-5 flex justify-center overflow-x-hidden">
-          <Carousel
+          <CarouselGame
             autoPlay={false}
             imgs={game.images.map((image) => image.filepath)}
             thumbs={true}
-            height={300}
-            width={200}
           />
         </div>
         <div className=" xl:w-2/3 w-full lg:p-5 ">
