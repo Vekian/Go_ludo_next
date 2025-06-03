@@ -9,6 +9,7 @@ import { ChatMessageNotification } from "@/interfaces/notification.interface";
 export default function Chat({ party }: { party: Party }) {
   const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
   const chatEndRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     const eventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_MERCURE_URL}?topic=/party/${party.id}/messages`,
@@ -21,19 +22,27 @@ export default function Chat({ party }: { party: Party }) {
 
     eventSource.onmessage = (event) => {
       const notif: ChatMessageNotification = JSON.parse(event.data);
-      if (notif.action === "create") {
-        addMessage(notif.message);
-      } else if (notif.action === "update") {
-        updateMessage(notif.message);
-      } else if (notif.action === "delete") {
-        deleteMessage(notif.message.id);
-      }
+
+      setMessages((prevMessages) => {
+        if (notif.action === "create") {
+          return [...prevMessages, notif.message];
+        } else if (notif.action === "update") {
+          return prevMessages.map((m) =>
+            m.id === notif.message.id ? notif.message : m
+          );
+        } else if (notif.action === "delete") {
+          return prevMessages.filter((m) => m.id !== notif.message.id);
+        } else {
+          return prevMessages;
+        }
+      });
     };
 
     return () => {
       eventSource.close();
     };
   }, [party.id, party.token]);
+
   useEffect(() => {
     // Scrolle en bas à chaque mise à jour des messages
     if (chatEndRef?.current) {
@@ -41,30 +50,6 @@ export default function Chat({ party }: { party: Party }) {
     }
   }, [messages]);
 
-  const addMessage = (message: Message) => {
-    if (messages) {
-      setMessages([...messages, message]);
-    } else {
-      setMessages([message]);
-    }
-  };
-
-  const updateMessage = (message: Message) => {
-    setMessages((prevMessages) => {
-      const index = prevMessages.findIndex((m) => m.id === message.id);
-      if (index !== -1) {
-        const updatedMessages = [...prevMessages];
-        updatedMessages[index] = message;
-        return updatedMessages;
-      }
-      return prevMessages;
-    });
-  };
-  const deleteMessage = (messageId: number) => {
-    setMessages((prevMessages) =>
-      prevMessages.filter((message) => message.id !== messageId)
-    );
-  };
   return (
     <div className="flex flex-col w-full h-full gap-y-3 sm:gap-y-6">
       <div className="bg-white rounded-lg  h-4/5 overflow-y-scroll">
