@@ -1,6 +1,7 @@
 "use client";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import ButtonInput from "@/components/ui/button/ButtonInput";
+import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import { Message } from "@/interfaces/party.interface";
@@ -69,20 +70,18 @@ export default function MessageEdit({ message }: { message: Message }) {
           </div>
         </DialogContent>
         <DialogActions>
-          <ButtonSecondary
-            onClick={handleClose}
-            label="Annuler"
-            color={theme.colors.primary[800]}
-          />
-          <Button
-            className={`bg-primary-600 hover:brightness-90 text-white rounded-md font-semibold  px-3 py-1.5 m-2.5`}
-            type="submit"
-            sx={{
-              textTransform: "none",
-            }}
-          >
-            Soumettre
-          </Button>
+          <div className="flex gap-x-3 ">
+            <ButtonSecondary
+              onClick={handleClose}
+              label="Annuler"
+              color={theme.colors.primary[800]}
+            />
+            <ButtonPrimary
+              label="Valider"
+              type="submit"
+              color={theme.colors.primary[600]}
+            />
+          </div>
         </DialogActions>
       </Dialog>
       <ButtonInput

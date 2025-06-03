@@ -78,7 +78,7 @@ export default function Signup() {
     <div className="w-full mt-10 p-6 bg-white rounded-lg flex flex-col items-center">
       <h1 className="text-2xl text-center font-bold mb-4">Créer un compte</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4 px-6 w-1/2">
+      <form onSubmit={handleSubmit} className="space-y-4 px-6 lg:w-1/2">
         <div className="flex flex-col">
           <label>Nom utilisateur</label>
           <InputText
