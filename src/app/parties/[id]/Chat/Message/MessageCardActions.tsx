@@ -6,19 +6,17 @@ import MessageDelete from "./MessageDelete";
 
 export default function MessageCardActions({
   message,
-  setContent,
   author,
 }: {
   message: Message;
-  setContent: (content: string) => void;
   author: boolean;
 }) {
   return (
     <div className="flex gap-x-2">
       {author && (
         <>
-          <MessageEdit message={message} setContent={setContent} />
-          <MessageDelete message={message} setContent={setContent} />
+          <MessageEdit message={message} />
+          <MessageDelete message={message} />
         </>
       )}
     </div>

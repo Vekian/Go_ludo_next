@@ -1,4 +1,5 @@
 "use client";
+import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
 import ButtonInput from "@/components/ui/button/ButtonInput";
 import ButtonSecondary from "@/components/ui/button/ButtonSecondary";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
@@ -14,14 +15,9 @@ import {
 } from "@mui/material";
 import React from "react";
 
-export default function MessageEdit({
-  message,
-  setContent,
-}: {
-  message: Message;
-  setContent: (content: string) => void;
-}) {
+export default function MessageEdit({ message }: { message: Message }) {
   const [open, setOpen] = React.useState(false);
+  const { showSnackbar } = useSnackbarContext();
   const [contentEdit, setContentEdit] = React.useState(message.content);
   const [errors, setErrors] =
     React.useState<Record<string, string[] | undefined>>();
@@ -39,10 +35,10 @@ export default function MessageEdit({
     if (response.errors) {
       setErrors(response.errors);
     } else {
-      setContent(contentEdit);
       setErrors(undefined);
       setOpen(false);
     }
+    showSnackbar(response.message, response.ok ? "success" : "error");
   };
   return (
     <div>

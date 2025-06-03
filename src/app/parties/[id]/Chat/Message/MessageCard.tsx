@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { Message } from "@/interfaces/party.interface";
 import { getRelativeTime } from "@/lib/date";
 import MessageCardActions from "./MessageCardActions";
@@ -13,7 +13,6 @@ export default function MessageCard({
   message: Message;
   author: boolean;
 }) {
-  const [content, setContent] = useState<string>(message.content);
   return (
     <div
       className={`${
@@ -46,14 +45,10 @@ export default function MessageCard({
           <p className="text-xs lg:text-sm">
             {getRelativeTime(message.createdAt)}
           </p>
-          <MessageCardActions
-            message={message}
-            setContent={setContent}
-            author={author}
-          />
+          <MessageCardActions message={message} author={author} />
         </div>
 
-        <p>{content}</p>
+        <p>{message.content}</p>
       </div>
     </div>
   );

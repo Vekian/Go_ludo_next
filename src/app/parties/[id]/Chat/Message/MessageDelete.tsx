@@ -6,19 +6,10 @@ import { theme } from "@/theme/theme";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 
-export default function MessageDelete({
-  message,
-  setContent,
-}: {
-  message: Message;
-  setContent: (content: string) => void;
-}) {
+export default function MessageDelete({ message }: { message: Message }) {
   const { showSnackbar } = useSnackbarContext();
   const handleDelete = async () => {
     const response = await deleteMessage(message.id);
-    if (response.ok) {
-      setContent("Message supprimé");
-    }
     showSnackbar(response.message, response.ok ? "success" : "error");
   };
   return (
