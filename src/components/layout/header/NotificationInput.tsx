@@ -41,6 +41,7 @@ export default function NotificationInput({ user }: { user: User }) {
       );
 
       eventSource.onmessage = (event) => {
+        console.log(event.data);
         if (event.data.read === "true") {
           fetchNotifications(true);
         }
