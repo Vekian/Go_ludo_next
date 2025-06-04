@@ -16,7 +16,7 @@ function UserButton() {
     <div className="order-4 flex items-center">
       {status === "authenticated" ? (
         <div className="flex items-center">
-          <NotificationInput />
+          <NotificationInput user={session.user} />
           <ProfilButton user={session.user}></ProfilButton>
         </div>
       ) : (
