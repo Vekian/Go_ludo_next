@@ -2,7 +2,7 @@
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge, IconButton, MenuItem } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import NotificationsList from "./NotificationsList";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { User } from "next-auth";
@@ -23,7 +23,9 @@ export default function NotificationInput({ user }: { user: User }) {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  console.log(notifications);
+  useEffect(() => {
+    console.log("notifications updated", notifications);
+  }, [notifications]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -31,6 +33,21 @@ export default function NotificationInput({ user }: { user: User }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const fetchNotifications = useCallback(async (tokenCreated: boolean) => {
+    const response = await getNotifications(tokenCreated);
+    if (response.ok && response.data?.token) {
+      if (response.data.token) {
+        setMercureToken(response.data.token);
+      }
+      if (response.data.notifications) {
+        if (!tokenCreated) {
+          setNotifications(response.data.notifications);
+        } else {
+          setNotifications([]);
+        }
+      }
+    }
+  }, []);
   useEffect(() => {
     if (!mercureToken) {
       fetchNotifications(false);
@@ -55,23 +72,8 @@ export default function NotificationInput({ user }: { user: User }) {
         eventSource.close();
       };
     }
-  }, [mercureToken]);
+  }, [mercureToken, fetchNotifications]); // ← ajoute fetchNotifications ici
 
-  const fetchNotifications = async (tokenCreated: boolean) => {
-    const response = await getNotifications(tokenCreated);
-    if (response.ok && response.data?.token) {
-      if (response.data.token) {
-        setMercureToken(response.data.token);
-      }
-      if (response.data.notifications) {
-        if (!tokenCreated) {
-          setNotifications(response.data.notifications);
-        } else {
-          setNotifications([]);
-        }
-      }
-    }
-  };
   const readAll = async () => {
     if (notifications.some((item) => item.read === false)) {
       const response = await readNotifications();
