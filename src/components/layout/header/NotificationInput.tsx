@@ -23,6 +23,8 @@ export default function NotificationInput({ user }: { user: User }) {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const unreadCount = notifications.filter((n) => !n.read).length;
 
+  console.log(unreadCount);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
