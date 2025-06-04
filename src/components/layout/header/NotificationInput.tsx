@@ -58,6 +58,7 @@ export default function NotificationInput({ user }: { user: User }) {
   }, [mercureToken]);
 
   useEffect(() => {
+    console.log("test");
     if (!notifications) {
       fetchNotifications(true);
     }
@@ -70,6 +71,7 @@ export default function NotificationInput({ user }: { user: User }) {
         setMercureToken(response.data.token);
       }
       if (response.data.notifications) {
+        console.log("notifications", response.data.notifications);
         setNotifications(response.data.notifications);
       }
     }
