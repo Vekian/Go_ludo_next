@@ -55,6 +55,7 @@ export default function NotificationInput({ user }: { user: User }) {
 
   const fetchNotifications = async (tokenCreated: boolean) => {
     const response = await getNotifications(tokenCreated);
+    console.log(response);
     if (response.ok && response.data?.token) {
       if (response.data.token) {
         setMercureToken(response.data.token);
