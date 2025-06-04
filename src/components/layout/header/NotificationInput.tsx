@@ -23,7 +23,7 @@ export default function NotificationInput({ user }: { user: User }) {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const unreadCount = notifications.filter((n) => !n.read).length;
 
-  console.log(unreadCount);
+  console.log(notifications);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -47,7 +47,7 @@ export default function NotificationInput({ user }: { user: User }) {
       eventSource.onmessage = (event) => {
         const response = JSON.parse(event.data);
         if (response?.new === true) {
-          fetchNotifications(true);
+          setNotifications([]);
         }
       };
 
