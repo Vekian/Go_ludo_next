@@ -21,6 +21,8 @@ export default function NotificationInput({ user }: { user: User }) {
   const open = Boolean(anchorEl);
   const [mercureToken, setMercureToken] = React.useState<string>();
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  const unreadCount = notifications.filter((n) => !n.read).length;
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -88,11 +90,7 @@ export default function NotificationInput({ user }: { user: User }) {
         <Badge
           color="primary"
           overlap="circular"
-          badgeContent={
-            notifications &&
-            notifications.filter((notification) => notification.read === false)
-              .length
-          }
+          badgeContent={unreadCount}
           invisible={false}
         >
           <FontAwesomeIcon
