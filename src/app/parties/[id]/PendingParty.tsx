@@ -1,5 +1,5 @@
 "use client";
-import { Party } from "@/interfaces/party.interface";
+import { Message, Party } from "@/interfaces/party.interface";
 import React, { useEffect, useState } from "react";
 import Infos from "./CardInfos/Infos";
 import UserInfos from "./CardInfos/UserInfos";
@@ -17,12 +17,47 @@ import {
   faCommentDots,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
+import { EventSourcePolyfill } from "event-source-polyfill";
+import { ChatMessageNotification } from "@/interfaces/notification.interface";
 
 export default function PendingParty({ party }: { party: Party }) {
   const [mobileChat, setMobileChat] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
 
   const participants = [party.author, ...party.participants];
+  useEffect(() => {
+    const eventSource = new EventSourcePolyfill(
+      `${process.env.NEXT_PUBLIC_MERCURE_URL}?topic=/party/${party.id}/messages`,
+      {
+        headers: {
+          Authorization: `Bearer ${party.token}`,
+        },
+      }
+    );
+
+    eventSource.onmessage = (event) => {
+      const notif: ChatMessageNotification = JSON.parse(event.data);
+
+      setMessages((prevMessages) => {
+        if (notif.action === "create") {
+          return [...prevMessages, notif.message];
+        } else if (notif.action === "update") {
+          return prevMessages.map((m) =>
+            m.id === notif.message.id ? notif.message : m
+          );
+        } else if (notif.action === "delete") {
+          return prevMessages.filter((m) => m.id !== notif.message.id);
+        } else {
+          return prevMessages;
+        }
+      });
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [party.id, party.token]);
 
   useEffect(() => {
     // Fonction pour vérifier la largeur de l'écran
@@ -137,7 +172,7 @@ export default function PendingParty({ party }: { party: Party }) {
             isMobile && mobileChat ? "h-4/5" : "h-full"
           } w-full lg:w-1/2 2xl:w-2/3`}
         >
-          <Chat party={party} />
+          <Chat party={party} messages={messages ?? []} />
         </div>
       )}
     </div>

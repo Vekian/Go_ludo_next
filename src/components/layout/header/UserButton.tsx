@@ -7,16 +7,18 @@ import { useSession } from "next-auth/react";
 import ProfilButton from "./ProfilButton";
 import { theme } from "@/theme/theme";
 import { useRouter } from "next/navigation";
+import NotificationInput from "./NotificationInput";
 
 function UserButton() {
   const { status, data: session } = useSession();
   const router = useRouter();
   return (
-    <div className="order-3 flex items-center">
+    <div className="order-4 flex items-center">
       {status === "authenticated" ? (
-        <>
+        <div className="flex items-center">
+          <NotificationInput />
           <ProfilButton user={session.user}></ProfilButton>
-        </>
+        </div>
       ) : (
         <div className="flex gap-x-3">
           <LogInModal />

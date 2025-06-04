@@ -5,6 +5,7 @@ import { getRelativeTime } from "@/lib/date";
 import MessageCardActions from "./MessageCardActions";
 import { Avatar } from "@mui/material";
 import { getImg } from "@/lib/utils";
+import Link from "next/link";
 
 export default function MessageCard({
   message,
@@ -22,16 +23,21 @@ export default function MessageCard({
       } gap-x-6 rounded-lg py-3`}
     >
       <div className="w-2/12 flex flex-col items-center -mt-8">
-        <div className=" overflow-hidden rounded-full ">
-          <Avatar
-            alt={message.author.username}
-            src={getImg(message.author.avatar)}
-            sx={{ width: 65, height: 65 }}
-          />
-        </div>
-
-        <p>{message.author.username}</p>
+        <Link
+          href={`/users/${message.author.id}`}
+          className="flex flex-col items-center"
+        >
+          <div className=" overflow-hidden rounded-full ">
+            <Avatar
+              alt={message.author.username}
+              src={getImg(message.author.avatar)}
+              sx={{ width: 65, height: 65 }}
+            />
+          </div>
+          <p>{message.author.username}</p>{" "}
+        </Link>
       </div>
+
       <div
         className={`w-10/12 flex flex-col gap-y-1 pr-3 ${
           author ? "items-start" : "items-end pl-3"

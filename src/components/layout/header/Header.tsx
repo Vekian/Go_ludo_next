@@ -9,7 +9,6 @@ import { AppBar } from "@mui/material";
 import { theme } from "@/theme/theme";
 import SearchBarMobil from "./SearchBarMobil";
 export default function Header() {
-
   return (
     <AppBar
       position="fixed"

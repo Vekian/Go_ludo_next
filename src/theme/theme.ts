@@ -2,6 +2,16 @@ export const theme = {
   container: {
     center: true,
   },
+  keyframes: {
+    shake: {
+      "0%, 100%": { transform: "rotate(0deg)" },
+      "25%": { transform: "rotate(20deg)" },
+      "75%": { transform: "rotate(-20deg)" },
+    },
+  },
+  animation: {
+    shake: "shake 0.4s ease-in-out 2",
+  },
   colors: {
     black: "rgba(17, 17, 17, 1)",
     white: "rgba(254, 254, 254, 1)",

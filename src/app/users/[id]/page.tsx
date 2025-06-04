@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/api/nextAuth";
 import { notFound, redirect } from "next/navigation";
 import { handleAuthAdmin } from "@/lib/api/authServer";
+import UserConf from "@/components/layout/user-page/UserConf";
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   const session = await getServerSession(authOptions);
@@ -32,6 +33,7 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
             <>
               <UserParams user={userProfil.user} />
               <UserNotifs user={userProfil.user} />
+              <UserConf user={userProfil.user} />
             </>
           )}
         </UserContent>
