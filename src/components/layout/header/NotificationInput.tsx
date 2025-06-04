@@ -88,6 +88,7 @@ export default function NotificationInput({ user }: { user: User }) {
           color="primary"
           overlap="circular"
           badgeContent={
+            notifications &&
             notifications.filter((notification) => notification.read === false)
               .length
           }
@@ -95,7 +96,11 @@ export default function NotificationInput({ user }: { user: User }) {
         >
           <FontAwesomeIcon
             icon={faBell}
-            className="text-primary-950 animate-shake"
+            className={`text-primary-950 ${
+              notifications &&
+              notifications.some((item) => item.read === false) &&
+              "animate-shake"
+            } `}
             size="lg"
           />
         </Badge>
