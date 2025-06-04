@@ -64,7 +64,11 @@ export default function NotificationInput({ user }: { user: User }) {
         setMercureToken(response.data.token);
       }
       if (response.data.notifications) {
-        setNotifications([]);
+        if (!tokenCreated) {
+          setNotifications(response.data.notifications);
+        } else {
+          setNotifications([]);
+        }
       }
     }
   };
