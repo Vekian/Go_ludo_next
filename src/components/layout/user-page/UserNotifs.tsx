@@ -15,6 +15,9 @@ function UserNotifs({ user }: { user: User }) {
   const [notifPartyMember, setNotifPartyMember] = React.useState(
     user.notifPartyMember ?? false
   );
+  const [notifGameRelease, setNotifGameRelease] = React.useState(
+    user.notifGameRelease ?? false
+  );
   const [notifPartyZone, setNotifPartyZone] = React.useState(
     user.notifPartyZone ?? false
   );
@@ -43,7 +46,23 @@ function UserNotifs({ user }: { user: User }) {
     };
     const response = await updateUser(data, user.id);
     if (response.ok) {
-      setNotifPartyMember(!notifPartyMessage);
+      setNotifPartyMember(!notifPartyMember);
+      showSnackbar(response.message, "success");
+    } else {
+      showSnackbar(response.message, "error");
+    }
+  };
+
+  const handleNotifGameRelease = async (
+    _: React.SyntheticEvent,
+    checked: boolean
+  ) => {
+    const data = {
+      notifPartyMember: checked,
+    };
+    const response = await updateUser(data, user.id);
+    if (response.ok) {
+      setNotifGameRelease(!notifGameRelease);
       showSnackbar(response.message, "success");
     } else {
       showSnackbar(response.message, "error");
@@ -59,7 +78,7 @@ function UserNotifs({ user }: { user: User }) {
     };
     const response = await updateUser(data, user.id);
     if (response.ok) {
-      setNotifPartyZone(!notifPartyMessage);
+      setNotifPartyZone(!notifPartyZone);
       showSnackbar(response.message, "success");
     } else {
       showSnackbar(response.message, "error");
@@ -97,6 +116,7 @@ function UserNotifs({ user }: { user: User }) {
               control={<Checkbox />}
               label="Activé"
               defaultChecked={user.notifGameRelease}
+              onChange={handleNotifGameRelease}
             />
             <ButtonPrimary
               label="Ajouter un jeu"

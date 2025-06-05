@@ -47,7 +47,7 @@ export default function NotificationInput({ user }: { user: User }) {
       eventSource.onmessage = (event) => {
         const notif: Notification = JSON.parse(event.data);
         setNotifications((prevNotifications) => {
-          return [...prevNotifications, notif];
+          return [notif, ...prevNotifications];
         });
       };
 
@@ -115,7 +115,7 @@ export default function NotificationInput({ user }: { user: User }) {
         }}
       >
         {notifications.map((notification) => (
-          <MenuItem key={notification.content} onClick={handleClose}>
+          <MenuItem key={notification.id} onClick={handleClose}>
             <Link
               href={handleUrlNotification(notification)}
               className="text-wrap text-md flex flex-col text-neutral-950"
