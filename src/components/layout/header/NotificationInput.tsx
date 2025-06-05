@@ -2,9 +2,8 @@
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge, IconButton, MenuItem } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import NotificationsList from "./NotificationsList";
-import { EventSourcePolyfill } from "event-source-polyfill";
 import { User } from "next-auth";
 import { Notification } from "@/interfaces/notification.interface";
 import {
@@ -15,15 +14,16 @@ import Link from "next/link";
 import { handleUrlNotification } from "@/lib/notification/notification";
 import { theme } from "@/theme/theme";
 import { getRelativeTime } from "@/lib/date";
+import { useMercureSubscription } from "@/hook/UseMercureSubscription";
 
 export default function NotificationInput({ user }: { user: User }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [mercureToken, setMercureToken] = React.useState<string>();
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
-  const unreadCount = notifications.filter((n) => !n.read).length;
-
-  console.log(notifications);
+  const unreadCount = useMemo(
+    () => notifications.filter((n) => !n.read).length,
+    [notifications]
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -31,51 +31,56 @@ export default function NotificationInput({ user }: { user: User }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  useEffect(() => {
-    if (!mercureToken) {
-      fetchNotifications();
-    } else {
-      const eventSource = new EventSourcePolyfill(
-        `${process.env.NEXT_PUBLIC_MERCURE_URL}?topic=/user/${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${mercureToken}`,
-          },
-        }
-      );
 
-      eventSource.onmessage = (event) => {
-        const notif: Notification = JSON.parse(event.data);
-        setNotifications((prevNotifications) => {
-          return [notif, ...prevNotifications];
-        });
-      };
+  useMercureSubscription({
+    topic: `/user/${user.id}`,
+    refreshUrl: `/api/notification/token`,
+    onMessage: (notif: object) => {
+      const notification = notif as Notification;
+      setNotifications((prevNotifications) => {
+        return [notification, ...prevNotifications];
+      });
+    },
+  });
 
-      return () => {
-        eventSource.close();
-      };
-    }
-  }, [mercureToken]);
-
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     const response = await getNotifications();
-    if (response.ok && response.data?.token) {
-      setMercureToken(response.data.token);
-      setNotifications(response.data.notifications);
+    if (response.ok && response.data) {
+      setNotifications(response.data);
     }
-  };
-  const readAll = async () => {
-    if (notifications.some((item) => item.read === false)) {
+  }, []);
+  const readAll = useCallback(async () => {
+    if (notifications.some((item) => !item.read)) {
       const response = await readNotifications();
       if (response.ok) {
-        const updatedNotifications = notifications.map((notification) => ({
-          ...notification,
-          read: true,
-        }));
-        setNotifications(updatedNotifications);
+        setNotifications((prev) =>
+          prev.map((notif) => ({ ...notif, read: true }))
+        );
       }
     }
-  };
+  }, [notifications]);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  const notificationItems = useMemo(
+    () =>
+      notifications.map((notification) => (
+        <MenuItem key={notification.id} onClick={handleClose}>
+          <Link
+            href={handleUrlNotification(notification)}
+            className="text-wrap text-md flex flex-col text-neutral-950"
+          >
+            <small>{getRelativeTime(notification.createdAt)}</small>
+            <div className={notification.read ? "" : "font-semibold"}>
+              {notification.content}
+            </div>
+          </Link>
+        </MenuItem>
+      )),
+    [notifications, handleClose]
+  );
 
   return (
     <div className="me-12">
@@ -114,19 +119,7 @@ export default function NotificationInput({ user }: { user: User }) {
           },
         }}
       >
-        {notifications.map((notification) => (
-          <MenuItem key={notification.id} onClick={handleClose}>
-            <Link
-              href={handleUrlNotification(notification)}
-              className="text-wrap text-md flex flex-col text-neutral-950"
-            >
-              <small>{getRelativeTime(notification.createdAt)}</small>
-              <div className={`${notification.read ? "" : "font-semibold"}`}>
-                {notification.content}
-              </div>
-            </Link>
-          </MenuItem>
-        ))}
+        {notificationItems}
       </NotificationsList>
     </div>
   );

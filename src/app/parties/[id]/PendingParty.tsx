@@ -17,47 +17,35 @@ import {
   faCommentDots,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import { EventSourcePolyfill } from "event-source-polyfill";
 import { ChatMessageNotification } from "@/interfaces/notification.interface";
+import { useMercureSubscription } from "@/hook/UseMercureSubscription";
 
 export default function PendingParty({ party }: { party: Party }) {
   const [mobileChat, setMobileChat] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
-
   const participants = [party.author, ...party.participants];
-  useEffect(() => {
-    const eventSource = new EventSourcePolyfill(
-      `${process.env.NEXT_PUBLIC_MERCURE_URL}?topic=/party/${party.id}/messages`,
-      {
-        headers: {
-          Authorization: `Bearer ${party.token}`,
-        },
-      }
-    );
 
-    eventSource.onmessage = (event) => {
-      const notif: ChatMessageNotification = JSON.parse(event.data);
-
+  useMercureSubscription({
+    topic: `/party/${party.id}/messages`,
+    refreshUrl: `/api/party/token/${party.id}`,
+    onMessage: (notif: object) => {
+      const notification = notif as ChatMessageNotification;
       setMessages((prevMessages) => {
-        if (notif.action === "create") {
-          return [...prevMessages, notif.message];
-        } else if (notif.action === "update") {
+        if (notification.action === "create") {
+          return [...prevMessages, notification.message];
+        } else if (notification.action === "update") {
           return prevMessages.map((m) =>
-            m.id === notif.message.id ? notif.message : m
+            m.id === notification.message.id ? notification.message : m
           );
-        } else if (notif.action === "delete") {
-          return prevMessages.filter((m) => m.id !== notif.message.id);
+        } else if (notification.action === "delete") {
+          return prevMessages.filter((m) => m.id !== notification.message.id);
         } else {
           return prevMessages;
         }
       });
-    };
-
-    return () => {
-      eventSource.close();
-    };
-  }, [party.id, party.token]);
+    },
+  });
 
   useEffect(() => {
     // Fonction pour vérifier la largeur de l'écran

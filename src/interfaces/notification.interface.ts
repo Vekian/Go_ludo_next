@@ -4,9 +4,8 @@ export interface ChatMessageNotification {
   action: "create" | "update" | "delete";
 }
 
-export interface NotificationsInit {
+export interface TokenNotification {
   token: string;
-  notifications: Notification[];
 }
 
 export interface Notification {
