@@ -33,7 +33,7 @@ export default function NotificationInput({ user }: { user: User }) {
   };
   useEffect(() => {
     if (!mercureToken) {
-      fetchNotifications(false);
+      fetchNotifications();
     } else {
       const eventSource = new EventSourcePolyfill(
         `${process.env.NEXT_PUBLIC_MERCURE_URL}?topic=/user/${user.id}`,
@@ -45,10 +45,10 @@ export default function NotificationInput({ user }: { user: User }) {
       );
 
       eventSource.onmessage = (event) => {
-        const response = JSON.parse(event.data);
-        if (response?.new === true) {
-          setNotifications([]);
-        }
+        const notif: Notification = JSON.parse(event.data);
+        setNotifications((prevNotifications) => {
+          return [...prevNotifications, notif];
+        });
       };
 
       return () => {
@@ -57,21 +57,11 @@ export default function NotificationInput({ user }: { user: User }) {
     }
   }, [mercureToken]);
 
-  useEffect(() => {
-    if (notifications.length === 0) {
-      fetchNotifications(true);
-    }
-  }, [notifications]);
-
-  const fetchNotifications = async (tokenCreated: boolean) => {
-    const response = await getNotifications(tokenCreated);
+  const fetchNotifications = async () => {
+    const response = await getNotifications();
     if (response.ok && response.data?.token) {
-      if (response.data.token) {
-        setMercureToken(response.data.token);
-      }
-      if (response.data.notifications) {
-        setNotifications(response.data.notifications);
-      }
+      setMercureToken(response.data.token);
+      setNotifications(response.data.notifications);
     }
   };
   const readAll = async () => {
