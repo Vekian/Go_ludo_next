@@ -18,6 +18,13 @@ export default function MobileNavigation() {
     return 0;
   });
 
+  React.useEffect(() => {
+    // Permet de définir l'onglet actif en fonction de la route actuelle
+    if (pathname === "/") setValue(0);
+    if (pathname === "/parties") setValue(1);
+    if (pathname === "/users/profil") setValue(2);
+  }, [pathname]);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
     switch (newValue) {

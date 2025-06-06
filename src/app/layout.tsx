@@ -50,7 +50,7 @@ export default function RootLayout({
               <AuthProvider>
                 <SidemenuProvider>
                   <Header />
-                  <div className="pt-16 h-screen lg:flex md:pb-0 pb-14">
+                  <div className="pt-8 md:pt-12 h-screen lg:flex md:pb-0 pb-14">
                     <Sidemenu />
                     <div className=" w-full h-full overflow-y-auto">
                       {children}

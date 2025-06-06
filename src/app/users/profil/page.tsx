@@ -35,7 +35,7 @@ const Page = async () => {
           <UserConf user={user.user} />
         </UserContent>
       </div>
-      <div>
+      <div className="px-1 md:px-6">
         <h1 className="text-center">Collection</h1>
         <ListGames games={user.games} />
       </div>

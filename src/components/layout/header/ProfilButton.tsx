@@ -33,6 +33,7 @@ function ProfilButton({ user }: { user: User }) {
         aria-expanded={open ? "true" : undefined}
         variant="text"
         disableElevation
+        disableRipple
         onClick={handleClick}
         endIcon={
           <span className="hidden md:block">
@@ -47,7 +48,28 @@ function ProfilButton({ user }: { user: User }) {
           },
           color: "white",
           "&:hover": {
-            backgroundColor: theme.colors.primary[400],
+            backgroundColor: {
+              xs: "transparent",
+              md: theme.colors.primary[400],
+            },
+          },
+          "&:focus": {
+            backgroundColor: {
+              xs: "transparent",
+              md: theme.colors.primary[500],
+            },
+          },
+          "&.Mui-focusVisible": {
+            backgroundColor: {
+              xs: "transparent",
+              md: theme.colors.primary[500],
+            },
+          },
+          "&:active": {
+            backgroundColor: {
+              xs: "transparent",
+              md: theme.colors.primary[500],
+            },
           },
           padding: "0 8px",
           borderRadius: {

@@ -43,7 +43,7 @@ export default async function Home({
           </TabsCustom>
         </div>
       </div>
-      <div className="p-0 md:px-6">
+      <div className="px-1 md:px-6">
         <Suspense fallback={<CustomLinearProgress />}>
           <GamesList searchParams={searchParams} />
         </Suspense>
