@@ -10,6 +10,7 @@ import Sidemenu from "@/components/layout/sidemenu/Sidemenu";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { muiTheme } from "@/theme/muiTheme";
 import { ThemeProvider } from "@mui/material";
+import InstallPwaBanner from "@/components/ui/button/InstallPwaBanner";
 
 export const metadata: Metadata = {
   title: "Go Ludo",
@@ -54,6 +55,7 @@ export default function RootLayout({
                       {children}
                     </div>
                   </div>
+                  <InstallPwaBanner />
                 </SidemenuProvider>
               </AuthProvider>
             </SnackbarProvider>

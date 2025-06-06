@@ -1,5 +1,4 @@
 import { useSidemenu } from "@/components/provider/SidemenuProvider";
-import InstallPwaButton from "@/components/ui/button/InstallPwaButton";
 import { faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -90,9 +89,7 @@ export default function ListAssistance({
             sx={{
               paddingLeft: 6,
             }}
-          >
-            <InstallPwaButton />
-          </List>
+          ></List>
         </Collapse>
       </ListItem>
     </List>
