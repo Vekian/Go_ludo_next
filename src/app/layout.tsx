@@ -11,6 +11,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { muiTheme } from "@/theme/muiTheme";
 import { ThemeProvider } from "@mui/material";
 import InstallPwaBanner from "@/components/ui/button/InstallPwaBanner";
+import MobileNavigation from "@/components/layout/mobileNavigation/MobileNavigation";
 
 export const metadata: Metadata = {
   title: "Go Ludo",
@@ -49,12 +50,14 @@ export default function RootLayout({
               <AuthProvider>
                 <SidemenuProvider>
                   <Header />
-                  <div className="pt-16 h-screen lg:flex">
+                  <div className="pt-16 h-screen lg:flex md:pb-0 pb-14">
                     <Sidemenu />
                     <div className=" w-full h-full overflow-y-auto">
                       {children}
                     </div>
+                    <MobileNavigation />
                   </div>
+
                   <InstallPwaBanner />
                 </SidemenuProvider>
               </AuthProvider>

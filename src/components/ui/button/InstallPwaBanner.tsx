@@ -84,18 +84,33 @@ export default function InstallPwaBanner() {
             />
           }
         >
-          Installez l’application pour un accès plus rapide !
+          <span className="font-nunito font-semibold">
+            Installez l’application pour un accès plus rapide !
+          </span>
         </Alert>
       </Snackbar>
 
       {/* iOS */}
       {isIos && (
         <Snackbar
-          open
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          open={shown ? !shown : open}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          <Alert severity="info" sx={{ width: "100%" }} onClose={handleClose}>
-            Sur iPhone : menu Partager &rarr; Sur l’écran d’accueil.
+          <Alert
+            severity="info"
+            sx={{
+              width: "100%",
+              backgroundColor: theme.colors.primary[950], // vert foncé par exemple
+              color: "#fff",
+              "& .MuiAlert-message": {
+                color: "#fff",
+              },
+            }}
+            onClose={handleClose}
+          >
+            <span className="font-nunito font-semibold">
+              Sur iPhone : menu Partager &rarr; Sur l’écran d’accueil.
+            </span>
           </Alert>
         </Snackbar>
       )}
