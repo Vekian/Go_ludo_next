@@ -44,7 +44,7 @@ export const muiTheme = createTheme({
     },
     text: {
       primary: appTheme.colors.black,
-      secondary: appTheme.colors.neutral[600],
+      secondary: appTheme.colors.neutral[800],
     },
   },
   shape: {
