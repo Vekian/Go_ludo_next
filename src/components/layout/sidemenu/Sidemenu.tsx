@@ -1,7 +1,7 @@
 "use client";
 import { useSidemenu } from "@/components/provider/SidemenuProvider";
 import { CSSObject, Divider, IconButton, styled, Theme } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import MuiDrawer from "@mui/material/Drawer";
 import ListCollection from "./ListCollection";
 import ListParties from "./ListParties";
@@ -62,6 +62,27 @@ const Drawer = styled(MuiDrawer, {
 
 export default function Sidemenu() {
   const { isMenuOpen, toggleSidemenu } = useSidemenu();
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      registerServiceWorker();
+    }
+  }, []);
+
+  async function registerServiceWorker() {
+    try {
+      await navigator.serviceWorker.register("/sw.js", {
+        scope: "/",
+        updateViaCache: "none",
+      });
+      console.log("Service Worker enregistré avec succès.");
+    } catch (error) {
+      console.error(
+        "Erreur lors de l'enregistrement du Service Worker :",
+        error
+      );
+    }
+  }
   return (
     <>
       <Drawer
