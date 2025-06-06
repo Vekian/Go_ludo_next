@@ -88,11 +88,6 @@ export default function ListCollection({
               paddingLeft: 6,
             }}
           >
-            <ListItem component="li">
-              <ListItemButton sx={{ py: 0 }}>
-                <ListItemText primary="Recherche avancée" />
-              </ListItemButton>
-            </ListItem>
             {data && data.user.id && (
               <ListItem component="li">
                 <Link

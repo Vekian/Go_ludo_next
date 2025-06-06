@@ -1,9 +1,7 @@
 "use client";
 import { useSnackbarContext } from "@/components/provider/SnackbarProvider";
-import ButtonPrimary from "@/components/ui/button/ButtonPrimary";
 import { User } from "@/interfaces";
 import { updateUser } from "@/lib/api/server/user";
-import { theme } from "@/theme/theme";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
 
@@ -15,12 +13,12 @@ function UserNotifs({ user }: { user: User }) {
   const [notifPartyMember, setNotifPartyMember] = React.useState(
     user.notifPartyMember ?? false
   );
-  const [notifGameRelease, setNotifGameRelease] = React.useState(
+  /*   const [notifGameRelease, setNotifGameRelease] = React.useState(
     user.notifGameRelease ?? false
   );
   const [notifPartyZone, setNotifPartyZone] = React.useState(
     user.notifPartyZone ?? false
-  );
+  ); */
   const handleNotifPartyMessage = async (
     _: React.SyntheticEvent,
     checked: boolean
@@ -52,7 +50,7 @@ function UserNotifs({ user }: { user: User }) {
       showSnackbar(response.message, "error");
     }
   };
-
+  /* 
   const handleNotifGameRelease = async (
     _: React.SyntheticEvent,
     checked: boolean
@@ -83,7 +81,7 @@ function UserNotifs({ user }: { user: User }) {
     } else {
       showSnackbar(response.message, "error");
     }
-  };
+  }; */
 
   return (
     <div
@@ -109,7 +107,7 @@ function UserNotifs({ user }: { user: User }) {
             onChange={handleNotifPartyMember}
           />
         </div>
-        <div className="flex flex-col gap-y-3">
+        {/*   <div className="flex flex-col gap-y-3">
           <p>Pour les sorties d&apos;un jeu (extensions):</p>
           <div className="flex gap-x-6">
             <FormControlLabel
@@ -123,9 +121,9 @@ function UserNotifs({ user }: { user: User }) {
               color={theme.colors.primary[600]}
             />
           </div>
-        </div>
+        </div> */}
       </div>
-      <div className="flex flex-col gap-y-3">
+      {/*    <div className="flex flex-col gap-y-3">
         <div>
           <h4>Zones d&apos;alerte:</h4>
           <p>
@@ -145,7 +143,7 @@ function UserNotifs({ user }: { user: User }) {
             color={theme.colors.primary[600]}
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
