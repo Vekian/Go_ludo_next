@@ -8,7 +8,6 @@ import { Message } from "@/interfaces/party.interface";
 import { updateMessage } from "@/lib/api/server/chat";
 import { theme } from "@/theme/theme";
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
