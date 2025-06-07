@@ -87,6 +87,16 @@ export default function ListParties({
             }}
           >
             <Link
+              href={"/parties/create"}
+              onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
+            >
+              <ListItem component="li">
+                <ListItemButton sx={{ py: 0 }}>
+                  <ListItemText primary="Créer une partie" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Link
               href={"/parties/joined"}
               onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
             >

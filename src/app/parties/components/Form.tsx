@@ -79,7 +79,7 @@ export default function Form({
 
   return (
     <form onSubmit={handleSubmitAll}>
-      <div className="flex gap-x-10 p-10 flex-wrap gap-y-3">
+      <div className="flex gap-x-10 p-3 lg:p-10 flex-wrap gap-y-3">
         <FormLocalisation
           handleChange={handleChange}
           errors={errors}
