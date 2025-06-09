@@ -80,7 +80,7 @@ async function page({
         </div>
       )}
       <Suspense fallback={<p>Chargement...</p>}>
-        <SimilarGames />
+        <SimilarGames game={game} />
       </Suspense>
     </div>
   );
