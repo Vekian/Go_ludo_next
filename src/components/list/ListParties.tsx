@@ -18,9 +18,10 @@ function ListParties({ parties }: { parties: ListPaginated<PartyCard> }) {
   return (
     <div>
       <div className=" flex flex-col gap-5 mt-5">
-        {parties.items.map((party) => (
-          <CardParty party={party} key={party.id} />
-        ))}
+        {parties.items &&
+          parties.items.map((party) => (
+            <CardParty party={party} key={party.id} />
+          ))}
       </div>
       <NumberPaginator
         page={parties.page}

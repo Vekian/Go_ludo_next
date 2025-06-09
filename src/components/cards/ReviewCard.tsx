@@ -1,6 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { GameReview } from "@/interfaces";
 import { getImg } from "@/lib/utils";
 import ReviewActions from "./actions/ReviewActions";
@@ -40,7 +38,6 @@ export default function ReviewCard({
           </div>
           <div className="flex items-center gap-x-4 justify-end w-full sm:justify-center sm:w-auto md:mb-0 -mb-5">
             {owner && <ReviewActions review={review} />}
-            <FontAwesomeIcon icon={faFlag} fontSize={26} />
           </div>
         </div>
         <p className="mt-5">{review.content}</p>
@@ -73,7 +70,7 @@ export default function ReviewCard({
           </div>
         </div>
       </div>
-      <ReviewComments review={review} />
+      {review.content && <ReviewComments review={review} />}
     </div>
   );
 }

@@ -150,6 +150,47 @@ export async function createParty(
   return handleResponse(
     response,
     "Partie créée avec succès",
-    "Impossible de créeer la partie, veuillez vérifier vos informations"
+    "Impossible de créer la partie, veuillez vérifier vos informations"
+  );
+}
+export async function updateParty(
+  formData: FormData,
+  gamesId: number[] | undefined,
+  partyId: number
+): Promise<ResponserServer<PartyCard>> {
+  const rawData = Object.fromEntries(formData.entries());
+  const filteredData = Object.fromEntries(
+    Object.entries(rawData).filter(
+      ([, value]) => value !== "" && value !== null && value !== undefined
+    )
+  );
+
+  const validatedData = handleValidation(
+    {
+      games: gamesId,
+      ...filteredData,
+    },
+    createPartySchema,
+    "Impossible d'éditer la partie"
+  );
+
+  if (!validatedData.ok) {
+    return validatedData as ResponserServer<PartyCard>;
+  }
+
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/party/${partyId}`
+  );
+  const headers = await handleAuth();
+  const response = await fetch(url, {
+    headers: headers,
+    method: "PUT",
+    body: JSON.stringify(validatedData.data),
+  });
+
+  return handleResponse(
+    response,
+    "Partie éditée avec succès",
+    "Impossible d'éditer la partie, veuillez vérifier vos informations"
   );
 }

@@ -1,4 +1,5 @@
 import { GameListItem } from "./game.interface";
+import { CityListItem } from "./localisation.interface";
 import { User } from "./user.interface";
 
 export interface PartyCard {
@@ -7,7 +8,7 @@ export interface PartyCard {
   playersMax: number;
   cover: string;
   games: Partial<GameListItem>[];
-  city: City;
+  city: CityListItem;
   meetingDate: string;
   meetingTime: string;
   author: User;
@@ -27,7 +28,7 @@ export interface Party {
   playersCount: number;
   cover: string;
   games: GameListItem[];
-  city: City;
+  city: CityListItem;
   meetingDate: string;
   meetingTime: string;
   author: User;
@@ -46,7 +47,4 @@ export interface Message {
   createdAt: string;
   updatedAt: string;
   author: User;
-}
-export interface City {
-  name: string;
 }

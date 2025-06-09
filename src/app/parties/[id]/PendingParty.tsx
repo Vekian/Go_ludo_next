@@ -15,16 +15,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
   faCommentDots,
+  faPen,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { ChatMessageNotification } from "@/interfaces/notification.interface";
 import { useMercureSubscription } from "@/hook/UseMercureSubscription";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function PendingParty({ party }: { party: Party }) {
   const [mobileChat, setMobileChat] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<Message[]>(party.messages ?? []);
   const participants = [party.author, ...party.participants];
+  const { data } = useSession();
 
   useMercureSubscription({
     topic: `/party/${party.id}/messages`,
@@ -92,18 +96,27 @@ export default function PendingParty({ party }: { party: Party }) {
           </div>
         ) : (
           <div className="bg-white rounded-lg flex flex-wrap justify-center  gap-x-14 px-5 py-8">
-            <div className="flex w-full justify-around">
+            <div className="flex w-full justify-around relative">
               <UserInfos user={party.author} />
+              {data &&
+                (data.user.roles.includes("ROLE_ADMIN") ||
+                  party.author.id === Number(data.user.id)) && (
+                  <div className="absolute right-0">
+                    <Link href={`/parties/edit/${party.id}`}>
+                      <ButtonPrimary
+                        label=""
+                        icon={faPen}
+                        color={theme.colors.primary[600]}
+                      />
+                    </Link>
+                  </div>
+                )}
             </div>
             <Infos party={party} />
           </div>
         )}
 
         <div className="flex justify-around items-center">
-          <ButtonPrimary
-            label="Inviter un ami"
-            color={theme.colors.primary[600]}
-          />
           <ButtonLeave party={party} />
         </div>
         {isMobile && mobileChat ? (

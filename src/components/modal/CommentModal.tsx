@@ -19,6 +19,7 @@ import {
 } from "@/lib/api/server/reviewComment";
 import { useSnackbarContext } from "../provider/SnackbarProvider";
 import FormError from "../ui/error/FormError";
+import { useSession } from "next-auth/react";
 
 export default function CommentModal({
   review,
@@ -27,6 +28,7 @@ export default function CommentModal({
   review: GameReview;
   comment?: ReviewComment;
 }) {
+  const { data } = useSession();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[] | undefined>>();
@@ -34,7 +36,11 @@ export default function CommentModal({
   const router = useRouter();
 
   const handleClickOpen = () => {
-    setOpen(true);
+    if (!data) {
+      router.push("/signup");
+    } else {
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {

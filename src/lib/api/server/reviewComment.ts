@@ -32,6 +32,7 @@ export async function addReviewComment(
     method: "POST",
     body: JSON.stringify(validatedData.data),
   });
+  console.log(response);
 
   return handleResponse(
     response,

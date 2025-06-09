@@ -6,6 +6,7 @@ import PartyTimePicker from "@/components/ui/input/PartyTimePicker";
 import RangeThumb from "@/components/ui/input/range/RangeThumb";
 import TextAreaAutosize from "@/components/ui/input/TextAreaAutosize";
 import DoubleSlider from "@/components/ui/slider/DoubleSlider";
+import { Party } from "@/interfaces/party.interface";
 import { theme } from "@/theme/theme";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -16,21 +17,35 @@ dayjs.locale("fr");
 
 export default function FormInfosParty({
   errors,
+  party,
 }: {
   errors: Record<string, string[] | undefined>;
+  party?: Party;
 }) {
-  const [rangeValue, setRangeValue] = useState([2, 30]);
-  const [ageValue, setAgeValue] = useState([2, 30]);
-  const [description, setDescription] = useState("");
-  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(null);
-  const [timeValue, setTimeValue] = React.useState<Dayjs | null>(null);
+  const [playersValue, setPlayersValues] = useState([
+    party ? party.playersMin : 2,
+    party ? party.playersMax : 30,
+  ]);
+  const [ageValue, setAgeValue] = useState([
+    party ? party.ageMin : 18,
+    party ? party.ageMax : 30,
+  ]);
+  const [description, setDescription] = useState(
+    party ? party.description : ""
+  );
+  const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(
+    party ? dayjs(party.meetingDate) : dayjs()
+  );
+  const [timeValue, setTimeValue] = React.useState<Dayjs | null>(
+    party ? dayjs(party.meetingTime) : dayjs()
+  );
 
   const handleRangeChange = (
     event: Event,
-    newRangeValue: number | number[]
+    newPlayersValues: number | number[]
   ) => {
-    if (Array.isArray(newRangeValue)) {
-      setRangeValue(newRangeValue as number[]);
+    if (Array.isArray(newPlayersValues)) {
+      setPlayersValues(newPlayersValues as number[]);
     }
   };
 
@@ -46,7 +61,7 @@ export default function FormInfosParty({
           <label htmlFor="title" className="text-primary-950 font-semibold">
             Nom du groupe
           </label>
-          <InputText defaultValue="" id="title" />
+          <InputText defaultValue={party ? party.title : ""} id="title" />
           {errors?.title && <FormError name="title" errors={errors.title} />}
         </div>
         <div className="flex flex-wrap w-full lg:w-3/5 gap-x-12">
@@ -60,7 +75,7 @@ export default function FormInfosParty({
               defaultValue={[5, 10]}
               valueLabelDisplay="auto"
               name="players"
-              value={rangeValue}
+              value={playersValue}
               onChange={handleRangeChange}
               slots={{
                 thumb: RangeThumb,

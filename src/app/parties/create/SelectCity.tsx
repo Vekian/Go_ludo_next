@@ -24,6 +24,8 @@ export default function SelectCity({
         label="Une ville (code postal, ville..)"
         icon={faCity}
         onChange={handleCityChange}
+        value={city?.name ?? undefined}
+        city={city}
       />
       {city && <input type="hidden" name="city" value={city.id} />}
     </>

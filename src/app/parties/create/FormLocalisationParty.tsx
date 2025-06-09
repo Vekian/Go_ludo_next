@@ -7,6 +7,7 @@ import { TypeSelectionLocalisation } from "@/interfaces/localisation.interface";
 import { getCity } from "@/lib/api/server/city";
 import { CityListItem } from "@/interfaces/localisation.interface";
 import FormError from "@/components/ui/error/FormError";
+import { Party } from "@/interfaces/party.interface";
 
 const DynamicMap = dynamic(() => import("@/components/map/Map"), {
   ssr: false,
@@ -14,14 +15,22 @@ const DynamicMap = dynamic(() => import("@/components/map/Map"), {
 
 export default function FormLocalisationParty({
   errors,
+  party,
 }: {
   errors: Record<string, string[] | undefined>;
+  party?: Party;
 }) {
   const [position, setPosition] = useState<[number, number] | null>(null);
-  const [city, setCity] = useState<CityListItem | null>(null);
-  const [localisation, setLocalisation] = useState<TypeSelectionLocalisation>({
-    type: "gps",
-  });
+  const [city, setCity] = useState<CityListItem | null>(
+    party ? (party.city as CityListItem) : null
+  );
+  const [localisation, setLocalisation] = useState<TypeSelectionLocalisation>(
+    party
+      ? { type: "city" }
+      : {
+          type: "gps",
+        }
+  );
 
   useEffect(() => {
     if (localisation.type === "city") {

@@ -36,7 +36,7 @@ export default async function page({
           </div>
           <ListParties parties={parties} />
         </div>
-      )}{" "}
+      )}
     </div>
   );
 }
