@@ -24,7 +24,7 @@ function EditUser({ user }: { user: User }) {
   const { showSnackbar } = useSnackbarContext();
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
-  const [gender, setGender] = React.useState(user.gender);
+  const [gender, setGender] = React.useState(user.gender ?? "Aucun");
   const [city, setCity] = React.useState<CityListItem | null>(user?.city);
   const [inputCity, setInputCity] = React.useState(
     user.city?.name ?? undefined
@@ -125,7 +125,7 @@ function EditUser({ user }: { user: User }) {
                   name="firstname"
                   id="firstname"
                   className="bg-neutral-50 rounded-full px-3 py-1"
-                  defaultValue={user.firstname}
+                  defaultValue={user.firstname ?? undefined}
                 />
                 {errors?.firstname && (
                   <p className="text-red-500">{errors.firstname[0]}</p>
@@ -143,7 +143,7 @@ function EditUser({ user }: { user: User }) {
                   name="lastname"
                   id="lastname"
                   className="bg-neutral-50 rounded-full px-3 py-1"
-                  defaultValue={user.lastname}
+                  defaultValue={user.lastname ?? undefined}
                 />
                 {errors?.lastname && (
                   <p className="text-red-500">{errors.lastname[0]}</p>
@@ -168,6 +168,7 @@ function EditUser({ user }: { user: User }) {
                 <SelectClassic
                   value={gender}
                   options={[
+                    { label: "Non renseigné", value: "Aucun" },
                     { label: "Homme", value: "Homme" },
                     { label: "Femme", value: "Femme" },
                   ]}

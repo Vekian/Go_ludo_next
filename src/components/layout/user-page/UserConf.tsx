@@ -45,10 +45,6 @@ function UserConf({ user }: { user: User }) {
                 value: "1",
               },
               {
-                label: "Mes amis",
-                value: "2",
-              },
-              {
                 label: "Personne",
                 value: "3",
               },

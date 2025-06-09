@@ -38,10 +38,12 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
           )}
         </UserContent>
       </div>
-      <div className="px-1 md:px-6">
-        <h1 className="text-center">Collection</h1>
-        <ListGames games={userProfil.games} />
-      </div>
+      {userProfil.user.confCollection === 1 && (
+        <div className="px-1 md:px-6">
+          <h1 className="text-center">Collection</h1>
+          <ListGames games={userProfil.games} />
+        </div>
+      )}
     </div>
   );
 };

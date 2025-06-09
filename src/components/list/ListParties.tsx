@@ -15,12 +15,13 @@ function ListParties({ parties }: { parties: ListPaginated<PartyCard> }) {
     params.set("page", String(page));
     router.push(`/parties?${params.toString()}`, { scroll: false });
   };
+
   return (
     <div>
       <div className=" flex flex-col gap-5 mt-5">
         {parties.items &&
           parties.items.map((party) => (
-            <CardParty party={party} key={party.id} />
+            <CardParty party={party} key={`${party.id}party`} />
           ))}
       </div>
       <NumberPaginator

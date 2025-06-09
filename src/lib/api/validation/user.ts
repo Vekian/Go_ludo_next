@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const GenderEnum = z.enum(["Homme", "Femme"]);
+const GenderEnum = z.enum(["Homme", "Femme", "Aucun"]);
 
 export const createUserSchema = z.object({
   username: z
@@ -25,7 +25,9 @@ export const createUserSchema = z.object({
     .optional(),
   description: z
     .string()
-    .max(3000, "La description ne doit pas dépasser 3000 caractères"),
+    .max(3000, "La description ne doit pas dépasser 3000 caractères")
+    .nullable()
+    .optional(),
   age: z.coerce
     .number()
     .min(1, "Pas d'écran lorsqu'on est si jeune")

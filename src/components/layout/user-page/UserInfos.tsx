@@ -13,22 +13,24 @@ function UserInfos({ user, edit = true }: { user: User; edit?: boolean }) {
       <div className="hidden lg:block">
         <div className="flex justify-between items-center">
           <div className="flex">
-            <FontAwesomeIcon
-              icon={user.gender === "Homme" ? faMars : faVenus}
-              className={`${
-                user.gender === "Homme"
-                  ? "text-secondary-400"
-                  : "text-primary-700"
-              } text-2xl`}
-            />
+            {user.gender !== "Aucun" && (
+              <FontAwesomeIcon
+                icon={user.gender === "Homme" ? faMars : faVenus}
+                className={`${
+                  user.gender === "Homme"
+                    ? "text-secondary-400"
+                    : "text-primary-700"
+                } text-2xl`}
+              />
+            )}
+
             {user.city && (
               <div className="ml-4">
                 <FontAwesomeIcon icon={faCity} className="mr-2" />
                 {user.city.name}
               </div>
             )}
-
-            <p className="ml-4">{user.age} ans</p>
+            {user.age && <p className="ml-4">{user.age} ans</p>}
           </div>
           {edit && <EditUser user={user} />}
         </div>
