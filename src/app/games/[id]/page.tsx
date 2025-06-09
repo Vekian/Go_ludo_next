@@ -17,6 +17,7 @@ import { getBaseUrl } from "@/lib/game";
 import ListGames from "@/components/list/ListGames";
 import ReviewsWrapper from "@/components/layout/gamePage/review/ReviewsWrapper";
 import CarouselGame from "@/components/ui/carousel/CarouselGame";
+import ButtonDeleteGame from "@/components/ui/button/ButtonDeleteGame";
 
 async function page({
   params,
@@ -50,13 +51,16 @@ async function page({
             <div className="flex items-center gap-x-3">
               <h2>{game.name}</h2>
               {session && session.user.roles.includes("ROLE_ADMIN") && (
-                <Link href={`/${getBaseUrl(game)}edit/${game.id}/1`}>
-                  <ButtonPrimary
-                    label=""
-                    icon={faPen}
-                    color={theme.colors.primary[600]}
-                  />
-                </Link>
+                <div className="flex gap-x-2">
+                  <Link href={`/${getBaseUrl(game)}edit/${game.id}/1`}>
+                    <ButtonPrimary
+                      label=""
+                      icon={faPen}
+                      color={theme.colors.primary[600]}
+                    />
+                  </Link>
+                  <ButtonDeleteGame game={game} />
+                </div>
               )}
             </div>
 

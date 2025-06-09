@@ -4,6 +4,7 @@ import { handleAuth } from "../authServer";
 import { handleResponse, handleValidation, ResponserServer } from "../fetch";
 import { createGameSchema, updateGameSchema } from "../validation/game";
 import { ListPaginated } from "@/interfaces/paginator.interface";
+import { imageGameSchema } from "../validation/image";
 
 export async function getGames(
   params: Param[] = []
@@ -54,6 +55,25 @@ export async function getGame(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`
   );
   const response = await fetch(url, { headers });
+
+  return handleResponse(response);
+}
+
+export async function deleteGame(
+  id: number | null,
+  type: string | null
+): Promise<ResponserServer<null>> {
+  if (!id) {
+    return {
+      ok: false,
+      message: "Jeu invalide",
+    };
+  }
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}/${id}`
+  );
+  const response = await fetch(url, { headers: headers, method: "DELETE" });
 
   return handleResponse(response);
 }
@@ -216,7 +236,7 @@ export async function uploadImageGame(
   }
   const validatedData = handleValidation(
     { file: file },
-    updateGameSchema,
+    imageGameSchema,
     "Erreur lors de la validation de l'image"
   );
   if (!validatedData.ok) {
