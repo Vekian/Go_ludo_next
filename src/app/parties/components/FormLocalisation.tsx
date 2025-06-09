@@ -140,7 +140,7 @@ export default function FormLocalisation({
             value={
               formData.playersMax && formData.playersMin
                 ? [Number(formData.playersMin), Number(formData.playersMax)]
-                : undefined
+                : [2, 30]
             }
             onChange={handleRangeChange}
             slots={{

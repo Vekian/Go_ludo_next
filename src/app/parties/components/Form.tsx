@@ -62,12 +62,13 @@ export default function Form({
     const params = new URLSearchParams();
 
     for (const [key, value] of formDataInstance.entries()) {
-      if (value !== null && value !== "") {
+      if (value !== null && value !== "" && value !== undefined) {
         params.set(key, String(value));
       }
     }
+
     Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null && value !== "0") {
+      if (value !== null && value !== "0" && value !== undefined) {
         params.set(key, String(value));
       }
     });

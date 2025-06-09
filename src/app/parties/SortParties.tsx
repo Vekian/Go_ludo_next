@@ -7,8 +7,10 @@ import React from "react";
 
 export default function SortParties({
   countParties,
+  searchParams,
 }: {
   countParties: number;
+  searchParams: Record<string, string>;
 }) {
   const router = useRouter();
   return (
@@ -24,9 +26,16 @@ export default function SortParties({
           { label: "Pertinence", value: "score" },
           { label: "Distance", value: "distance" },
         ]}
-        value="score"
+        value={searchParams.sort ?? "score"}
         onChange={(event: SelectChangeEvent<string>) => {
-          router.push(`/parties?sort=${event.target.value}`);
+          const newSort = event.target.value;
+          const params = new URLSearchParams(searchParams);
+
+          // On met à jour / ajoute le paramètre 'sort'
+          params.set("sort", newSort);
+
+          // On pousse la nouvelle URL
+          router.push(`/parties?${params.toString()}`);
         }}
       />
     </div>

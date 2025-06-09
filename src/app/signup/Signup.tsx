@@ -77,19 +77,7 @@ export default function Signup() {
   return (
     <div className="w-full mt-10 p-6 bg-white rounded-lg flex flex-col items-center">
       <h1 className="text-2xl text-center font-bold mb-4">Créer un compte</h1>
-
       <form onSubmit={handleSubmit} className="space-y-4 px-6 lg:w-1/2">
-        <div className="flex flex-col">
-          <label>Nom utilisateur</label>
-          <InputText
-            id="username"
-            defaultValue={userData.username}
-            onChange={(value) => handleChange("username", value)}
-          />
-          {errors?.username && (
-            <FormError errors={errors.username} name="username" />
-          )}
-        </div>
         <div className="flex flex-col">
           <label>Email</label>
           <InputText
@@ -113,6 +101,17 @@ export default function Signup() {
           )}
         </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="flex flex-col">
+          <label>Nom utilisateur</label>
+          <InputText
+            id="username"
+            defaultValue={userData.username}
+            onChange={(value) => handleChange("username", value)}
+          />
+          {errors?.username && (
+            <FormError errors={errors.username} name="username" />
+          )}
+        </div>
         <div className="flex w-full justify-center">
           {loading ? (
             <div className="text-center mt-6">

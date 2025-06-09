@@ -72,7 +72,10 @@ export default async function page({
               </div>
             </div>
             <div className="ml-6">
-              <SortParties countParties={parties.totalResults} />
+              <SortParties
+                countParties={parties.totalResults}
+                searchParams={params as Record<string, string>}
+              />
             </div>
             <ListParties parties={parties} />
           </div>
