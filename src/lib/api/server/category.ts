@@ -10,7 +10,10 @@ export async function getCategories(
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/${type}`
   );
-  const response = await fetch(url, { headers });
+  const response = await fetch(url, {
+    headers: headers,
+    next: { revalidate: 86400 },
+  });
 
   return handleResponse(response);
 }
