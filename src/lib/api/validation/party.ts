@@ -10,6 +10,7 @@ export const searchPartySchema = z.object({
   date: z.string().date().optional().nullable(),
   startTime: z.string().optional().nullable(),
   endTime: z.string().optional().nullable(),
+  sort: z.string().optional().nullable(),
   game: z.coerce.number().optional(),
   category: z.coerce.number().optional(),
   theme: z.coerce.number().optional(),

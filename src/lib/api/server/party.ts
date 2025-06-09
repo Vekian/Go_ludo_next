@@ -61,6 +61,7 @@ export async function searchParties(
       }
     });
   }
+  console.log(url);
   const headers = await handleAuth();
   const response = await fetch(url, {
     headers: headers,

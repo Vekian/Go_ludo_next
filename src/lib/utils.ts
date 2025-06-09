@@ -1,6 +1,9 @@
 import { GameListItem } from "@/interfaces";
 
-export function getImg(url: string) {
+export function getImg(url?: string) {
+  if (!url) {
+    return `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/images/placeholder.png`;
+  }
   return `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}${url}`;
 }
 
