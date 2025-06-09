@@ -133,6 +133,7 @@ export default function PendingParty({ party }: { party: Party }) {
                   <CardParticipant
                     participant={participant}
                     key={`participant${participant.id}`}
+                    party={party}
                   />
                 ))}
               </TabsCustom>
