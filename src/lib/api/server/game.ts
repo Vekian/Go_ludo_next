@@ -30,6 +30,19 @@ export async function getGames(
   return handleResponse(response);
 }
 
+export async function getSimilarGames(
+  gameId: number
+): Promise<ResponserServer<GameListItem[]>> {
+  const headers = await handleAuth();
+  const url = new URL(
+    `${process.env.NEXT_PUBLIC_API_SYMFONY_URL}/api/game/similar/${gameId}`
+  );
+
+  const response = await fetch(url, { headers });
+
+  return handleResponse(response);
+}
+
 export async function getGamesRec(): Promise<ResponserServer<GameListItem[]>> {
   const headers = await handleAuth();
   const url = new URL(
