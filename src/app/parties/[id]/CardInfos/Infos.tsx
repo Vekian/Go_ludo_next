@@ -3,12 +3,13 @@ import React from "react";
 import {
   faCalendarCheck,
   faCity,
+  faClock,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import GameTag from "@/components/tag/GameTag";
-import { formatDate } from "@/lib/date";
+import { formatDate, getTimeFormated } from "@/lib/date";
 
 export default function Infos({ party }: { party: Party }) {
   return (
@@ -25,6 +26,12 @@ export default function Infos({ party }: { party: Party }) {
               <FontAwesomeIcon icon={faCalendarCheck} />
               <p>{formatDate(party.meetingDate)}</p>
             </div>
+            {party.meetingTime && (
+              <div className="flex gap-x-2 items-center">
+                <FontAwesomeIcon icon={faClock} />
+                <p>{getTimeFormated(party.meetingTime)}</p>
+              </div>
+            )}
             <div className="flex gap-x-2 items-center">
               <FontAwesomeIcon icon={faUserGroup} />
               <p>

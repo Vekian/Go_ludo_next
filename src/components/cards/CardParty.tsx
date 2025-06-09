@@ -6,6 +6,7 @@ import {
   faCalendarCheck,
   faChartSimple,
   faCity,
+  faClock,
   faShoePrints,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
@@ -13,9 +14,10 @@ import { PartyCard } from "@/interfaces/party.interface";
 import Link from "next/link";
 import { Avatar, Tooltip } from "@mui/material";
 import { getImg } from "@/lib/utils";
-import { formatDate } from "@/lib/date";
+import { formatDate, getTimeFormated } from "@/lib/date";
 
 export default function CardParty({ party }: { party: PartyCard }) {
+  console.log(party.meetingTime);
   return (
     <Link href={`/parties/${party.id}`}>
       <div className="flex justify-between px-2 sm:px-6 bg-white hover:bg-secondary-50 rounded-lg p-3 w-full gap-x-6">
@@ -51,14 +53,24 @@ export default function CardParty({ party }: { party: PartyCard }) {
                 <FontAwesomeIcon icon={faCity} className="text-primary-950" />
                 {party.city.name}
               </div>
-
-              <div className="flex gap-x-2 items-center">
-                <FontAwesomeIcon
-                  icon={faCalendarCheck}
-                  className="text-primary-950"
-                />
-                {formatDate(party.meetingDate)}
-              </div>
+              {party.meetingDate && (
+                <div className="flex gap-x-2 items-center">
+                  <FontAwesomeIcon
+                    icon={faCalendarCheck}
+                    className="text-primary-950"
+                  />
+                  {formatDate(party.meetingDate)}
+                </div>
+              )}
+              {party.meetingTime && (
+                <div className="flex gap-x-2 items-center">
+                  <FontAwesomeIcon
+                    icon={faClock}
+                    className="text-primary-950"
+                  />
+                  {getTimeFormated(party.meetingTime)}
+                </div>
+              )}
             </div>
           </div>
         </div>

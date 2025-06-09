@@ -24,6 +24,13 @@ export function getDateFormated(createdAt: string, updatedAt: string) {
   return `${updated ? "Modifié" : ""} ${formatedDate}`;
 }
 
+export function getTimeFormated(dateString: string) {
+  const date = new Date(dateString);
+  const heures = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  return `${heures}:${minutes}`;
+}
+
 export function getRelativeTime(date: string, uppercase: boolean = true) {
   const relativeTime = dayjs(date).fromNow();
   if (uppercase) {
