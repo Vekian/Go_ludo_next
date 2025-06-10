@@ -1,6 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBarcode } from "@fortawesome/free-solid-svg-icons";
 import InputSearch from "@/components/ui/input/search/InputSearch";
 
 function SearchBar() {
