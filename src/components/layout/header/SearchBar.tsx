@@ -13,9 +13,7 @@ function SearchBar() {
         <InputSearch label="Rechercher un jeu" />
       </div>
 
-      <div className="pl-6 hidden md:block">
-        <FontAwesomeIcon icon={faBarcode} className="text-black" />
-      </div>
+      <div className="pl-6 hidden md:block"></div>
     </div>
   );
 }

@@ -21,7 +21,7 @@ export default function ListAssistance({
 
   return (
     <List>
-      <ListItem key={"Assistance"} disablePadding sx={{ display: "block" }}>
+      <ListItem key={"Accueil"} disablePadding sx={{ display: "block" }}>
         <Link
           href={"/"}
           onClick={() => isMobile && isMobileMenuOpen && toggleMobileMenu()}
@@ -65,7 +65,7 @@ export default function ListAssistance({
               />
             </ListItemIcon>
             <ListItemText
-              primary="Assistance"
+              primary="Accueil"
               sx={[
                 (isMobile && isMobileMenuOpen) || isMenuOpen
                   ? {
