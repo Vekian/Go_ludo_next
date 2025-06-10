@@ -20,7 +20,7 @@ export default function ArrowPaginator({ type }: { type: string }) {
   };
   return (
     <div
-      className={` absolute bottom-1/2 ${
+      className={`z-50 absolute bottom-1/3 ${
         type === "prev" ? "left-6" : "right-6"
       } `}
     >
@@ -34,6 +34,9 @@ export default function ArrowPaginator({ type }: { type: string }) {
         }
         sx={{
           backgroundColor: theme.colors.white,
+          "&:hover": {
+            backgroundColor: theme.colors.neutral[50],
+          },
         }}
       >
         {type === "prev" && (
