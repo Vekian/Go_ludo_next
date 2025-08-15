@@ -45,7 +45,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd webapps/go-ludo-frontend
+            cd /var/www/go_ludo_front
             docker compose down
             rm docker-compose.yml
             docker rmi ${{ secrets.DOCKER_USERNAME }}/go_ludo_front:latest || true
