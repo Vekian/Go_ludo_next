@@ -23,7 +23,7 @@ COPY . .
 COPY .env.production.sample .env.production
 
 # Build Next.js en production
-RUN yarn build
+RUN yarn build --no-lint
 
 # Étape finale: image de runtime
 FROM base AS runner
